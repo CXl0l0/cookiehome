@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cookie Homes</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Cookie Homes</h1>
+    <nav id="nav" aria-label="Homes"></nav>
+  </header>
+  <main>
+    <section class="house" aria-labelledby="home-name">
+      <div class="roof"></div>
+      <div class="walls">
+        <h2 id="home-name"></h2>
+        <p id="owner"></p>
+        <p id="notice" role="alert"></p>
+        <div class="zones">
+          <div id="waiting" class="zone"></div>
+          <div id="inside" class="zone"></div>
+          <div id="outside" class="zone"></div>
+        </div>
+        <p id="done" hidden>Everyone here has an answer. Visit another home above.</p>
+      </div>
+    </section>
+    <aside>
+      <h3>Saved for every home</h3>
+      <p id="prefs"></p>
+      <h3>What happened</h3>
+      <ul id="log"></ul>
+    </aside>
+  </main>
+  <script type="module" src="src/ui/app.js"></script>
+</body>
+</html>

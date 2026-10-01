@@ -1,0 +1,11 @@
+{
+  "name": "cookie-homes",
+  "version": "0.1.0",
+  "description": "CP4106 - gamified privacy preference extraction (Week 7: core prototype, no AI)",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test test/rules.test.js"
+  },
+  "license": "MIT"
+}

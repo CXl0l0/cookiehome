@@ -1,0 +1,30 @@
+:root{--sky:#dfe9ee;--wall:#fbfaf7;--roof:#43305a;--ink:#1f2630;--door:#d9902f;--ok:#2f7d5b;--no:#a8433f;--line:#c4ced6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--sky);color:var(--ink);font:16px/1.5 Georgia,"Iowan Old Style",serif}
+header{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between;padding:1rem 1.5rem}
+h1{margin:0;font-size:1.6rem}
+.tab{font:inherit;padding:.4rem .9rem;border:2px solid var(--roof);background:transparent;color:var(--roof);border-radius:999px;cursor:pointer;margin-left:.4rem}
+.tab.active{background:var(--roof);color:#fff}
+main{display:grid;grid-template-columns:minmax(0,3fr) minmax(220px,1fr);gap:1.5rem;padding:0 1.5rem 2rem}
+.roof{height:60px;background:var(--roof);clip-path:polygon(50% 0,100% 100%,0 100%)}
+.walls{background:var(--wall);border:3px solid var(--roof);border-top:0;padding:1.25rem;min-height:420px}
+.walls h2{margin:0}
+.zones{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:1rem}
+.zone h3{margin:.2rem 0 .5rem;font-size:1rem}
+.zone:empty{display:none}
+.guest{border:2px solid var(--line);border-radius:6px;padding:.7rem;margin-bottom:.7rem;background:#fff}
+.guest.pending{border-color:var(--door);border-style:dashed}
+.guest.inside{border-color:var(--ok)}
+.guest.left{border-color:var(--no);opacity:.7}
+.guest p{margin:.4rem 0}
+.tag{margin-left:.5rem;font-size:.8rem;color:#5b6572}
+.row{display:flex;gap:.5rem}
+.row button{flex:1;font:inherit;padding:.4rem;border:0;border-radius:4px;color:#fff;cursor:pointer}
+.accept{background:var(--ok)}.reject{background:var(--no)}
+.remember{display:block;margin-top:.4rem;font-size:.85rem}
+button:focus-visible,input:focus-visible{outline:3px solid #1b6ec2;outline-offset:2px}
+#notice{color:var(--no);min-height:1.4em;margin:.3rem 0}
+aside{background:var(--wall);padding:1rem;border-radius:6px;align-self:start}
+aside h3{margin-top:0}
+#log{padding-left:1.1rem;font-size:.9rem;max-height:320px;overflow:auto}
+@media(max-width:760px){main{grid-template-columns:1fr}}
