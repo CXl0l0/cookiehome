@@ -17,7 +17,6 @@
       <div class="walls">
         <h2 id="home-name"></h2>
         <p id="owner"></p>
-        <p id="notice" role="alert"></p>
         <div class="zones">
           <div id="waiting" class="zone"></div>
           <div id="inside" class="zone"></div>
@@ -27,6 +26,17 @@
       </div>
     </section>
     <aside>
+      <section class="chat" aria-labelledby="chat-title">
+        <h3 id="chat-title">Talk to the guide</h3>
+        <p class="hint">Tell the guide what you’re comfortable with in your own words.</p>
+        <div id="chat-messages" class="messages" aria-live="polite" aria-label="Chat messages"></div>
+        <form id="chat-form">
+          <label class="sr-only" for="chat-input">Your privacy preference</label>
+          <textarea id="chat-input" rows="3" maxlength="2000" placeholder="For example: Remember my settings, but don't let advertisers follow me." required></textarea>
+          <button id="send" type="submit">Send</button>
+        </form>
+        <p id="notice" role="alert"></p>
+      </section>
       <h3>Saved for every home</h3>
       <p id="prefs"></p>
       <h3>What happened</h3>
