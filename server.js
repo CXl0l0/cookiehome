@@ -14,6 +14,8 @@ const intentSchema = {
   properties: {
     reply: { type: "string" },
     needsClarification: { type: "boolean" },
+    followUpTitle: { type: "string" },
+    followUpScene: { type: "string" },
     decisions: { type: "array", items: {
       type: "object",
       properties: {
@@ -22,7 +24,7 @@ const intentSchema = {
         scope: { type: "string", enum: SCOPES },
       }, required: ["category", "decision", "scope"],
     } },
-  }, required: ["reply", "needsClarification", "decisions"],
+  }, required: ["reply", "needsClarification", "followUpTitle", "followUpScene", "decisions"],
 };
 
 async function readJson(req) {
@@ -49,10 +51,14 @@ async function interpret(req, res) {
       home: String(body.context?.home ?? "").slice(0, 100),
       pending: Array.isArray(body.context?.pending) ? body.context.pending.filter((x) => safeCategories.includes(x.category)).map((x) => ({ category: x.category, request: String(x.request).slice(0, 300) })) : [],
       conversation: Array.isArray(body.history) ? body.history.slice(-8).map((m) => ({ role: m.role === "assistant" ? "assistant" : "user", content: String(m.content).slice(0, 1000) })) : [],
+      activeFollowUp: body.context?.activeFollowUp && typeof body.context.activeFollowUp === "object" ? {
+        title: String(body.context.activeFollowUp.title ?? "").slice(0, 120),
+        scene: String(body.context.activeFollowUp.scene ?? "").slice(0, 500),
+      } : null,
       message: body.message.trim(),
     };
     const model = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
-    const prompt = `Interpret the user's latest message in the context below. Only decide a category when the user clearly expresses accept or reject. Map everyday phrases like remembering settings to functionality and tracking or ads to advertising. Essential cookies are always enabled and never produce a decision. Scope is all_homes only when the user clearly asks for a lasting general preference; otherwise this_home. Never infer a preference from silence, uncertainty, or an unrelated message. If ambiguous, ask one concise clarifying question, set needsClarification true, and return no decisions. A clarification response should answer conversationally and explain each change briefly. Return only decisions supported by the latest message and context.\n\nConversation and current home context:\n${JSON.stringify(context)}`;
+    const prompt = `Interpret the user's latest message in the context below. Only decide a category when the user clearly expresses accept or reject. Map everyday phrases like remembering settings to functionality and tracking or ads to advertising. Essential cookies are always enabled and never produce a decision. Scope is all_homes only when the user clearly asks for a lasting general preference; otherwise this_home. Never infer a preference from silence, uncertainty, or an unrelated message. If ambiguous, ask one concise clarifying question, set needsClarification true, return no decisions, and generate a short linked follow-up scenario: its title and a concrete 1-2 sentence scene that asks about the unclear request. The follow-up should clarify the user's intention, not pressure them or invent a new permission request. If the user's message clearly answers only some of the pending categories, set needsClarification false, return only those explicit decisions, and generate a new linked scenario that naturally asks about the remaining unanswered requests. Name only requests from the pending list and do not infer any choice for them. If the clear answer resolves every pending category, leave followUpTitle and followUpScene empty. If the message is unrelated or gives no clear decision, ask a brief clarifying question and make no changes. A clarification response should answer conversationally and explain each change briefly. Return only decisions supported by the latest message and context.\n\nConversation and current home context:\n${JSON.stringify(context)}`;
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
       method: "POST", headers: { "x-goog-api-key": process.env.GEMINI_API_KEY, "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -80,7 +86,23 @@ async function interpret(req, res) {
     if (result.decisions.some((d) => d.category === "essential" || !safeCategories.includes(d.category)) || new Set(result.decisions.map((d) => d.category)).size !== result.decisions.length) {
       throw new Error("AI returned invalid decisions.");
     }
-    if (result.needsClarification) result.decisions = [];
+    if (result.needsClarification) {
+      result.decisions = [];
+      result.followUpTitle = String(result.followUpTitle ?? "").slice(0, 120);
+      result.followUpScene = String(result.followUpScene ?? "").slice(0, 500);
+      if (!result.followUpTitle || !result.followUpScene) throw new Error("AI returned an incomplete follow-up scenario.");
+    } else {
+      const decidedCategories = new Set(result.decisions.map((decision) => decision.category));
+      const remainingCategories = context.pending.map((guest) => guest.category).filter((category) => !decidedCategories.has(category));
+      if (remainingCategories.length) {
+        result.followUpTitle = String(result.followUpTitle ?? "").slice(0, 120);
+        result.followUpScene = String(result.followUpScene ?? "").slice(0, 500);
+        if (!result.followUpTitle || !result.followUpScene) throw new Error("AI returned an incomplete next scenario for unanswered requests.");
+      } else {
+        result.followUpTitle = "";
+        result.followUpScene = "";
+      }
+    }
     res.writeHead(200, { "Content-Type": "application/json" }).end(JSON.stringify(result));
   } catch (error) {
     console.error("Chat request failed:", error.message);
