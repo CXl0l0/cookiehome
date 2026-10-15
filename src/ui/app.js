@@ -209,22 +209,11 @@ function render() {
     window.setTimeout(() => {
       if (recentlyChanged === changed) {
         recentlyChanged = new Set();
-        renderGuestZonesOnly();
+        // Rebuild every zone from game state. A partial refresh can leave stale
+        // cards behind when the last guest leaves a zone or enters an empty one.
+        render();
       }
     }, 650);
-  }
-}
-
-function renderGuestZonesOnly() {
-  const scenario = currentScenario(game);
-  const home = game.homes[scenario.id];
-  for (const [key, status] of [["waiting", "pending"], ["inside", "inside"], ["outside", "left"]]) {
-    const zone = $(key);
-    const guests = scenario.guests.filter((guest) => home.guests[guest.id] === status);
-    if (!guests.length) continue;
-    const grid = zone.querySelector(".guest-grid");
-    if (!grid) continue;
-    grid.replaceChildren(...guests.map((guest) => guestCard(guest, status)));
   }
 }
 
