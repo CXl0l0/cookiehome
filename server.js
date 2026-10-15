@@ -7,7 +7,7 @@ import { CATEGORIES, DECISIONS, SCOPES } from "./src/engine/model.js";
 
 const root = join(fileURLToPath(import.meta.url), "..");
 const types = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css" };
-const AI_CATEGORIES = CATEGORIES.filter((category) => category !== "essential");
+const AI_CATEGORIES = [...CATEGORIES, "unclassified"];
 
 const intentSchema = {
   type: "object",
@@ -22,7 +22,8 @@ const intentSchema = {
         category: { type: "string", enum: AI_CATEGORIES },
         decision: { type: "string", enum: DECISIONS },
         scope: { type: "string", enum: SCOPES },
-      }, required: ["category", "decision", "scope"],
+        guestIds: { type: "array", items: { type: "string" } },
+      }, required: ["category", "decision", "scope", "guestIds"],
     } },
   }, required: ["reply", "needsClarification", "followUpTitle", "followUpScene", "decisions"],
 };
@@ -50,6 +51,7 @@ async function interpret(req, res) {
     const context = {
       home: String(body.context?.home ?? "").slice(0, 100),
       pending: Array.isArray(body.context?.pending) ? body.context.pending.filter((x) => safeCategories.includes(x.category)).map((x) => ({ category: x.category, request: String(x.request).slice(0, 300) })) : [],
+      currentGuests: Array.isArray(body.context?.currentGuests) ? body.context.currentGuests.filter((x) => typeof x.id === "string" && typeof x.name === "string" && safeCategories.includes(x.category)).map((x) => ({ id: x.id.slice(0, 100), name: x.name.slice(0, 120), category: x.category, request: String(x.request ?? "").slice(0, 300), status: ["pending", "inside", "left"].includes(x.status) ? x.status : "pending" })) : [],
       conversation: Array.isArray(body.history) ? body.history.slice(-8).map((m) => ({ role: m.role === "assistant" ? "assistant" : "user", content: String(m.content).slice(0, 1000) })) : [],
       activeFollowUp: body.context?.activeFollowUp && typeof body.context.activeFollowUp === "object" ? {
         title: String(body.context.activeFollowUp.title ?? "").slice(0, 120),
@@ -58,7 +60,7 @@ async function interpret(req, res) {
       message: body.message.trim(),
     };
     const model = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
-    const prompt = `Interpret the user's latest message in the context below. Only decide a category when the user clearly expresses accept or reject. Map everyday phrases like remembering settings to functionality and tracking or ads to advertising. Essential cookies are always enabled and never produce a decision. Scope is all_homes only when the user clearly asks for a lasting general preference; otherwise this_home. Never infer a preference from silence, uncertainty, or an unrelated message. If ambiguous, ask one concise clarifying question, set needsClarification true, return no decisions, and generate a short linked follow-up scenario: its title and a concrete 1-2 sentence scene that asks about the unclear request. The follow-up should clarify the user's intention, not pressure them or invent a new permission request. If the user's message clearly answers only some of the pending categories, set needsClarification false, return only those explicit decisions, and generate a new linked scenario that naturally asks about the remaining unanswered requests. Name only requests from the pending list and do not infer any choice for them. If the clear answer resolves every pending category, leave followUpTitle and followUpScene empty. If the message is unrelated or gives no clear decision, ask a brief clarifying question and make no changes. A clarification response should answer conversationally and explain each change briefly. Return only decisions supported by the latest message and context.\n\nConversation and current home context:\n${JSON.stringify(context)}`;
+    const prompt = `Interpret the user's latest message in the context below. Only decide when the user clearly expresses accept or reject. Map everyday phrases like remembering settings to functionality and tracking or ads to advertising. Every decision MUST include guestIds from currentGuests, exactly identifying the guest(s) the user referred to. Never substitute another guest/category if their named target is essential or otherwise cannot be changed. If the user explicitly asks to remove, reject, block, or no longer welcome a guest whose status is inside, output a reject decision for that exact guest ID; the deterministic engine can reverse a prior welcome. Essential guests may be named as targets so the engine can explain they cannot be removed; do not redirect that choice to another guest. Unclassified guests are also present in the current home. If the user explicitly rejects/blocks an unclassified guest, output category unclassified, decision reject, scope this_home, and that exact guest ID. Do not accept an unclassified guest because its purpose is unknown; ask for clarification instead. Scope is all_homes only when the user clearly asks for a lasting general preference; otherwise this_home. Never infer a preference from silence, uncertainty, or an unrelated message. If ambiguous, ask one concise clarifying question, set needsClarification true, return no decisions, and generate a short linked follow-up scenario: its title and a concrete 1-2 sentence scene that asks about the unclear request. The follow-up should clarify the user's intention, not pressure them or invent a new permission request. If the user's message clearly answers only some of the pending guests, set needsClarification false, return only those explicit decisions, and generate a new linked scenario that naturally asks about the remaining unanswered guests. Name only requests from the pending list and do not infer any choice for them. If the clear answer resolves every pending guest, leave followUpTitle and followUpScene empty. If the message is unrelated or gives no clear decision, ask a brief clarifying question and make no changes. A clarification response should answer conversationally and explain each change briefly. Return only decisions supported by the latest message and context.\n\nConversation and current home context:\n${JSON.stringify(context)}`;
     const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, {
       method: "POST", headers: { "x-goog-api-key": process.env.GEMINI_API_KEY, "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -83,7 +85,9 @@ async function interpret(req, res) {
     const output = data.candidates?.[0]?.content?.parts?.map((part) => part.text ?? "").join("");
     if (!output) throw new Error("AI returned no structured result.");
     const result = JSON.parse(output);
-    if (result.decisions.some((d) => d.category === "essential" || !safeCategories.includes(d.category)) || new Set(result.decisions.map((d) => d.category)).size !== result.decisions.length) {
+    const currentById = new Map(context.currentGuests.map((guest) => [guest.id, guest]));
+    const targetedIds = result.decisions.flatMap((decision) => decision.guestIds ?? []);
+    if (result.decisions.some((d) => !safeCategories.includes(d.category) || !Array.isArray(d.guestIds) || !d.guestIds.length || new Set(d.guestIds).size !== d.guestIds.length || d.guestIds.some((id) => !currentById.has(id) || currentById.get(id).category !== d.category)) || new Set(targetedIds).size !== targetedIds.length) {
       throw new Error("AI returned invalid decisions.");
     }
     if (result.needsClarification) {
@@ -92,8 +96,8 @@ async function interpret(req, res) {
       result.followUpScene = String(result.followUpScene ?? "").slice(0, 500);
       if (!result.followUpTitle || !result.followUpScene) throw new Error("AI returned an incomplete follow-up scenario.");
     } else {
-      const decidedCategories = new Set(result.decisions.map((decision) => decision.category));
-      const remainingCategories = context.pending.map((guest) => guest.category).filter((category) => !decidedCategories.has(category));
+      const decidedIds = new Set(targetedIds);
+      const remainingCategories = context.currentGuests.filter((guest) => guest.status === "pending" && !decidedIds.has(guest.id)).map((guest) => guest.category);
       if (remainingCategories.length) {
         result.followUpTitle = String(result.followUpTitle ?? "").slice(0, 120);
         result.followUpScene = String(result.followUpScene ?? "").slice(0, 500);

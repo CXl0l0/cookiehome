@@ -3,7 +3,18 @@ import { createGame, currentScenario } from "../engine/model.js";
 import { enterHome, applyIntent, isHomeDone } from "../engine/rules.js";
 import { scenarios } from "../data/scenarios.js";
 
-let game = enterHome(createGame(scenarios), 0);
+let initialScenarios = scenarios;
+try {
+  const savedRoster = sessionStorage.getItem("cookiehomes.generatedScenario");
+  if (savedRoster) {
+    const imported = JSON.parse(savedRoster);
+    if (imported && Array.isArray(imported.guests) && imported.guests.length) {
+      initialScenarios = [{ id: "generated-site", name: imported.name || "Generated test site", owner: "the site owner", story: "This home was built from the cookie metadata and CMP inputs you supplied. Review each guest and its source metadata before making a choice.", guests: imported.guests }];
+    }
+    sessionStorage.removeItem("cookiehomes.generatedScenario");
+  }
+} catch { /* fall back to the built-in homes if imported demo data is invalid */ }
+let game = enterHome(createGame(initialScenarios), 0);
 let chatHistory = [];
 let activeFollowUp = null;
 let busy = false;
@@ -46,6 +57,12 @@ function guestCard(guest, status) {
   card.append(top);
   card.append(el("span", "guest-party", guest.party === "first" ? "THE HOST" : "A THIRD-PARTY GUEST"));
   card.append(el("p", "", guest.request));
+  if (guest.metadata) {
+    const details = el("details", "guest-metadata");
+    details.append(el("summary", "", `Cookie metadata · ${guest.metadata.name}`));
+    details.append(el("p", "", `${guest.metadata.domain} · path ${guest.metadata.path} · ${guest.metadata.expires} · Secure ${guest.metadata.secure} · HttpOnly ${guest.metadata.httpOnly} · SameSite ${guest.metadata.sameSite} · ${guest.metadata.party}-party · purpose: ${guest.category} (${guest.purposeEvidence})${guest.cmpDecision ? ` · CMP: ${guest.cmpDecision}` : ""}`));
+    card.append(details);
+  }
   card.setAttribute("aria-label", `${guest.name}: ${stateLabel}. ${guest.request}`);
   return card;
 }
@@ -237,7 +254,12 @@ async function sendMessage(event) {
       body: JSON.stringify({
         message,
         history: chatHistory,
-        context: { home: scenario.name, pending: pending.map((guest) => ({ category: guest.category, request: guest.request })), activeFollowUp },
+        context: {
+          home: scenario.name,
+          pending: pending.map((guest) => ({ category: guest.category, request: guest.request })),
+          currentGuests: scenario.guests.map((guest) => ({ id: guest.id, name: guest.name, category: guest.category, request: guest.request, status: home.guests[guest.id] })),
+          activeFollowUp,
+        },
       }),
     });
     const result = await response.json();

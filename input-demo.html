@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f8f5">
+  <title>How the inputs work — Cookie Homes</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="input-demo.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Cookie Homes home"><span class="brand-mark" aria-hidden="true">⌂</span><span>cookie<span class="brand-light">homes</span></span></a>
+    <nav class="site-nav" aria-label="Main navigation"><a href="/">Privacy journey</a><a class="active" href="/input-demo.html" aria-current="page">How the inputs work</a></nav>
+    <div class="topbar-note"><span class="privacy-dot"></span> Controlled test site</div>
+  </header>
+
+  <main class="page-shell input-page">
+    <section class="input-intro">
+      <p class="eyebrow">THE INPUT LAYER · A PROFESSOR-READY WALKTHROUGH</p>
+      <h1>Understand the signals before interpreting the person.</h1>
+      <p>Cookie Homes uses two core signals plus a linking catalog: what the browser observed, what the site’s consent platform says the user chose, and evidence connecting a cookie to its vendor and purpose. The catalog is necessary for attribution; neither signal replaces asking the user what they want.</p>
+      <div class="input-principle"><span aria-hidden="true">✳</span><div><strong>Inputs matter just as much as the output.</strong><br><span>Good preference extraction starts with good context. Unknown evidence stays unknown; it never silently becomes consent.</span></div></div>
+    </section>
+
+    <section class="input-cards" aria-label="Core inputs and linking catalog">
+      <article class="input-type-card metadata-type">
+        <div class="input-type-top"><span class="input-number">INPUT 01</span><span class="type-icon" aria-hidden="true">◉</span></div>
+        <h2>Observed cookie metadata</h2>
+        <p><strong>What did the browser receive?</strong> Technical details from <code>Set-Cookie</code>: cookie name, setting domain, path, lifetime, and security flags.</p>
+        <div class="type-example"><span>Example observation</span><code>basket_id · shop.test · Secure · HttpOnly</code></div>
+        <p class="type-caution"><span aria-hidden="true">↳</span> Describes a cookie’s handling—not its purpose or whether the user agreed to it.</p>
+      </article>
+      <article class="input-type-card cmp-type">
+        <div class="input-type-top"><span class="input-number">INPUT 02</span><span class="type-icon" aria-hidden="true">☷</span></div>
+        <h2>CMP consent signal</h2>
+        <p><strong>What choice did a consent platform record?</strong> When available, a GPP or TCF signal can describe choices for supported purposes or vendors.</p>
+        <div class="type-example"><span>Example decoded signal</span><code>Northstar Ads · personalised ads · deny</code></div>
+        <p class="type-caution"><span aria-hidden="true">↳</span> Describes a choice—it does not list every cookie that implements that purpose.</p>
+      </article>
+      <article class="input-type-card catalog-type">
+        <div class="input-type-top"><span class="input-number">LINKING INPUT</span><span class="type-icon" aria-hidden="true">⛓</span></div>
+        <h2>Site purpose catalog</h2>
+        <p><strong>Which vendor and purpose does a cookie belong to?</strong> A site disclosure or verified inventory connects cookie name/domain to vendor ID, purpose ID, category, and a plain-language explanation.</p>
+        <div class="type-example"><span>Example mapping</span><code>layout_choice → fresh-shop / saved-layout</code></div>
+        <p class="type-caution"><span aria-hidden="true">↳</span> This third input is the attribution bridge. Without a match, show an unknown guest and keep CMP choices unlinked.</p>
+      </article>
+    </section>
+
+    <section class="lab-panel" aria-labelledby="lab-title">
+      <div class="lab-heading">
+          <div><p class="eyebrow">INTERACTIVE TEST FIXTURE</p><h2 id="lab-title">See the two signals and their link</h2><p class="lab-description">Enter cookie metadata, a CMP signal, and the editable site-purpose catalog. The catalog connects matching cookie and CMP identifiers; unmatched records remain visible without being guessed.</p></div>
+        <div class="mode-switch" role="group" aria-label="CMP signal availability">
+          <button type="button" class="mode-button active" data-mode="missing" aria-pressed="true">No readable CMP</button>
+          <button type="button" class="mode-button" data-mode="available" aria-pressed="false">CMP signal available</button>
+        </div>
+      </div>
+
+      <div class="fixture-label"><span class="fixture-pulse"></span> CONTROLLED SITE <strong>shop.test</strong><span class="fixture-caption">Example data only · no real browser cookies are read</span></div>
+
+      <div class="input-lanes">
+        <section class="lane metadata-lane" aria-labelledby="metadata-title">
+          <div class="lane-heading"><span class="lane-index">01</span><div><h3 id="metadata-title">Browser observation</h3><p>Observed from the test site’s response headers</p></div><span class="lane-state observed-state">OBSERVED</span></div>
+          <div class="cookie-records">
+            <article class="cookie-record known-record">
+              <div class="record-top"><span class="cookie-symbol" aria-hidden="true">◈</span><div><strong>basket_id</strong><small>shop.test · first-party</small></div><span class="record-indicator">Seen</span></div>
+              <div class="attribute-chips"><span>Secure</span><span>HttpOnly</span><span>30 days</span></div>
+              <p class="record-note">Technical attributes tell us how it is handled. The test catalog supplies the purpose.</p>
+            </article>
+            <article class="cookie-record mapped-record">
+              <div class="record-top"><span class="cookie-symbol vendor-symbol" aria-hidden="true">◈</span><div><strong>ns_ad_id</strong><small>ads.northstar.test · third-party</small></div><span class="record-indicator">Seen</span></div>
+              <div class="attribute-chips"><span>Secure</span><span>SameSite=Lax</span><span>90 days</span></div>
+              <p class="record-note">The site’s test disclosure links this domain to Northstar Ads.</p>
+            </article>
+            <article class="cookie-record unknown-record">
+              <div class="record-top"><span class="cookie-symbol unknown-symbol" aria-hidden="true">?</span><div><strong>x7</strong><small>edge.unknown.test · third-party</small></div><span class="record-indicator unknown-indicator">Unmapped</span></div>
+              <div class="attribute-chips"><span>Secure</span><span>Purpose unknown</span></div>
+              <p class="record-note">The name and flags do not reveal what this cookie does.</p>
+            </article>
+          </div>
+          <details class="raw-details"><summary>Inspect a raw Set-Cookie example</summary><code>Set-Cookie: basket_id=•••; Path=/; Max-Age=2592000; Secure; HttpOnly; SameSite=Lax</code><p>The value is masked: a real session or identifier value is not needed for preference extraction.</p></details>
+        </section>
+
+        <div class="lane-connector" aria-hidden="true"><span>＋</span><small>different evidence</small></div>
+
+        <section class="lane cmp-lane" aria-labelledby="cmp-title">
+          <div class="lane-heading"><span class="lane-index cmp-index">02</span><div><h3 id="cmp-title">Consent platform signal</h3><p id="cmp-subtitle">A CMP may expose a supported consent signal</p></div><span class="lane-state" id="cmp-status">NOT READABLE</span></div>
+          <div id="cmp-missing" class="cmp-empty">
+            <span class="empty-icon" aria-hidden="true">∅</span>
+            <strong>No readable signal found</strong>
+            <p>The browser observation is still useful. Cookie Homes uses verified test-site disclosure where it exists, asks about the known purpose, and leaves <b>x7</b> unclassified.</p>
+            <span class="empty-foot">No CMP signal ≠ permission granted</span>
+          </div>
+          <div id="cmp-available" class="cmp-signal" hidden>
+            <div class="signal-brand"><span class="signal-check" aria-hidden="true">✓</span><div><strong>GPP / TCF demo signal</strong><small>Decoded fixture · test CMP · section: EU TCF</small></div><span class="decoded-tag">DECODED</span></div>
+            <div class="signal-choice"><div><span class="signal-kicker">VENDOR</span><strong>Northstar Ads</strong></div><div><span class="signal-kicker">PURPOSE</span><strong>Personalised advertising</strong></div><div><span class="signal-kicker">RECORDED CHOICE</span><strong class="deny-choice">Denied</strong></div></div>
+            <p class="signal-footnote">This signal covers a vendor and purpose. The disclosure catalog—not the CMP string alone—links it to <code>ns_ad_id</code>.</p>
+          </div>
+          <div class="cmp-explainer"><span aria-hidden="true">i</span><p id="cmp-explanation">The metadata and catalog can still build a useful prompt when the CMP signal is missing.</p></div>
+        </section>
+      </div>
+
+      <section class="mapping-stage input-contract" aria-labelledby="contract-title">
+        <div class="stage-heading"><div><p class="eyebrow">PROTOTYPE INPUT CONTRACT</p><h3 id="contract-title">Records in, guests out</h3><p>These are two separate inputs. Cookie purpose mappings are a versioned site disclosure/catalog, not guessed from cookie flags or names.</p></div><button type="button" id="build-guests" class="mode-button">Build guest roster</button></div>
+        <div class="contract-grid">
+          <label><strong>01 · Cookie metadata JSON</strong><small>One observation per cookie: name, domain, path, lifetime, security flags, party.</small><textarea id="metadata-input" spellcheck="false" aria-label="Cookie metadata input"></textarea></label>
+          <label><strong>02 · CMP signal JSON</strong><small>Framework plus vendor/purpose decisions. Empty or unreadable signal makes no choice.</small><textarea id="cmp-input" spellcheck="false" aria-label="CMP signal input"></textarea></label>
+          <label class="catalog-input"><strong>Linking catalog JSON · editable data</strong><small>This small site disclosure links cookie name + domain to vendor, purpose, category, and guest description. Add rows here for new cookies; no code change is needed.</small><textarea id="catalog-input" spellcheck="false" aria-label="Purpose linking catalog input"></textarea></label>
+        </div>
+        <p id="input-error" class="input-error" role="alert"></p>
+        <div class="generated-roster"><div class="generated-roster-heading"><div><p class="eyebrow">ADAPTER OUTPUT</p><h4>Guest roster for this home</h4></div><span id="generated-count" class="stage-tag"></span></div><div id="generated-guests" class="generated-guest-grid" aria-live="polite"></div><div class="cmp-record-output"><h4>CMP records received</h4><div id="generated-cmp" class="generated-cmp-list" aria-live="polite"></div></div><button type="button" id="open-generated" class="mode-button open-generated" hidden>Open this generated home in the privacy journey →</button></div>
+        <p class="mapping-note">The adapter preserves each observed record. A catalog match assigns one of the five categories and links the cookie to vendor/purpose IDs. Essential starts inside; a matching readable CMP decision is reflected; all other known guests wait at the door. Unknown purpose stays unclassified at the door. CMP choices without a cookie/catalog match are still displayed but are not applied to a guest.</p>
+      </section>
+
+      <section class="mapping-stage" aria-labelledby="mapping-title">
+        <div class="stage-marker"><span>↓</span></div>
+        <div class="stage-heading"><div><p class="eyebrow">EVIDENCE LINKING · NOT GUESSING</p><h3 id="mapping-title">Turn evidence into a scenario</h3></div><span class="stage-tag">PROVENANCE KEPT</span></div>
+        <div class="mapping-table-wrap"><table class="mapping-table"><thead><tr><th>Observed cookie</th><th>Purpose evidence</th><th>Guest shown to user</th><th>Handling</th></tr></thead><tbody>
+          <tr><td><strong>basket_id</strong><small>shop.test</small></td><td><span class="evidence-badge verified">Test-site disclosure</span><small>Functionality · verified fixture</small></td><td><strong>The basket keeper</strong><small>Remembers your basket between visits</small></td><td><span class="handling-pill ask">Ask user</span></td></tr>
+          <tr id="ad-mapping-row"><td><strong>ns_ad_id</strong><small>ads.northstar.test</small></td><td><span class="evidence-badge">Disclosure + CMP</span><small>Advertising · Northstar Ads</small></td><td><strong>The ad guest</strong><small>Uses activity to personalise ads</small></td><td><span id="ad-handling" class="handling-pill ask">Ask user</span></td></tr>
+          <tr><td><strong>x7</strong><small>edge.unknown.test</small></td><td><span class="evidence-badge unknown-evidence">No purpose evidence</span><small>Unclassified · confidence unavailable</small></td><td><strong>An unknown guest</strong><small>Purpose not verified; do not infer it</small></td><td><span class="handling-pill hold">Hold · clarify</span></td></tr>
+        </tbody></table></div>
+        <p class="mapping-note"><span aria-hidden="true">↳</span> Cookie metadata finds the guest. Disclosures or a CMP help explain the purpose. Neither source alone is a complete cookie-to-purpose map.</p>
+      </section>
+
+      <section class="preference-stage" aria-labelledby="preference-title">
+        <div class="stage-marker stage-marker-green"><span>↓</span></div>
+        <div class="preference-stage-header"><div><p class="eyebrow">A SEPARATE, EQUALLY IMPORTANT STEP</p><h3 id="preference-title">Now extract what the person wants</h3><p>The inputs provide context. The user’s own words provide the preference. This example shows a sample interpreter result; it does not call Gemini.</p></div><div class="output-stamp"><span aria-hidden="true">✳</span> USER PREFERENCE OUTPUT</div></div>
+        <div class="preference-demo-grid">
+          <div class="user-answer-card"><span class="answer-label">SAMPLE USER MESSAGE</span><blockquote id="sample-message">“Keep my basket, but don’t use my activity for personalised ads.”</blockquote><div class="answer-actions"><button type="button" class="answer-button active" data-answer="clear">Show clear answer</button><button type="button" class="answer-button" data-answer="unclear">Show unclear answer</button></div><p id="answer-feedback" class="answer-feedback" aria-live="polite">Two clear choices are extracted. The unknown cookie stays undecided.</p></div>
+          <div class="output-card"><div class="output-header"><div><span class="output-dot"></span><strong>Structured preference output</strong></div><span id="output-state" class="output-state">EXPLICIT</span></div><pre id="output-json" aria-live="polite"></pre><div class="rule-result"><span class="rule-icon" aria-hidden="true">✓</span><p id="rule-copy">Deterministic rules can welcome the basket keeper, turn away the ad guest, and leave x7 pending.</p></div></div>
+        </div>
+      </section>
+
+      <section class="future-section" aria-labelledby="future-title">
+        <div class="future-icon" aria-hidden="true">↗</div><div><p class="eyebrow">GRACEFUL WHEN THE WEB CHANGES</p><h3 id="future-title">New cookie? New purpose? Keep the pipeline; extend the catalog.</h3><p>Store new raw observations and versions without rejecting the record. Add a mapping only when evidence is available. Until then, show an unknown guest, ask for clarification, and apply no preference. Future work: move purpose definitions into a versioned data registry so new categories can use the same validated decision flow. This prototype demonstrates the flow with fixtures; it does not yet implement live browser or CMP adapters.</p></div>
+        <div class="future-steps"><span><b>01</b> Parse what is known</span><span><b>02</b> Preserve unknown fields</span><span><b>03</b> Ask, never assume</span></div>
+      </section>
+    </section>
+
+    <section class="professor-takeaway"><span class="takeaway-icon" aria-hidden="true">✦</span><p><strong>The project has two jobs:</strong> gather and normalize reliable website evidence, then extract the user’s explicit privacy preferences from conversation. Strong input handling makes the output safer, more explainable, and easier to extend as cookies and consent frameworks evolve.</p></section>
+    <footer class="page-footer"><span>Cookie Homes · CP4106 prototype</span><span>Illustrative fixture; not a real consent manager or browser scanner.</span></footer>
+  </main>
+  <script type="module" src="src/ui/input-demo.js"></script>
+</body>
+</html>

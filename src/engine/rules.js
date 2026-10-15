@@ -9,9 +9,15 @@ const clone = (x) => structuredClone(x);
 const say = (g, text) => g.log.push(text);
 
 export function validateIntent(intent) {
-  if (!intent || !CATEGORIES.includes(intent.category)) return "Unknown category.";
+  if (!intent || (!CATEGORIES.includes(intent.category) && intent.category !== "unclassified")) return "Unknown category.";
   if (!DECISIONS.includes(intent.decision)) return "Decision must be accept or reject.";
   if (intent.scope && !SCOPES.includes(intent.scope)) return "Unknown scope.";
+  if (intent.guestIds !== undefined && (!Array.isArray(intent.guestIds) || !intent.guestIds.length || intent.guestIds.some((id) => typeof id !== "string") || new Set(intent.guestIds).size !== intent.guestIds.length)) {
+    return "Guest targets must be a non-empty list of unique guest IDs.";
+  }
+  if (intent.category === "unclassified" && intent.decision !== "reject") return "A guest with an unknown purpose cannot be welcomed until its purpose is verified.";
+  if (intent.category === "unclassified" && intent.scope === "all_homes") return "An unclassified guest can only be rejected for this home until its purpose is known.";
+  if (intent.category === "unclassified" && !intent.guestIds?.length) return "An unclassified guest must be rejected by its specific guest ID.";
   return null;
 }
 
@@ -30,6 +36,11 @@ export function enterHome(state, index) {
         say(g, `${guest.name} is needed to keep the house working, so they come in.`);
         continue;
       }
+      if (guest.initialStatus === "inside" || guest.initialStatus === "left") {
+        home.guests[guest.id] = guest.initialStatus;
+        say(g, `${guest.name}: the mapped input signal marked this guest ${guest.initialStatus}.`);
+        continue;
+      }
       const saved = g.standingPreferences[guest.category];
       if (saved) {
         home.guests[guest.id] = saved === "accept" ? "inside" : "left";
@@ -42,33 +53,45 @@ export function enterHome(state, index) {
   return g;
 }
 
-// Apply one structured privacy decision to the current home.
+// Apply one structured privacy decision to specific guests, including changing a past choice.
 export function applyIntent(state, intent) {
   const error = validateIntent(intent);
   if (error) return { state, ok: false, error };
 
-  if (intent.category === "essential") {
-    return { state, ok: false, error: "Essential cookies can't be changed." };
-  }
-
   const g = clone(state);
   const scenario = currentScenario(g);
   const home = g.homes[scenario.id];
-  const targets = scenario.guests.filter((x) => x.category === intent.category);
-  const pending = targets.filter((x) => home.guests[x.id] === "pending");
+  const categoryGuests = scenario.guests.filter((guest) => guest.category === intent.category);
+  const selectedGuests = intent.guestIds
+    ? categoryGuests.filter((guest) => intent.guestIds.includes(guest.id))
+    : categoryGuests;
 
-  if (pending.length === 0 && intent.scope !== "all_homes") {
-    return { state, ok: false, error: "No one here is waiting on that." };
+  if (!selectedGuests.length) {
+    return { state, ok: false, error: "Those guests are not part of this home or do not match that request." };
   }
+  if (selectedGuests.some((guest) => guest.category === "essential")) {
+    const names = selectedGuests.filter((guest) => guest.category === "essential").map((guest) => guest.name);
+    return { state, ok: false, error: `${names.join(", ")} ${names.length === 1 ? "is" : "are"} essential to this home and cannot be removed.` };
+  }
+
+  // A lasting category preference applies to all guests of that category here and in future homes.
+  const targets = intent.scope === "all_homes" ? categoryGuests : selectedGuests;
+  const nextStatus = intent.decision === "accept" ? "inside" : "left";
+  const changed = targets.filter((guest) => home.guests[guest.id] !== nextStatus);
+  if (!changed.length && intent.scope !== "all_homes") {
+    return { state, ok: false, error: "Those guests already match that choice." };
+  }
+
   if (intent.scope === "all_homes") {
     g.standingPreferences[intent.category] = intent.decision;
     say(g, `Saved: ${intent.category} will be ${intent.decision}ed in every home.`);
   }
-  for (const guest of pending) {
-    home.guests[guest.id] = intent.decision === "accept" ? "inside" : "left";
+  for (const guest of changed) {
+    const previousStatus = home.guests[guest.id];
+    home.guests[guest.id] = nextStatus;
     say(g, intent.decision === "accept"
       ? `You welcome ${guest.name} inside.`
-      : `You ask ${guest.name} to leave.`);
+      : previousStatus === "inside" ? `You ask ${guest.name} to leave.` : `You keep ${guest.name} outside.`);
   }
   return { state: g, ok: true };
 }
