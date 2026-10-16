@@ -138,7 +138,14 @@ function render() {
   const welcomed = scenario.guests.filter((guest) => home.guests[guest.id] === "inside");
   const outside = scenario.guests.filter((guest) => home.guests[guest.id] === "left");
 
+  $("guest-count").textContent = waiting.length ? `${waiting.length} waiting` : "No open requests";
+  const settledCount = welcomed.length + outside.length;
+  $("settled-summary").textContent = settledCount
+    ? `See current choices · ${welcomed.length} welcomed, ${outside.length} outside`
+    : "See current choices · none yet";
+
   $("home-name").textContent = scenario.name;
+  $("chat-context").textContent = `Current scenario · ${scenario.name}`;
   $("owner").textContent = `Hosted by ${scenario.owner}`;
   $("home-step").textContent = `HOME ${String(game.currentHome + 1).padStart(2, "0")} · ${completed ? "VISIT COMPLETE" : game.currentHome === 0 ? "YOUR FIRST STOP" : "YOUR NEXT STOP"}`;
   $("home-brief").textContent = completed

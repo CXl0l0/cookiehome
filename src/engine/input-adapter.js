@@ -10,9 +10,13 @@ export function buildGuestsFromInputs({ cookieMetadata, purposeCatalog = [], cmp
     if (!cookie || typeof cookie.name !== "string" || typeof cookie.domain !== "string") {
       throw new TypeError(`Cookie metadata record ${index + 1} needs name and domain strings.`);
     }
-    const mapping = purposeCatalog.find((entry) => entry.cookieName === cookie.name && entry.domain === cookie.domain);
+    const exactMappings = purposeCatalog.filter((entry) => entry.cookieName === cookie.name && entry.domain === cookie.domain);
+    const nameOnlyMappings = purposeCatalog.filter((entry) => entry.cookieName === cookie.name && !entry.domain);
+    const mapping = exactMappings[0] || (nameOnlyMappings.length === 1 ? nameOnlyMappings[0] : null);
     const mapped = mapping && CATEGORIES.includes(mapping.category);
-    const choice = mapped && choices.find((entry) => entry.vendorId === mapping.vendorId && entry.purposeId === mapping.purposeId);
+    const choice = mapped && choices.find((entry) =>
+      (entry.category && entry.category === mapping.category) ||
+      (entry.vendorId === mapping.vendorId && entry.purposeId === mapping.purposeId));
     const cmpDecision = choice && ["accept", "reject"].includes(choice.decision) ? choice.decision : null;
     const essential = mapped && mapping.category === "essential";
     const id = `cookie-${encodeURIComponent(cookie.name)}-${encodeURIComponent(cookie.domain)}`;
@@ -20,7 +24,7 @@ export function buildGuestsFromInputs({ cookieMetadata, purposeCatalog = [], cmp
       id,
       name: mapped ? (mapping.guestName || mapping.vendorName || cookie.name) : `Unknown guest · ${cookie.name}`,
       category: mapped ? mapping.category : "unclassified",
-      party: cookie.party === "third" || mapping?.party === "third" ? "third" : "first",
+      party: cookie.party === "third" ? "third" : cookie.party === "first" ? "first" : mapping?.party || "unknown",
       vendor: mapping?.vendorName || cookie.vendor || cookie.domain,
       request: mapped ? mapping.request : "Purpose not verified. Review the site disclosure or leave this guest undecided.",
       metadata: {

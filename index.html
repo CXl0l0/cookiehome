@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f7f8f5">
+  <meta name="theme-color" content="#080b12">
   <title>Cookie Homes — a more human way to set privacy</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -20,13 +20,13 @@
   <main id="top" class="page-shell">
     <section class="welcome-row" aria-labelledby="page-title">
       <div>
-        <p class="eyebrow">A little more human. A lot more you.</p>
-        <h1 id="page-title">Settle in. Set your boundaries.</h1>
-        <p class="intro-copy">Visit a few website homes and tell us what feels right—in your own words. One message can cover every guest at the door.</p>
+        <p class="eyebrow">PRIVACY, IN YOUR WORDS</p>
+        <h1 id="page-title">Choose who gets in.</h1>
+        <p class="intro-copy">Tell each host what you’re comfortable with. One note can cover every guest.</p>
       </div>
       <div class="journey-badge" aria-label="Privacy preference journey">
-        <span class="badge-icon" aria-hidden="true">✳</span>
-        <span><strong id="journey-label">Your privacy journey</strong><small id="journey-count">A few thoughtful choices</small></span>
+        <span class="badge-icon" aria-hidden="true">⌁</span>
+        <span><strong id="journey-label">Your journey</strong><small id="journey-count">A few choices to make</small></span>
       </div>
     </section>
 
@@ -53,24 +53,23 @@
           </div>
         </div>
 
-        <div class="visit-brief">
-          <div class="brief-icon" aria-hidden="true">☕</div>
-          <div><strong>Make yourself at home</strong><p id="home-brief">A few people have stopped by with requests. Tell the host what you’re comfortable with in one message.</p></div>
-        </div>
+        <p id="home-brief" class="visit-brief">A few people have stopped by with requests. Tell the host what you’re comfortable with in one message.</p>
 
         <div id="follow-up" class="follow-up" aria-live="polite" hidden>
           <div class="follow-icon" aria-hidden="true">↳</div>
           <div><p class="follow-up-label">Your next scenario</p><h3 id="follow-up-title"></h3><p id="follow-up-scene"></p><small id="follow-up-parent"></small></div>
         </div>
 
-        <div class="guest-section-heading"><div><p class="eyebrow">WHO’S HERE</p><h3>The people at this home</h3></div><span id="guest-count" class="guest-count"></span></div>
-        <p class="guest-intro">See what each guest is asking for. A guest’s status updates after you reply.</p>
+        <div class="guest-section-heading"><div><p class="eyebrow">THE SCENARIO</p><h3>Requests at the door</h3></div><span id="guest-count" class="guest-count"></span></div>
         <div class="zones">
           <section id="waiting" class="zone" aria-label="Guests waiting at the door"></section>
-          <section class="settled-zones">
-            <div id="inside" class="zone" aria-label="Guests welcomed inside"></div>
-            <div id="outside" class="zone" aria-label="Guests asked to leave"></div>
-          </section>
+          <details class="settled-details">
+            <summary id="settled-summary">See current choices</summary>
+            <section class="settled-zones">
+              <div id="inside" class="zone" aria-label="Guests welcomed inside"></div>
+              <div id="outside" class="zone" aria-label="Guests asked to leave"></div>
+            </section>
+          </details>
         </div>
 
         <section id="completion" class="completion-card" aria-live="polite" hidden>
@@ -84,7 +83,7 @@
         <section class="chat-panel" aria-labelledby="chat-title">
           <div class="chat-heading">
             <div class="guide-avatar" aria-hidden="true">C</div>
-            <div><p class="eyebrow">YOUR HOST’S HELPER</p><h2 id="chat-title">A note to the host</h2></div>
+            <div><p class="eyebrow">YOUR HOST’S HELPER</p><h2 id="chat-title">A note to the host</h2><small id="chat-context" class="chat-context"></small></div>
             <span class="online-indicator" title="Ready"></span>
           </div>
           <div id="chat-messages" class="messages" aria-live="polite" aria-label="Conversation"></div>
@@ -97,13 +96,15 @@
           <p class="privacy-note"><span aria-hidden="true">♧</span> You can change your mind at any home.</p>
         </section>
 
-        <section class="recap-panel" aria-labelledby="recap-title">
-          <div class="recap-heading"><span class="recap-icon" aria-hidden="true">✧</span><div><p class="eyebrow">YOUR CALLS, YOUR RULES</p><h2 id="recap-title">Your preferences</h2></div></div>
-          <div id="prefs" class="preference-list"></div>
-          <div class="recap-divider"></div>
-          <div class="outcome-heading"><h3>This home so far</h3><span id="outcome-count" class="outcome-count"></span></div>
-          <div id="outcome-summary" class="outcome-summary"></div>
-        </section>
+        <details class="recap-panel">
+          <summary class="recap-summary"><span class="recap-icon" aria-hidden="true">✧</span><span><small class="eyebrow">YOUR CALLS, YOUR RULES</small><strong id="recap-title">Preferences &amp; outcomes</strong></span><span class="recap-chevron" aria-hidden="true">⌄</span></summary>
+          <div class="recap-content">
+            <div id="prefs" class="preference-list"></div>
+            <div class="recap-divider"></div>
+            <div class="outcome-heading"><h3>This home so far</h3><span id="outcome-count" class="outcome-count"></span></div>
+            <div id="outcome-summary" class="outcome-summary"></div>
+          </div>
+        </details>
       </aside>
     </div>
     <footer class="page-footer"><span>Cookie Homes</span><span>Choices should feel like yours.</span></footer>

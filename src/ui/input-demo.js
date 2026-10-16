@@ -1,32 +1,35 @@
-import { buildGuestsFromInputs } from "../engine/input-adapter.js";
+import { buildGuestsFromCookiebotInputs } from "../engine/cookiebot-adapter.js";
 
 const $ = (id) => document.getElementById(id);
 let cmpMode = "missing";
 let answerMode = "clear";
 let lastBuiltGuests = [];
 
-const metadataFixture = [
-  { name: "basket_id", domain: "shop.test", path: "/", expires: "30 days", secure: true, httpOnly: true, sameSite: "Lax", party: "first" },
-  { name: "ns_ad_id", domain: "ads.northstar.test", path: "/", expires: "90 days", secure: true, httpOnly: false, sameSite: "Lax", party: "third" },
-  { name: "x7", domain: "edge.unknown.test", path: "/", expires: "session", secure: true, httpOnly: false, sameSite: "unspecified", party: "third" },
+const chromeCookiesFixture = [
+  { name: "basket_id", value: "SENSITIVE_VALUE_OMITTED_BY_ADAPTER", domain: ".shop.test", hostOnly: false, path: "/", secure: true, httpOnly: true, sameSite: "lax", session: false, expirationDate: 1792022400, storeId: "0" },
+  { name: "ns_ad_id", value: "SENSITIVE_VALUE_OMITTED_BY_ADAPTER", domain: ".ads.northstar.test", hostOnly: false, path: "/", secure: true, httpOnly: false, sameSite: "lax", session: false, expirationDate: 1792022400, storeId: "0" },
+  { name: "x7", value: "SENSITIVE_VALUE_OMITTED_BY_ADAPTER", domain: ".shop.test", hostOnly: false, path: "/", secure: true, httpOnly: false, sameSite: "unspecified", session: true, storeId: "0" },
 ];
-const purposeCatalogFixture = [
-  { cookieName: "basket_id", domain: "shop.test", vendorId: "shop", purposeId: "basket", vendorName: "Shop owner", guestName: "Basket keeper", category: "functionality", party: "first", request: "Remembers the basket while you browse.", evidence: "test-site disclosure v1" },
-  { cookieName: "ns_ad_id", domain: "ads.northstar.test", vendorId: "northstar", purposeId: "personalised-ads", vendorName: "Northstar Ads", guestName: "Northstar ad guest", category: "advertising", party: "third", request: "Uses activity to personalise advertising.", evidence: "test-site disclosure v1" },
-];
-const cmpFixture = {
-  status: "readable", format: "TCF/GPP decoded adapter record", version: "demo-v1",
-  choices: [{ vendorId: "northstar", purposeId: "personalised-ads", decision: "reject" }],
+const cookiebotDetailsFixture = {
+  domain: "shop.test", culture: "EN", cookies: [
+    { Name: "basket_id", Provider: "Shop owner", Path: "/", HTTPOnly: true, Secure: true, ThirdParty: false, Persistent: true, ExpireDays: 30, TrackerTypeName: "HTTP Cookie", Category: "2", PurposeDescription: "Remembers the basket while you browse." },
+    { Name: "ns_ad_id", Provider: "Northstar Ads", Path: "/", HTTPOnly: false, Secure: true, ThirdParty: true, Persistent: true, ExpireDays: 90, TrackerTypeName: "HTTP Cookie", Category: "4", PurposeDescription: "Uses activity to personalise advertising." },
+  ],
 };
+const cookiebotSdkFixture = {
+  hasResponse: true, consented: true, declined: false, method: "explicit",
+  consent: { necessary: true, preferences: true, statistics: false, marketing: false },
+};
+const cookiebotNoResponseFixture = { hasResponse: false, consent: { necessary: true, preferences: false, statistics: false, marketing: false } };
 
 function setInputFixtures() {
-  $("metadata-input").value = JSON.stringify(metadataFixture, null, 2);
-  $("catalog-input").value = JSON.stringify(purposeCatalogFixture, null, 2);
+  $("metadata-input").value = JSON.stringify(chromeCookiesFixture, null, 2);
+  $("catalog-input").value = JSON.stringify(cookiebotDetailsFixture, null, 2);
   setCmpFixture();
 }
 
 function setCmpFixture() {
-  $("cmp-input").value = JSON.stringify(cmpMode === "available" ? cmpFixture : { status: "not_readable", choices: [] }, null, 2);
+  $("cmp-input").value = JSON.stringify(cmpMode === "available" ? cookiebotSdkFixture : cookiebotNoResponseFixture, null, 2);
 }
 
 function renderCmpRecords(cmpSignal, cookieMetadata, purposeCatalog) {
@@ -35,23 +38,23 @@ function renderCmpRecords(cmpSignal, cookieMetadata, purposeCatalog) {
   const choices = cmpSignal?.status === "readable" && Array.isArray(cmpSignal.choices) ? cmpSignal.choices : [];
   if (!choices.length) {
     const note = document.createElement("p");
-    note.textContent = cmpSignal?.status === "readable" ? "Readable CMP signal contains no vendor/purpose choices." : "No readable CMP choices were supplied. Cookies remain pending unless essential.";
+    note.textContent = cmpSignal?.status === "readable" ? "Readable Cookiebot snapshot contains no optional category choices." : "Cookiebot has no recorded response. Optional cookies remain pending unless essential.";
     host.append(note);
     return;
   }
   for (const choice of choices) {
-    const mapping = purposeCatalog.find((entry) => entry.vendorId === choice.vendorId && entry.purposeId === choice.purposeId);
-    const observed = mapping && cookieMetadata.some((cookie) => cookie.name === mapping.cookieName && cookie.domain === mapping.domain);
+    const mapping = purposeCatalog.find((entry) => choice.category ? entry.category === choice.category : entry.vendorId === choice.vendorId && entry.purposeId === choice.purposeId);
+    const observed = mapping && cookieMetadata.some((cookie) => cookie.name === mapping.cookieName && (!mapping.domain || cookie.domain === mapping.domain));
     const row = document.createElement("article");
     row.className = `cmp-record ${mapping && observed ? "cmp-linked" : "cmp-unlinked"}`;
-    const title = document.createElement("strong"); title.textContent = `${choice.vendorId || "Unknown vendor"} · ${choice.purposeId || "Unknown purpose"}`;
+    const title = document.createElement("strong"); title.textContent = choice.category ? `Cookiebot category · ${choice.category}` : `${choice.vendorId || "Unknown vendor"} · ${choice.purposeId || "Unknown purpose"}`;
     const decision = document.createElement("span"); decision.textContent = String(choice.decision || "no decision").toUpperCase();
     const explanation = document.createElement("p");
     explanation.textContent = mapping && observed
-      ? `Matched to ${mapping.cookieName} at ${mapping.domain} through catalog IDs. This choice can initialize that guest.`
+      ? `Matched by Cookiebot category to ${mapping.cookieName} at ${mapping.domain}. This category-level choice applies to mapped cookies in that category.`
       : mapping
         ? `Catalog entry exists for ${mapping.cookieName}, but that cookie is not in the metadata input. No guest is changed.`
-        : "No catalog entry has these vendor/purpose IDs. Signal is shown as unmatched and changes no guest.";
+        : "No scanned cookie is mapped to this category. Signal is shown as unmatched and changes no guest.";
     row.append(title, decision, explanation); host.append(row);
   }
 }
@@ -60,10 +63,12 @@ function renderGuestRoster() {
   const host = $("generated-guests");
   host.replaceChildren();
   try {
-    const cookieMetadata = JSON.parse($("metadata-input").value);
-    const cmpSignal = JSON.parse($("cmp-input").value);
-    const purposeCatalog = JSON.parse($("catalog-input").value);
-    const guests = buildGuestsFromInputs({ cookieMetadata, purposeCatalog, cmpSignal });
+    const chromeCookies = JSON.parse($("metadata-input").value);
+    const cookiebotSdk = JSON.parse($("cmp-input").value);
+    const cookiebotDetails = JSON.parse($("catalog-input").value);
+    const { cookieMetadata, purposeCatalog, cmpSignal, guests } = buildGuestsFromCookiebotInputs({
+      chromeCookies, siteDomain: "shop.test", cookiebotDetails, cookiebotSdk,
+    });
     // Keep the surrounding walkthrough cues in sync when someone edits the JSON directly.
     cmpMode = cmpSignal?.status === "readable" ? "available" : "missing";
     render();
@@ -100,7 +105,7 @@ const clearOutput = (withCmp) => ({
   inputEvidence: {
     cookieMetadata: ["basket_id", "ns_ad_id", "x7"],
     cmpSignal: withCmp
-      ? { status: "readable", format: "GPP / TCF demo", vendor: "Northstar Ads", purpose: "personalised advertising", recordedChoice: "deny" }
+      ? { status: "readable", format: "Cookiebot JavaScript SDK", category: "marketing", recordedChoice: "deny" }
       : { status: "not_readable", effect: "no choice inferred" },
   },
   userMessage: "Keep my basket, but don’t use my activity for personalised ads.",
@@ -124,7 +129,7 @@ const unclearOutput = (withCmp) => ({
   inputEvidence: {
     cookieMetadata: ["basket_id", "ns_ad_id", "x7"],
     cmpSignal: withCmp
-      ? { status: "readable", format: "GPP / TCF demo", vendor: "Northstar Ads", purpose: "personalised advertising", recordedChoice: "deny" }
+      ? { status: "readable", format: "Cookiebot JavaScript SDK", category: "marketing", recordedChoice: "deny" }
       : { status: "not_readable", effect: "no choice inferred" },
   },
   userMessage: "I don’t know what x7 does.",
@@ -140,11 +145,11 @@ function render() {
   $("cmp-available").hidden = !available;
   $("cmp-status").textContent = available ? "SIGNAL MATCHED" : "NOT READABLE";
   $("cmp-status").className = `lane-state ${available ? "matched-state" : ""}`;
-  $("cmp-subtitle").textContent = available ? "A vendor and purpose choice is available" : "A CMP signal was not readable on this visit";
+  $("cmp-subtitle").textContent = available ? "Cookiebot has a recorded category choice" : "Cookiebot has no recorded response";
   $("cmp-explanation").textContent = available
-    ? "The signal adds a recorded choice for Northstar Ads. The user can still state a different current preference in the conversation."
+    ? "Cookiebot records optional category choices. The user can still state a different current preference in the conversation."
     : "The metadata and catalog can still build a useful prompt when the CMP signal is missing.";
-  $("ad-mapping-row").querySelector(".evidence-badge").textContent = available ? "Disclosure + CMP" : "Test-site disclosure";
+  $("ad-mapping-row").querySelector(".evidence-badge").textContent = available ? "Cookiebot category + scan" : "Cookiebot scan";
   $("ad-mapping-row").querySelector(".evidence-badge").className = `evidence-badge${available ? " verified" : ""}`;
   $("ad-handling").textContent = available ? "Prefill: denied" : "Ask user";
   $("ad-handling").className = `handling-pill ${available ? "prefill" : "ask"}`;
