@@ -1,13 +1,39 @@
-// Static file server plus the private Gemini API proxy. The API key stays on the server.
+// Static file server plus private Gemini and Cookiebot API proxies. API keys stay on the server.
 import { createServer } from "node:http";
 import { readFile } from "node:fs/promises";
+import { randomBytes } from "node:crypto";
 import { extname, join, normalize } from "node:path";
 import { fileURLToPath } from "node:url";
 import { CATEGORIES, DECISIONS, SCOPES } from "./src/engine/model.js";
+import { buildGuestsFromCookiebotInputs } from "./src/engine/cookiebot-adapter.js";
 
 const root = join(fileURLToPath(import.meta.url), "..");
 const types = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css" };
 const AI_CATEGORIES = [...CATEGORIES, "unclassified"];
+const inputScenarios = new Map();
+const cookieDetailsCache = new Map();
+const SCENARIO_TTL_MS = 5 * 60 * 1000;
+const DETAILS_CACHE_TTL_MS = 10 * 60 * 1000;
+
+// Load local secrets from .env so they do not need to be entered in every shell.
+// Values already supplied by the process environment take precedence.
+try {
+  const envText = await readFile(join(root, ".env"), "utf8");
+  for (const line of envText.split(/\r?\n/)) {
+    const match = line.match(/^\s*(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*?)\s*$/);
+    if (!match || process.env[match[1]] !== undefined) continue;
+    let value = match[2];
+    if ((value.startsWith('"') && value.endsWith('"')) || (value.startsWith("'") && value.endsWith("'"))) {
+      value = value.slice(1, -1);
+      if (match[2].startsWith('"')) value = value.replace(/\\n/g, "\n").replace(/\\r/g, "\r");
+    } else {
+      value = value.replace(/\s+#.*$/, "").trim();
+    }
+    process.env[match[1]] = value;
+  }
+} catch (error) {
+  if (error.code !== "ENOENT") throw error;
+}
 
 const intentSchema = {
   type: "object",
@@ -35,6 +61,139 @@ async function readJson(req) {
     if (raw.length > 16_000) throw new Error("Message is too large.");
   }
   return JSON.parse(raw);
+}
+
+function json(res, status, value) {
+  res.writeHead(status, { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store" }).end(JSON.stringify(value));
+}
+
+function setInputCors(req, res) {
+  const origin = req.headers.origin;
+  if (!origin) return true;
+  const localOrigin = /^https?:\/\/(localhost|127\.0\.0\.1):3000$/.test(origin);
+  const extensionOrigin = /^chrome-extension:\/\/[a-p]{32}$/.test(origin);
+  if (!localOrigin && !extensionOrigin) return false;
+  res.setHeader("Access-Control-Allow-Origin", origin);
+  res.setHeader("Vary", "Origin");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  return true;
+}
+
+function normalizeDomain(value) {
+  const domain = String(value ?? "").trim().toLowerCase().replace(/^\.+|\.+$/g, "");
+  if (domain.length > 253 || !/^(?=.{1,253}$)(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)*[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(domain)) return null;
+  return domain;
+}
+
+const COOKIEBOT_COOKIE_FIELDS = [
+  "Name", "Provider", "Path", "HTTPOnly", "Secure", "ThirdParty", "Persistent",
+  "ExpireSeconds", "ExpireDays", "ExpireDescription", "TrackerTypeName", "Category",
+  "PurposeDescription", "Domain", "Host",
+];
+
+function sanitizeCookiebotDetails(details, domain, culture) {
+  if (!details || typeof details !== "object" || !Array.isArray(details.cookies)) {
+    const fields = details && typeof details === "object" ? Object.keys(details).slice(0, 8).join(", ") : typeof details;
+    const received = fields ? ` Fields received: ${fields}.` : "";
+    throw new TypeError(`Cookiebot response for ${domain} did not contain cookies[].${received} Check that the API key and domain-group serial are correct, and that this domain is registered in that Cookiebot domain group.`);
+  }
+  return {
+    domain: String(details.domain || domain).slice(0, 253),
+    culture: String(details.culture || culture).slice(0, 12),
+    cookies: details.cookies.slice(0, 2000).map((row) => Object.fromEntries(
+      COOKIEBOT_COOKIE_FIELDS.filter((key) => row?.[key] !== undefined).map((key) => [key, typeof row[key] === "string" ? row[key].slice(0, 2000) : row[key]]),
+    )).filter((row) => typeof row.Name === "string" && row.Name.length),
+  };
+}
+
+function sanitizeChromeCookies(cookies) {
+  if (!Array.isArray(cookies)) throw new TypeError("Chrome cookie records must be an array.");
+  const allowed = ["name", "domain", "path", "expirationDate", "secure", "httpOnly", "sameSite", "session", "hostOnly", "storeId", "partitionKey"];
+  return cookies.slice(0, 2000).map((row) => Object.fromEntries(
+    allowed.filter((key) => row?.[key] !== undefined).map((key) => [key, row[key]]),
+  ));
+}
+
+function sanitizeCookiebotSdk(snapshot) {
+  const consent = snapshot?.consent;
+  if (!snapshot || typeof snapshot !== "object" || !consent || typeof consent !== "object") throw new TypeError("Cookiebot SDK snapshot must contain consent.");
+  return {
+    hasResponse: snapshot.hasResponse === true,
+    consented: snapshot.consented === true,
+    declined: snapshot.declined === true,
+    consent: {
+      necessary: consent.necessary === true,
+      preferences: typeof consent.preferences === "boolean" ? consent.preferences : undefined,
+      statistics: typeof consent.statistics === "boolean" ? consent.statistics : undefined,
+      marketing: typeof consent.marketing === "boolean" ? consent.marketing : undefined,
+      method: ["explicit", "implied"].includes(consent.method || snapshot.method) ? (consent.method || snapshot.method) : null,
+    },
+  };
+}
+
+async function cookieDetails(domain) {
+  const apiKey = process.env.COOKIEBOT_API_KEY;
+  const domainGroup = process.env.COOKIEBOT_DOMAIN_GROUP;
+  const culture = process.env.COOKIEBOT_CULTURE || "default";
+  if (!apiKey || !domainGroup) throw new Error("Configure COOKIEBOT_API_KEY and COOKIEBOT_DOMAIN_GROUP on the server first.");
+  const allowedDomains = (process.env.COOKIEBOT_ALLOWED_DOMAINS || "").split(",").map(normalizeDomain).filter(Boolean);
+  if (!allowedDomains.length) throw new Error("Set COOKIEBOT_ALLOWED_DOMAINS to the site domains this local connector may query.");
+  const exactAllowedDomain = allowedDomains.find((allowed) => domain === allowed);
+  const parentAllowedDomain = allowedDomains
+    .filter((allowed) => domain.endsWith(`.${allowed}`))
+    .sort((left, right) => right.length - left.length)[0];
+  const scanDomain = exactAllowedDomain || parentAllowedDomain;
+  if (!scanDomain) throw new Error("This domain is not in COOKIEBOT_ALLOWED_DOMAINS.");
+  const cached = cookieDetailsCache.get(scanDomain);
+  if (cached && cached.expiresAt > Date.now()) return cached.details;
+  const endpoint = `https://consent.cookiebot.com/api/v1/${encodeURIComponent(apiKey)}/json/domaingroup/${encodeURIComponent(domainGroup)}/${encodeURIComponent(culture)}/domain/${encodeURIComponent(scanDomain)}/cookies`;
+  const response = await fetch(endpoint, { signal: AbortSignal.timeout(15_000) });
+  if (!response.ok) throw new Error(`Cookiebot API returned HTTP ${response.status}. Check the domain group and account access.`);
+  const apiResponse = await response.json();
+  if (apiResponse && typeof apiResponse === "object" && Object.hasOwn(apiResponse, "error")) {
+    let reason = typeof apiResponse.error === "string" ? apiResponse.error : JSON.stringify(apiResponse.error);
+    reason = String(reason || "Unspecified API error").replace(/\s+/g, " ").slice(0, 500);
+    for (const secret of [apiKey, encodeURIComponent(apiKey), domainGroup, encodeURIComponent(domainGroup)].filter(Boolean).sort((a, b) => b.length - a.length)) {
+      reason = reason.split(secret).join("[redacted]");
+    }
+    throw new Error(`Cookiebot API error for ${scanDomain}: ${reason}`);
+  }
+  const details = sanitizeCookiebotDetails(apiResponse, scanDomain, culture);
+  cookieDetailsCache.set(scanDomain, { details, expiresAt: Date.now() + DETAILS_CACHE_TTL_MS });
+  return details;
+}
+
+async function readJsonLimited(req, limit = 2_000_000) {
+  let raw = "";
+  for await (const chunk of req) {
+    raw += chunk;
+    if (raw.length > limit) throw new Error("Input data is too large.");
+  }
+  return JSON.parse(raw);
+}
+
+function pruneScenarios() {
+  const now = Date.now();
+  for (const [token, item] of inputScenarios) if (item.expiresAt <= now) inputScenarios.delete(token);
+}
+
+async function createInputScenario(req, res) {
+  try {
+    const body = await readJsonLimited(req);
+    const siteDomain = normalizeDomain(body.siteDomain);
+    if (!siteDomain) { json(res, 400, { error: "A valid site domain is required." }); return; }
+    const chromeCookies = sanitizeChromeCookies(body.chromeCookies);
+    const cookiebotSdk = sanitizeCookiebotSdk(body.cookiebotSdk);
+    const cookiebotDetails = sanitizeCookiebotDetails(body.cookiebotDetails, siteDomain, process.env.COOKIEBOT_CULTURE || "default");
+    buildGuestsFromCookiebotInputs({ chromeCookies, siteDomain, cookiebotDetails, cookiebotSdk });
+    pruneScenarios();
+    const token = randomBytes(24).toString("base64url");
+    inputScenarios.set(token, { expiresAt: Date.now() + SCENARIO_TTL_MS, payload: { siteDomain, chromeCookies, cookiebotSdk, cookiebotDetails } });
+    json(res, 201, { token, expiresInSeconds: SCENARIO_TTL_MS / 1000 });
+  } catch (error) {
+    json(res, 400, { error: error instanceof SyntaxError ? "Request body must be valid JSON." : error.message });
+  }
 }
 
 async function interpret(req, res) {
@@ -117,6 +276,31 @@ async function interpret(req, res) {
 }
 
 createServer(async (req, res) => {
+  const requestUrl = new URL(req.url, "http://localhost:3000");
+  if (["/api/cookiebot/details", "/api/input-scenarios"].includes(requestUrl.pathname) || requestUrl.pathname.startsWith("/api/input-scenarios/")) {
+    if (!setInputCors(req, res)) { json(res, 403, { error: "Origin is not allowed." }); return; }
+    if (req.method === "OPTIONS") { res.writeHead(204).end(); return; }
+  }
+  if (req.method === "GET" && requestUrl.pathname === "/api/cookiebot/details") {
+    const domain = normalizeDomain(requestUrl.searchParams.get("domain"));
+    if (!domain) { json(res, 400, { error: "Provide a valid domain query parameter." }); return; }
+    try { json(res, 200, await cookieDetails(domain)); }
+    catch (error) {
+      const status = /COOKIEBOT_API_KEY|COOKIEBOT_DOMAIN_GROUP|COOKIEBOT_ALLOWED_DOMAINS/.test(error.message) ? 503 : 502;
+      json(res, status, { error: error.message });
+    }
+    return;
+  }
+  if (req.method === "POST" && requestUrl.pathname === "/api/input-scenarios") { await createInputScenario(req, res); return; }
+  const scenarioMatch = requestUrl.pathname.match(/^\/api\/input-scenarios\/([A-Za-z0-9_-]{32})$/);
+  if (req.method === "GET" && scenarioMatch) {
+    pruneScenarios();
+    const item = inputScenarios.get(scenarioMatch[1]);
+    if (!item) { json(res, 404, { error: "This input handoff expired or was already opened. Collect the site again." }); return; }
+    inputScenarios.delete(scenarioMatch[1]);
+    json(res, 200, item.payload);
+    return;
+  }
   if (req.method === "POST" && req.url === "/api/chat") { await interpret(req, res); return; }
   if (req.url.startsWith("/api/")) { res.writeHead(404).end("Not found"); return; }
   const path = req.url.split("?")[0];
@@ -126,4 +310,4 @@ createServer(async (req, res) => {
     const body = await readFile(file);
     res.writeHead(200, { "Content-Type": types[extname(file)] ?? "text/plain" }).end(body);
   } catch { res.writeHead(404).end("Not found"); }
-}).listen(3000, () => console.log("Cookie Homes running at http://localhost:3000"));
+}).listen(3000, "localhost", () => console.log("Cookie Homes running at http://localhost:3000"));

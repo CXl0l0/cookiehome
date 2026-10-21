@@ -5,6 +5,14 @@ let cmpMode = "missing";
 let answerMode = "clear";
 let lastBuiltGuests = [];
 
+function currentSiteDomain() {
+  return $("site-domain-input").value.trim().toLowerCase().replace(/^https?:\/\//, "").split(/[/:?#]/, 1)[0].replace(/^\.+|\.+$/g, "");
+}
+
+function updateSiteLabel() {
+  $("fixture-domain").textContent = currentSiteDomain() || "enter a domain";
+}
+
 const chromeCookiesFixture = [
   { name: "basket_id", value: "SENSITIVE_VALUE_OMITTED_BY_ADAPTER", domain: ".shop.test", hostOnly: false, path: "/", secure: true, httpOnly: true, sameSite: "lax", session: false, expirationDate: 1792022400, storeId: "0" },
   { name: "ns_ad_id", value: "SENSITIVE_VALUE_OMITTED_BY_ADAPTER", domain: ".ads.northstar.test", hostOnly: false, path: "/", secure: true, httpOnly: false, sameSite: "lax", session: false, expirationDate: 1792022400, storeId: "0" },
@@ -17,8 +25,8 @@ const cookiebotDetailsFixture = {
   ],
 };
 const cookiebotSdkFixture = {
-  hasResponse: true, consented: true, declined: false, method: "explicit",
-  consent: { necessary: true, preferences: true, statistics: false, marketing: false },
+  hasResponse: true, consented: true, declined: false,
+  consent: { necessary: true, preferences: true, statistics: false, marketing: false, method: "explicit" },
 };
 const cookiebotNoResponseFixture = { hasResponse: false, consent: { necessary: true, preferences: false, statistics: false, marketing: false } };
 
@@ -44,7 +52,10 @@ function renderCmpRecords(cmpSignal, cookieMetadata, purposeCatalog) {
   }
   for (const choice of choices) {
     const mapping = purposeCatalog.find((entry) => choice.category ? entry.category === choice.category : entry.vendorId === choice.vendorId && entry.purposeId === choice.purposeId);
-    const observed = mapping && cookieMetadata.some((cookie) => cookie.name === mapping.cookieName && (!mapping.domain || cookie.domain === mapping.domain));
+    const nameMatches = mapping ? cookieMetadata.filter((cookie) => cookie.name === mapping.cookieName) : [];
+    const observed = mapping && (mapping.domain
+      ? nameMatches.some((cookie) => cookie.domain === mapping.domain)
+      : nameMatches.length === 1);
     const row = document.createElement("article");
     row.className = `cmp-record ${mapping && observed ? "cmp-linked" : "cmp-unlinked"}`;
     const title = document.createElement("strong"); title.textContent = choice.category ? `Cookiebot category · ${choice.category}` : `${choice.vendorId || "Unknown vendor"} · ${choice.purposeId || "Unknown purpose"}`;
@@ -66,8 +77,10 @@ function renderGuestRoster() {
     const chromeCookies = JSON.parse($("metadata-input").value);
     const cookiebotSdk = JSON.parse($("cmp-input").value);
     const cookiebotDetails = JSON.parse($("catalog-input").value);
+    const siteDomain = currentSiteDomain();
+    if (!siteDomain) throw new TypeError("Enter the website domain used for this cookie scan.");
     const { cookieMetadata, purposeCatalog, cmpSignal, guests } = buildGuestsFromCookiebotInputs({
-      chromeCookies, siteDomain: "shop.test", cookiebotDetails, cookiebotSdk,
+      chromeCookies, siteDomain, cookiebotDetails, cookiebotSdk,
     });
     // Keep the surrounding walkthrough cues in sync when someone edits the JSON directly.
     cmpMode = cmpSignal?.status === "readable" ? "available" : "missing";
@@ -199,10 +212,34 @@ for (const button of document.querySelectorAll(".answer-button")) {
 
 render();
 setInputFixtures();
+updateSiteLabel();
 renderGuestRoster();
 $("build-guests").addEventListener("click", renderGuestRoster);
+$("site-domain-input").addEventListener("input", () => { updateSiteLabel(); renderGuestRoster(); });
 $("open-generated").addEventListener("click", () => {
   if (!lastBuiltGuests.length) return;
-  sessionStorage.setItem("cookiehomes.generatedScenario", JSON.stringify({ name: "shop.test", guests: lastBuiltGuests }));
+  sessionStorage.setItem("cookiehomes.generatedScenario", JSON.stringify({ name: currentSiteDomain(), guests: lastBuiltGuests }));
   window.location.href = "/";
 });
+
+async function loadExtensionHandoff() {
+  const token = new URLSearchParams(window.location.search).get("scenario");
+  if (!token) return;
+  try {
+    const response = await fetch(`/api/input-scenarios/${encodeURIComponent(token)}`, { cache: "no-store" });
+    const payload = await response.json();
+    if (!response.ok) throw new Error(payload.error || "Could not load extension data.");
+    $("site-domain-input").value = payload.siteDomain;
+    $("metadata-input").value = JSON.stringify(payload.chromeCookies, null, 2);
+    $("cmp-input").value = JSON.stringify(payload.cookiebotSdk, null, 2);
+    $("catalog-input").value = JSON.stringify(payload.cookiebotDetails, null, 2);
+    updateSiteLabel();
+    renderGuestRoster();
+    history.replaceState(null, "", window.location.pathname);
+    $("contract-title").scrollIntoView({ behavior: "smooth", block: "start" });
+  } catch (error) {
+    $("input-error").textContent = `Extension handoff error: ${error.message}`;
+  }
+}
+
+void loadExtensionHandoff();

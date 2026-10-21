@@ -12,7 +12,8 @@ export function buildGuestsFromInputs({ cookieMetadata, purposeCatalog = [], cmp
     }
     const exactMappings = purposeCatalog.filter((entry) => entry.cookieName === cookie.name && entry.domain === cookie.domain);
     const nameOnlyMappings = purposeCatalog.filter((entry) => entry.cookieName === cookie.name && !entry.domain);
-    const mapping = exactMappings[0] || (nameOnlyMappings.length === 1 ? nameOnlyMappings[0] : null);
+    const sameNameObservations = cookieMetadata.filter((entry) => entry.name === cookie.name);
+    const mapping = exactMappings[0] || (nameOnlyMappings.length === 1 && sameNameObservations.length === 1 ? nameOnlyMappings[0] : null);
     const mapped = mapping && CATEGORIES.includes(mapping.category);
     const choice = mapped && choices.find((entry) =>
       (entry.category && entry.category === mapping.category) ||
@@ -24,7 +25,7 @@ export function buildGuestsFromInputs({ cookieMetadata, purposeCatalog = [], cmp
       id,
       name: mapped ? (mapping.guestName || mapping.vendorName || cookie.name) : `Unknown guest · ${cookie.name}`,
       category: mapped ? mapping.category : "unclassified",
-      party: cookie.party === "third" ? "third" : cookie.party === "first" ? "first" : mapping?.party || "unknown",
+      party: mapping?.party === "third" || mapping?.party === "first" ? mapping.party : cookie.party || "unknown",
       vendor: mapping?.vendorName || cookie.vendor || cookie.domain,
       request: mapped ? mapping.request : "Purpose not verified. Review the site disclosure or leave this guest undecided.",
       metadata: {

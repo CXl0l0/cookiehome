@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cookie Homes connector</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main>
+    <p class="eyebrow">COOKIE HOMES · LOCAL PROTOTYPE</p>
+    <h1>Connect this site</h1>
+    <p class="intro">Loads the Cookiebot scan, then asks before reading cookie metadata from this site and the scan’s cookie providers.</p>
+    <div class="site-card"><span>ACTIVE TAB</span><strong id="active-site">Looking up this tab…</strong></div>
+    <button id="load-scan" type="button">Load Cookiebot scan</button>
+    <section id="scan-summary" hidden>
+      <p id="scan-info"></p>
+      <button id="collect" class="secondary" type="button">Grant access and collect</button>
+    </section>
+    <p id="status" role="status" aria-live="polite">Start Cookie Homes at localhost:3000, then open a site that uses your configured Cookiebot account.</p>
+    <p class="privacy-note">Cookie values are removed in the extension before data is sent to Cookie Homes. The Cookiebot API key stays on the local server.</p>
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -56,7 +56,7 @@
         </div>
       </div>
 
-      <div class="fixture-label"><span class="fixture-pulse"></span> CONTROLLED SITE <strong>shop.test</strong><span class="fixture-caption">Example data only · no live browser or Cookiebot account is queried</span></div>
+      <div class="fixture-label"><span class="fixture-pulse"></span> INPUT SITE <strong id="fixture-domain">shop.test</strong><span class="fixture-caption">Pasted fixtures or a local Chrome extension handoff</span></div>
 
       <div class="input-lanes">
         <section class="lane metadata-lane" aria-labelledby="metadata-title">
@@ -103,10 +103,12 @@
       <section class="mapping-stage input-contract" aria-labelledby="contract-title">
         <div class="stage-heading"><div><p class="eyebrow">PROTOTYPE INPUT CONTRACT</p><h3 id="contract-title">Raw records in, guests out</h3><p>Paste source-shaped examples. The adapter maps Cookiebot categories to Cookiehome categories and links scanned cookie names to Chrome observations. References: <a href="https://www.cookiebot.com/us/developer/" target="_blank" rel="noreferrer">Cookiebot SDK</a> · <a href="https://support.cookiebot.com/hc/en-us/articles/360006346473-Extracting-cookie-information-via-API" target="_blank" rel="noreferrer">Cookie details API</a> · <a href="https://developer.chrome.com/docs/extensions/reference/api/cookies" target="_blank" rel="noreferrer">Chrome Cookies API</a>.</p></div><button type="button" id="build-guests" class="mode-button">Build guest roster</button></div>
         <div class="contract-grid">
+          <label class="site-domain-field"><strong>Site domain</strong><small>Used to distinguish first-party from third-party cookie domains.</small><input id="site-domain-input" type="text" value="shop.test" spellcheck="false" autocomplete="off" aria-label="Site domain"></label>
           <label><strong>01 · Chrome cookies.getAll() JSON</strong><small>Array of Chrome Cookie records. A real call requires an extension and host permission; values are discarded by the adapter.</small><textarea id="metadata-input" spellcheck="false" aria-label="Chrome cookies API input"></textarea></label>
           <label><strong>02 · Cookiebot SDK snapshot JSON</strong><small>Snapshot of <code>Cookiebot.hasResponse</code>, <code>Cookiebot.consent</code>, and method after consent is ready.</small><textarea id="cmp-input" spellcheck="false" aria-label="Cookiebot SDK consent input"></textarea></label>
           <label class="catalog-input"><strong>03 · Cookiebot Cookie Details API JSON</strong><small>Scan response containing <code>cookies[]</code>, including Name, Provider, Category, and PurposeDescription. API key stays server-side in a live integration.</small><textarea id="catalog-input" spellcheck="false" aria-label="Cookiebot details API input"></textarea></label>
         </div>
+        <p class="mapping-note">Live collection uses the unpacked extension in <code>extension/</code>. Configure the Cookiebot API credentials on the local server as described in the README, then click the extension while viewing a site.</p>
         <p id="input-error" class="input-error" role="alert"></p>
         <div class="generated-roster"><div class="generated-roster-heading"><div><p class="eyebrow">ADAPTER OUTPUT</p><h4>Guest roster for this home</h4></div><span id="generated-count" class="stage-tag"></span></div><div id="generated-guests" class="generated-guest-grid" aria-live="polite"></div><div class="cmp-record-output"><h4>CMP records received</h4><div id="generated-cmp" class="generated-cmp-list" aria-live="polite"></div></div><button type="button" id="open-generated" class="mode-button open-generated" hidden>Open this generated home in the privacy journey →</button></div>
         <p class="mapping-note">The adapter preserves each observation but drops Chrome cookie values. Cookiebot scan categories map to Cookiehome categories; SDK category choices initialize mapped optional guests. Necessary cookies start inside. Missing scan matches remain unclassified, and no consent is inferred when Cookiebot has no recorded response.</p>
@@ -133,13 +135,13 @@
       </section>
 
       <section class="future-section" aria-labelledby="future-title">
-        <div class="future-icon" aria-hidden="true">↗</div><div><p class="eyebrow">GRACEFUL WHEN THE WEB CHANGES</p><h3 id="future-title">New cookie? New scan entry? Keep the pipeline; extend the data.</h3><p>Store new observations and scan versions without rejecting the record. A Chrome cookie matched to a Cookiebot scan entry can be assigned a category and explanation. Unmatched cookies remain unknown. This page adapts pasted fixtures; live ingestion still requires a Chrome extension with site permissions and a backend service for Cookiebot’s API key and scan request.</p></div>
+        <div class="future-icon" aria-hidden="true">↗</div><div><p class="eyebrow">GRACEFUL WHEN THE WEB CHANGES</p><h3 id="future-title">New cookie? New scan entry? Keep the pipeline; extend the data.</h3><p>Store new observations and scan versions without rejecting the record. A Chrome cookie matched to a Cookiebot scan entry can be assigned a category and explanation. Unmatched cookies remain unknown. This prototype supports pasted fixtures and authorized local collection through the unpacked extension; a broader deployment would need secure user accounts, permission controls, durable scan management, and review tools for ambiguous matches.</p></div>
         <div class="future-steps"><span><b>01</b> Parse what is known</span><span><b>02</b> Preserve unknown fields</span><span><b>03</b> Ask, never assume</span></div>
       </section>
     </section>
 
     <section class="professor-takeaway"><span class="takeaway-icon" aria-hidden="true">✦</span><p><strong>The project has two jobs:</strong> gather and normalize reliable website evidence, then extract the user’s explicit privacy preferences from conversation. Strong input handling makes the output safer, more explainable, and easier to extend as cookies and consent frameworks evolve.</p></section>
-    <footer class="page-footer"><span>Cookie Homes · CP4106 prototype</span><span>Source-shaped fixtures · no live browser or Cookiebot API calls.</span></footer>
+    <footer class="page-footer"><span>Cookie Homes · CP4106 prototype</span><span>Fixture input or local browser extension handoff.</span></footer>
   </main>
   <script type="module" src="src/ui/input-demo.js"></script>
 </body>

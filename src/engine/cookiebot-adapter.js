@@ -44,7 +44,7 @@ export function catalogFromCookiebotDetails(details) {
     return [{
       cookieName: String(row.Name), domain, vendorId: slug(provider), purposeId: info?.label || slug(purpose),
       vendorName: provider, guestName: `${provider} · ${String(row.Name)}`,
-      category: info?.category || "unclassified", party: row.ThirdParty ? "third" : "first",
+      category: info?.category || "unclassified", party: typeof row.ThirdParty === "boolean" ? (row.ThirdParty ? "third" : "first") : undefined,
       request: purpose, evidence: "Cookiebot scanned-cookie details API",
       sourceCategory: row.Category ?? null, expire: expireDescription(row),
     }];
@@ -60,7 +60,7 @@ export function metadataFromChromeCookies(cookies, siteDomain) {
       throw new TypeError(`Chrome cookie record ${index + 1} needs name and domain strings.`);
     }
     const domain = cleanDomain(cookie.domain);
-    const firstParty = Boolean(site && (domain === site || domain.endsWith(`.${site}`)));
+    const firstParty = Boolean(site && (domain === site || domain.endsWith(`.${site}`) || site.endsWith(`.${domain}`)));
     return {
       name: cookie.name, domain, path: cookie.path || "/",
       expires: cookie.session || !Number.isFinite(cookie.expirationDate)
@@ -82,7 +82,7 @@ export function cmpFromCookiebotSdk(snapshot) {
   }
   const keys = ["preferences", "statistics", "marketing"];
   return {
-    status: "readable", format: "Cookiebot JavaScript SDK", method: snapshot.method || "unknown",
+    status: "readable", format: "Cookiebot JavaScript SDK", method: snapshot.method || consent.method || "unknown",
     choices: keys.filter((key) => typeof consent[key] === "boolean").map((key) => ({
       category: COOKIEBOT_CATEGORIES[key].category, decision: consent[key] ? "accept" : "reject",
     })),

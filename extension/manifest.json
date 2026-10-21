@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Cookie Homes Site Connector",
+  "version": "0.1.0",
+  "description": "Collects value-free cookie metadata and Cookiebot consent for a Cookie Homes prototype scenario.",
+  "permissions": ["activeTab", "cookies", "scripting"],
+  "host_permissions": [
+    "http://localhost:3000/*",
+    "http://127.0.0.1:3000/*"
+  ],
+  "optional_host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "action": {
+    "default_title": "Send this site to Cookie Homes",
+    "default_popup": "popup.html"
+  }
+}
