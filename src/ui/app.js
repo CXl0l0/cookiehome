@@ -9,7 +9,7 @@ try {
   if (savedRoster) {
     const imported = JSON.parse(savedRoster);
     if (imported && Array.isArray(imported.guests) && imported.guests.length) {
-      initialScenarios = [{ id: "generated-site", name: imported.name || "Generated test site", owner: "the site owner", story: "This home was built from the cookie metadata and CMP inputs you supplied. Review each guest and its source metadata before making a choice.", guests: imported.guests }];
+      initialScenarios = [{ id: "generated-site", name: imported.name || "Generated test site", owner: "the site owner", story: imported.story || "This home was built from cookie metadata and public purpose disclosures. Each guest's request is presented as a scenario; unknown purposes include browser-storage clues and remain uncertain.", guests: imported.guests }];
     }
     sessionStorage.removeItem("cookiehomes.generatedScenario");
   }
@@ -17,6 +17,8 @@ try {
 let game = enterHome(createGame(initialScenarios), 0);
 let chatHistory = [];
 let activeFollowUp = null;
+let activeGuestId = null;
+let dialogGuestId = null;
 let busy = false;
 let recentlyChanged = new Set();
 
@@ -26,12 +28,6 @@ const el = (tag, cls, text) => {
   if (cls) node.className = cls;
   if (text) node.textContent = text;
   return node;
-};
-const labels = {
-  authentication: "Remembering your visit",
-  functionality: "Personal settings",
-  analytics: "Visit statistics",
-  advertising: "Ad tracking",
 };
 const shortLabels = {
   authentication: "Remember me",
@@ -48,23 +44,63 @@ function addMessage(role, content) {
 }
 
 function guestCard(guest, status) {
-  const card = el("article", `guest ${status}${guest.party === "third" ? " third-party" : ""}${recentlyChanged.has(guest.id) ? " updated" : ""}`);
-  const top = el("div", "guest-top");
+  const card = el("button", `guest ${status}${guest.party === "third" ? " third-party" : ""}${recentlyChanged.has(guest.id) ? " updated" : ""}${activeGuestId === guest.id ? " selected" : ""}`);
+  card.type = "button";
+  card.dataset.guestId = guest.id;
+  card.setAttribute("aria-haspopup", "dialog");
+  const top = el("span", "guest-top");
   top.append(el("span", "guest-avatar", guest.name.trim().charAt(0).toUpperCase()));
   top.append(el("strong", "guest-name", guest.name));
   const stateLabel = status === "pending" ? "At the door" : status === "inside" ? "Welcomed" : "Outside";
   top.append(el("span", "guest-state", stateLabel));
   card.append(top);
-  card.append(el("span", "guest-party", guest.party === "first" ? "THE HOST" : "A THIRD-PARTY GUEST"));
-  card.append(el("p", "", guest.request));
-  if (guest.metadata) {
-    const details = el("details", "guest-metadata");
-    details.append(el("summary", "", `Cookie metadata · ${guest.metadata.name}`));
-    details.append(el("p", "", `${guest.metadata.domain} · path ${guest.metadata.path} · ${guest.metadata.expires} · Secure ${guest.metadata.secure} · HttpOnly ${guest.metadata.httpOnly} · SameSite ${guest.metadata.sameSite} · ${guest.metadata.party}-party · purpose: ${guest.category} (${guest.purposeEvidence})${guest.cmpDecision ? ` · CMP: ${guest.cmpDecision}` : ""}`));
-    card.append(details);
-  }
-  card.setAttribute("aria-label", `${guest.name}: ${stateLabel}. ${guest.request}`);
+  const category = guest.category === "unclassified" ? "Purpose unknown" : shortLabels[guest.category] ?? guest.category;
+  card.append(el("span", "guest-party", category));
+  card.append(el("span", "guest-open-hint", status === "pending" ? "Explore this scenario" : "Review this scenario"));
+  card.setAttribute("aria-label", `${guest.name}, ${category}, ${stateLabel}. Open scenario.`);
+  card.addEventListener("click", () => openScenario(guest.id));
   return card;
+}
+
+function openScenario(guestId) {
+  const scenario = currentScenario(game);
+  const guest = scenario.guests.find((item) => item.id === guestId);
+  if (!guest) return;
+  const status = game.homes[scenario.id].guests[guest.id];
+  dialogGuestId = guest.id;
+  $("dialog-avatar").textContent = guest.name.trim().charAt(0).toUpperCase();
+  $("scenario-dialog-title").textContent = guest.name;
+  $("dialog-status").textContent = status === "pending" ? "Waiting at the door" : status === "inside" ? "Welcomed inside" : "Staying outside";
+  $("dialog-category").textContent = guest.category === "unclassified" ? "Purpose not verified" : shortLabels[guest.category] ?? guest.category;
+  $("dialog-request").textContent = guest.request;
+  const evidence = [];
+  if (guest.purposeDescription) evidence.push(`Published purpose: ${guest.purposeDescription}`);
+  if (guest.purposeEvidence) evidence.push(`Evidence: ${guest.purposeEvidence}`);
+  if (guest.cmpDecision) evidence.push(`Consent setting: ${guest.cmpDecision}`);
+  if (guest.metadata) {
+    const m = guest.metadata;
+    evidence.push(`Browser details: ${m.name} · ${m.domain} · path ${m.path} · ${m.expires} · Secure ${m.secure} · HttpOnly ${m.httpOnly} · SameSite ${m.sameSite} · ${m.party}-party`);
+  }
+  $("dialog-evidence-copy").textContent = evidence.join("\n") || "No extra purpose evidence was found for this guest.";
+  $("dialog-evidence").hidden = false;
+  $("dialog-evidence").open = false;
+  const dialog = $("scenario-dialog");
+  if (!dialog.open) dialog.showModal();
+}
+
+function updateActiveGuest() {
+  const scenario = currentScenario(game);
+  const guest = scenario.guests.find((item) => item.id === activeGuestId);
+  $("active-scenario").hidden = !guest;
+  if (guest) {
+    const status = game.homes[scenario.id].guests[guest.id];
+    $("active-scenario-name").textContent = guest.name;
+    $("active-scenario-status").textContent = status === "inside" ? "Welcomed" : status === "left" ? "Outside" : "At the door";
+    $("active-scenario-preview").textContent = guest.category === "unclassified"
+      ? `No verified purpose was found. The browser details describe how ${guest.metadata?.name || "this cookie"} is stored, not why it is used. Would you accept the uncertainty?`
+      : guest.request;
+  }
+  $("chat-context").textContent = guest ? `A focused conversation · ${scenario.name}` : `Choose a guest to focus the chat · ${scenario.name}`;
 }
 
 function allOptionalGuests() {
@@ -100,13 +136,16 @@ function selectHome(index) {
   game = enterHome(game, index);
   chatHistory = [];
   activeFollowUp = null;
+  activeGuestId = null;
+  dialogGuestId = null;
+  $("scenario-dialog").close();
   recentlyChanged = new Set();
   $("follow-up").hidden = true;
   $("chat-messages").replaceChildren();
   const scenario = currentScenario(game);
-  addMessage("assistant", `Welcome to ${scenario.name}. You can tell ${scenario.owner} what you’re comfortable with in one note; I’ll help make sure each guest’s request is understood.`);
+  addMessage("assistant", `Welcome to ${scenario.name}. Choose a guest to explore a scenario, or share a preference for the whole home.`);
   render();
-  $("chat-input").placeholder = "For example: Remember my settings, but don’t let advertisers follow me.";
+  $("chat-input").placeholder = "Ask about a guest, or tell the host what you’re comfortable with…";
   $("chat-input").focus({ preventScroll: true });
 }
 
@@ -145,14 +184,14 @@ function render() {
     : "See current choices · none yet";
 
   $("home-name").textContent = scenario.name;
-  $("chat-context").textContent = `Current scenario · ${scenario.name}`;
+  updateActiveGuest();
   $("owner").textContent = `Hosted by ${scenario.owner}`;
   $("home-step").textContent = `HOME ${String(game.currentHome + 1).padStart(2, "0")} · ${completed ? "VISIT COMPLETE" : game.currentHome === 0 ? "YOUR FIRST STOP" : "YOUR NEXT STOP"}`;
   $("home-brief").textContent = completed
-    ? `${scenario.story} Your choices are reflected below; every guest now has a clear answer.`
+    ? "This visit is complete. Open any guest to review or change your choice."
     : waiting.length
-      ? `${scenario.story} ${waiting.length} ${waiting.length === 1 ? "guest is" : "guests are"} still waiting. You can cover these requests together in one note.`
-      : "This home’s requests have been answered. Take a look at the choices you made.";
+      ? "Choose a guest to see their scenario, then decide through chat."
+      : "Everyone has an answer. Open a guest to review or change your choice.";
 
   const waitingZone = $("waiting");
   waitingZone.replaceChildren(el("h3", "", waiting.length ? `At the door · ${waiting.length}` : "No one waiting"));
@@ -253,7 +292,21 @@ async function sendMessage(event) {
         context: {
           home: scenario.name,
           pending: pending.map((guest) => ({ category: guest.category, request: guest.request })),
-          currentGuests: scenario.guests.map((guest) => ({ id: guest.id, name: guest.name, category: guest.category, request: guest.request, status: home.guests[guest.id] })),
+          currentGuests: scenario.guests.map((guest) => ({
+            id: guest.id,
+            name: guest.name,
+            category: guest.category,
+            request: guest.request,
+            purposeDescription: guest.purposeDescription,
+            purposeEvidence: guest.purposeEvidence,
+            status: home.guests[guest.id],
+          })),
+          activeScenario: scenario.guests.find((guest) => guest.id === activeGuestId)
+            ? (() => {
+                const guest = scenario.guests.find((item) => item.id === activeGuestId);
+                return { id: guest.id, name: guest.name, category: guest.category, request: guest.request, purposeDescription: guest.purposeDescription, purposeEvidence: guest.purposeEvidence };
+              })()
+            : null,
           activeFollowUp,
         },
       }),
@@ -276,11 +329,11 @@ async function sendMessage(event) {
         ? `Linked to your conversation at ${scenario.name}. No choice has been applied yet.`
         : `Linked to your conversation at ${scenario.name}. Unanswered requests remain undecided.`;
       $("follow-up").hidden = false;
-      $("chat-input").placeholder = `Your reply to “${activeFollowUp.title}”…`;
+      $("chat-input").placeholder = `Reply to the helper…`;
     } else {
       activeFollowUp = null;
       $("follow-up").hidden = true;
-      $("chat-input").placeholder = "For example: Remember my settings, but don’t let advertisers follow me.";
+      $("chat-input").placeholder = activeGuestId ? "Ask about this guest, or say what you want the host to do…" : "Ask about a guest, or tell the host what you’re comfortable with…";
     }
 
     recentlyChanged = new Set();
@@ -303,8 +356,6 @@ async function sendMessage(event) {
           : "Everyone in this home has a clear answer.",
       ].filter(Boolean).join(" ");
       addMessage("assistant", outcomeText);
-    } else if (!result.needsClarification && !result.decisions.length) {
-      addMessage("assistant", "I haven’t changed anything yet. Tell me which requests you’re comfortable with, or ask me to explain a guest’s request.");
     }
 
     if (isHomeDone(game)) $("follow-up").hidden = true;
@@ -322,6 +373,38 @@ async function sendMessage(event) {
 }
 
 $("chat-form").addEventListener("submit", sendMessage);
+$("close-scenario").addEventListener("click", () => $("scenario-dialog").close());
+$("discuss-scenario").addEventListener("click", () => {
+  if (!dialogGuestId) return;
+  activeGuestId = dialogGuestId;
+  $("scenario-dialog").close();
+  updateActiveGuest();
+  $("chat-input").placeholder = "Ask about this guest, or say what you want the host to do…";
+  $("chat-input").focus({ preventScroll: true });
+});
+$("reopen-scenario").addEventListener("click", () => {
+  if (activeGuestId) openScenario(activeGuestId);
+});
+$("clear-scenario").addEventListener("click", () => {
+  activeGuestId = null;
+  updateActiveGuest();
+  $("chat-input").placeholder = "Ask about a guest, or tell the host what you’re comfortable with…";
+  render();
+});
+$("scenario-dialog").addEventListener("click", (event) => {
+  if (event.target === $("scenario-dialog")) $("scenario-dialog").close();
+});
+$("theme-toggle").addEventListener("click", () => {
+  const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = nextTheme;
+  try { localStorage.setItem("cookiehomes.theme", nextTheme); } catch { /* the toggle still works for this page */ }
+  const dark = nextTheme === "dark";
+  $("theme-toggle").setAttribute("aria-pressed", String(dark));
+  $("theme-toggle").setAttribute("aria-label", `Switch to ${dark ? "light" : "dark"} mode`);
+  $("theme-label").textContent = dark ? "Light mode" : "Dark mode";
+  $("theme-toggle").querySelector(".theme-icon").textContent = dark ? "☀" : "☾";
+  document.querySelector("meta[name='theme-color']").content = dark ? "#121a1b" : "#f5f7f4";
+});
 $("chat-input").addEventListener("keydown", (event) => {
   if (event.key === "Enter" && !event.shiftKey) {
     event.preventDefault();
@@ -329,5 +412,15 @@ $("chat-input").addEventListener("keydown", (event) => {
   }
 });
 
-addMessage("assistant", "Welcome in. Tell the host what you’re comfortable with in one note; if I need to check what you mean, I’ll ask a quick follow-up before changing anything.");
+try {
+  const savedTheme = localStorage.getItem("cookiehomes.theme");
+  if (savedTheme === "dark" || savedTheme === "light") document.documentElement.dataset.theme = savedTheme;
+} catch { /* theme preference is optional when storage is unavailable */ }
+const isDark = document.documentElement.dataset.theme === "dark";
+$("theme-toggle").setAttribute("aria-pressed", String(isDark));
+$("theme-toggle").setAttribute("aria-label", `Switch to ${isDark ? "light" : "dark"} mode`);
+$("theme-label").textContent = isDark ? "Light mode" : "Dark mode";
+$("theme-toggle").querySelector(".theme-icon").textContent = isDark ? "☀" : "☾";
+document.querySelector("meta[name='theme-color']").content = isDark ? "#121a1b" : "#f5f7f4";
+addMessage("assistant", "Welcome in. Choose a guest to explore their scenario, or tell the host what you’re comfortable with. I’ll ask before applying an unclear choice.");
 render();

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Cookie Homes Site Connector",
   "version": "0.1.0",
-  "description": "Collects value-free cookie metadata and Cookiebot consent for a Cookie Homes prototype scenario.",
+  "description": "Collects value-free cookie metadata, Cookiebot consent, and public cookie declarations for a Cookie Homes prototype scenario.",
   "permissions": ["activeTab", "cookies", "scripting"],
   "host_permissions": [
     "http://localhost:3000/*",

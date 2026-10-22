@@ -14,21 +14,21 @@ notepad .env
 npm start
 ```
 
-The server loads `.env` on startup, so after the one-time setup you can start the project with `npm start`. `.env` is ignored by Git. Values set in the current PowerShell session override values in the file. Create a Gemini key in [Google AI Studio](https://aistudio.google.com/app/apikey). The Gemini key is read only by the local server and is never sent to the browser. Do not commit either service key. The prototype sends the current chat turns and the current home's pending guest descriptions to Gemini for interpretation. Check the current [Gemini API pricing and free-tier terms](https://ai.google.dev/gemini-api/docs/pricing) for quota and data handling details.
+The server loads `.env` on startup, so after the one-time setup you can start the project with `npm start`. `.env` is ignored by Git. Values set in the current PowerShell session override values in the file. Create a Gemini key in [Google AI Studio](https://aistudio.google.com/app/apikey). The Gemini key is read only by the local server and is never sent to the browser. Do not commit the Gemini API key. The prototype sends the current chat turns and the current home's pending guest descriptions to Gemini for interpretation. Check the current [Gemini API pricing and free-tier terms](https://ai.google.dev/gemini-api/docs/pricing) for quota and data handling details.
 
-The navigation includes **How the inputs work** at `/input-demo.html`. You can continue to paste sample records, or use the unpacked Chrome extension in `extension/` to collect from a site you are authorized to inspect. The extension requests the site and scanned provider-domain permissions, reads cookie metadata and the Cookiebot SDK snapshot, and sends value-free records to the local app. The server retrieves Cookiebot's scanned-cookie details with credentials held in server environment variables. The input page displays the three records, builds the guest roster, and lets you open it as a home scenario.
+The navigation includes **How the inputs work** at `/input-demo.html`. You can continue to paste sample records, or use the unpacked Chrome extension in `extension/` to collect from a site you are authorized to inspect. The extension looks for a published cookie declaration on the current page or linked same-site policy pages, reads value-free Chrome cookie metadata and the Cookiebot SDK snapshot, then sends the three inputs to the local app. It does not call Cookiebot's private Data API, and no Cookiebot API key or account access is needed. The input page displays the records, builds the guest roster, and lets you open it as a home scenario.
 
-### Connect a Cookiebot test site
+### Collect from a site with a public declaration
 
-1. Put `COOKIEBOT_API_KEY` and `COOKIEBOT_DOMAIN_GROUP` from the Cookiebot account that owns the test domain in `.env`. Set `COOKIEBOT_CULTURE` if needed and `COOKIEBOT_ALLOWED_DOMAINS` to the domain name(s) registered in that Cookiebot domain group. A listed parent domain permits its subdomains; the API request uses the exact listed domain. Keep the API key out of the extension, browser inputs, and source control.
-2. Start the app with `npm start` and open the target website in Chrome. The site must run Cookiebot's browser SDK, and its domain must be available to the configured Cookiebot account/API key.
-3. Open `chrome://extensions`, enable **Developer mode**, choose **Load unpacked**, and select this repository's `extension` folder.
-4. Click the Cookie Homes extension while on the target site. Choose **Load Cookiebot scan**, then **Grant access and collect**. Chrome asks for access to that site and the provider domains in its scan. The extension strips each Chrome cookie's `value` before sending data to the local server.
+1. Start the app with `npm start` and open the target website in Chrome. Cookiebot's SDK is optional: without it, the extension sends an unreadable CMP snapshot and still collects the other available inputs.
+2. Open `chrome://extensions`, enable **Developer mode**, choose **Load unpacked**, and select this repository's `extension` folder.
+3. Click the Cookie Homes extension. Choose **Find public declaration**. The extension checks the active page, cookie/privacy links on that site, and common policy paths. If needed, enter a same-site declaration URL in the optional field.
+4. Choose **Grant access and collect**. Chrome asks for access to the active site and up to 24 provider domains listed in the declaration. The extension removes Chrome cookie values before sending data to the local app.
 5. The app opens `/input-demo.html` with the collected inputs. Review the roster, choose **Build guest roster**, then **Open this generated home in the privacy journey**.
 
-Cookiebot's scan is an inventory, not a live report of every cookie set during the current page load. Chrome may not contain scanned cookies because they are blocked, expired, partitioned, or not yet set. Provider-domain access is limited to 24 domains per collection. If the SDK or scan entry cannot be matched, the demo leaves the cookie unknown/pending. The local handoff token expires after five minutes and is single-use. This prototype server has no user authentication; keep it local and do not expose it to a network.
+The declaration is a public inventory, not a live report of every cookie set during the current page load; it may also be absent or out of date. Chrome may not contain declared cookies because they are blocked, expired, partitioned, or not yet set. Provider-domain access is limited to 24 domains per collection. If no declaration is found, browser metadata and the SDK snapshot are still collected, while cookies without purpose evidence remain unclassified. A public declaration only describes cookies included in that declaration; it does not establish that a cookie was actually set by the current visit. The local handoff token expires after five minutes and is single-use. This prototype server has no user authentication; keep it local and do not expose it to a network.
 
-The normalization code in `src/engine/cookiebot-adapter.js` translates Chrome Cookie records, Cookiebot SDK category choices, and Cookiebot scan rows into the existing guest contract. `src/engine/input-adapter.js` then applies category choices to mapped cookies. Cookiebot provides category-level consent, so the SDK cannot reveal a separate choice for each cookie. When the scan omits per-cookie domains, the adapter matches only an unambiguous cookie name; unresolved or duplicate matches should be reviewed rather than treated as confirmed purpose data.
+The normalization code in `src/engine/cookiebot-adapter.js` translates Chrome Cookie records, Cookiebot SDK category choices, and public declaration rows into the existing guest contract. `src/engine/input-adapter.js` turns recognized purposes into guest analogies and gives unmatched cookies a metadata-based uncertainty prompt. The user can accept or reject an unknown-purpose guest for that home, but cannot save that decision as an all-home preference. Cookiebot provides category-level consent, so the SDK cannot reveal a separate choice for each cookie. When a declaration omits per-cookie domains, the adapter matches only an unambiguous cookie name; unresolved or duplicate matches remain unclassified instead of being treated as confirmed purpose data.
 
 ## Week 8 interaction path
 
@@ -54,21 +54,21 @@ Home story + pending guests + recent chat + active scenario
        guest status + preference + event log
 ```
 
-The AI proposes structured intent; it does not move guests. The rule engine rejects unsupported categories and decisions, essential cookies cannot be changed, and ambiguous replies apply no preference. An unclassified guest is included in the chat context and can be rejected by its exact ID for the current home; it cannot be accepted or saved as an all-home category until its purpose is identified. Follow-up scenes are conversational scaffolding: they clarify an existing request and do not themselves create a guest or grant permission.
+The AI proposes structured intent; it does not move guests. The rule engine rejects unsupported categories and decisions, essential cookies cannot be changed, and ambiguous replies apply no preference. An unclassified guest is included in the chat context and can be accepted or rejected by its exact ID for the current home, letting the user make an explicit choice despite uncertainty; that choice cannot be saved as an all-home category. Follow-up scenes are conversational scaffolding: they clarify an existing request and do not themselves create a guest or grant permission.
 
 The live input path is separate from chat interpretation:
 
 ```text
-Chrome extension ── cookie metadata + Cookiebot SDK snapshot ──┐
+Chrome extension ── browser metadata + Cookiebot SDK snapshot ──┐
                                                                ├─ cookiebot-adapter → input-demo review → home scenario
-Local server ───── Cookiebot scanned-cookie details API ───────┘
+Public declaration page ─── cookie names + purpose/category ────┘
 ```
 
-The local server exposes `GET /api/cookiebot/details?domain=...` and a short-lived `POST /api/input-scenarios` handoff. It keeps the Cookiebot API key on the server, removes cookie values from scenario payloads, and binds only to `localhost`.
+The extension reads the public declaration page and gathers the browser and SDK records. The local server only provides a short-lived `POST /api/input-scenarios` handoff; it removes cookie values from the scenario payload and binds only to `localhost`.
 
 ## Realistic project scope
 
-This is a small, scenario-based preference elicitation prototype, not a reliable privacy profile extractor or a browser cookie manager. Its useful research question is whether contextual natural-language prompts help users express explicit choices, and how often the interpreter maps those choices correctly or asks for clarification. The unpacked extension can read metadata from an authorized live tab, but the Cookiebot scan can be stale, browser storage does not prove which page set a cookie, and purpose matching can be ambiguous. Test ambiguous, mixed, contradictory, and out-of-scope replies with participants, and compare the extracted choices with a direct preference questionnaire before claiming improved accuracy or usability.
+This is a small, scenario-based preference elicitation prototype, not a reliable privacy profile extractor or a browser cookie manager. Its useful research question is whether contextual natural-language prompts help users express explicit choices, and how often the interpreter maps those choices correctly or asks for clarification. The unpacked extension can read metadata from an authorized live tab, but a public declaration can be stale, browser storage does not prove which page set a cookie, and purpose matching can be ambiguous. Test ambiguous, mixed, contradictory, and out-of-scope replies with participants, and compare the extracted choices with a direct preference questionnaire before claiming improved accuracy or usability.
 
 The Gemini-backed chat requires an API key and network access. User messages, recent conversation turns, and current pending guest descriptions are sent to Google's Gemini API from the local server. Do not use sensitive personal data in this prototype; check provider terms and institutional research requirements before participant testing. The deterministic state engine can still be tested without an API key.
 

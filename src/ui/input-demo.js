@@ -162,7 +162,7 @@ function render() {
   $("cmp-explanation").textContent = available
     ? "Cookiebot records optional category choices. The user can still state a different current preference in the conversation."
     : "The metadata and catalog can still build a useful prompt when the CMP signal is missing.";
-  $("ad-mapping-row").querySelector(".evidence-badge").textContent = available ? "Cookiebot category + scan" : "Cookiebot scan";
+  $("ad-mapping-row").querySelector(".evidence-badge").textContent = available ? "Cookiebot category + declaration" : "Public declaration";
   $("ad-mapping-row").querySelector(".evidence-badge").className = `evidence-badge${available ? " verified" : ""}`;
   $("ad-handling").textContent = available ? "Prefill: denied" : "Ask user";
   $("ad-handling").className = `handling-pill ${available ? "prefill" : "ask"}`;
@@ -218,7 +218,11 @@ $("build-guests").addEventListener("click", renderGuestRoster);
 $("site-domain-input").addEventListener("input", () => { updateSiteLabel(); renderGuestRoster(); });
 $("open-generated").addEventListener("click", () => {
   if (!lastBuiltGuests.length) return;
-  sessionStorage.setItem("cookiehomes.generatedScenario", JSON.stringify({ name: currentSiteDomain(), guests: lastBuiltGuests }));
+  const namedPurposes = lastBuiltGuests.filter((guest) => guest.purposeEvidence !== "unmapped").length;
+  const unknownPurposes = lastBuiltGuests.length - namedPurposes;
+  const siteName = currentSiteDomain();
+  const story = `${siteName} is a home with ${lastBuiltGuests.length} cookie guests. ${namedPurposes} arrive with analogies based on published purpose descriptions; ${unknownPurposes} arrive without a verified purpose, with only browser-storage clues to consider. Decide which guests may enter, including whether you are comfortable taking the risk on an unknown guest.`;
+  sessionStorage.setItem("cookiehomes.generatedScenario", JSON.stringify({ name: siteName, story, guests: lastBuiltGuests }));
   window.location.href = "/";
 });
 

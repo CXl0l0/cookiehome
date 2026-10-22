@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#080b12">
+  <meta name="theme-color" content="#f5f7f4">
   <title>Cookie Homes — a more human way to set privacy</title>
   <link rel="stylesheet" href="style.css">
 </head>
@@ -14,7 +14,10 @@
       <span>cookie<span class="brand-light">homes</span></span>
     </a>
     <nav class="site-nav" aria-label="Main navigation"><a class="active" href="/">Privacy journey</a><a href="/input-demo.html">How the inputs work</a></nav>
-    <div class="topbar-note"><span class="privacy-dot"></span> Demo mode · choices reset on refresh</div>
+    <div class="topbar-actions">
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch to dark mode" aria-pressed="false"><span class="theme-icon" aria-hidden="true">☾</span><span id="theme-label">Dark mode</span></button>
+      <div class="topbar-note"><span class="privacy-dot"></span> Demo mode · choices reset on refresh</div>
+    </div>
   </header>
 
   <main id="top" class="page-shell">
@@ -53,11 +56,11 @@
           </div>
         </div>
 
-        <p id="home-brief" class="visit-brief">A few people have stopped by with requests. Tell the host what you’re comfortable with in one message.</p>
+        <p id="home-brief" class="visit-brief">Choose a guest to hear their story, then talk it through with your host’s helper.</p>
 
         <div id="follow-up" class="follow-up" aria-live="polite" hidden>
           <div class="follow-icon" aria-hidden="true">↳</div>
-          <div><p class="follow-up-label">Your next scenario</p><h3 id="follow-up-title"></h3><p id="follow-up-scene"></p><small id="follow-up-parent"></small></div>
+          <div><p class="follow-up-label">A quick follow-up</p><h3 id="follow-up-title"></h3><p id="follow-up-scene"></p><small id="follow-up-parent"></small></div>
         </div>
 
         <div class="guest-section-heading"><div><p class="eyebrow">THE SCENARIO</p><h3>Requests at the door</h3></div><span id="guest-count" class="guest-count"></span></div>
@@ -83,14 +86,20 @@
         <section class="chat-panel" aria-labelledby="chat-title">
           <div class="chat-heading">
             <div class="guide-avatar" aria-hidden="true">C</div>
-            <div><p class="eyebrow">YOUR HOST’S HELPER</p><h2 id="chat-title">A note to the host</h2><small id="chat-context" class="chat-context"></small></div>
+            <div><p class="eyebrow">YOUR HOST’S HELPER</p><h2 id="chat-title">Talk it through</h2><small id="chat-context" class="chat-context"></small></div>
             <span class="online-indicator" title="Ready"></span>
           </div>
+          <section id="active-scenario" class="active-scenario" aria-label="Scenario in focus" aria-live="polite" hidden>
+            <div class="active-scenario-top"><span class="active-scenario-kicker"><span class="active-scenario-dot" aria-hidden="true"></span> SCENARIO IN FOCUS</span><span id="active-scenario-status" class="active-scenario-status"></span></div>
+            <h3 id="active-scenario-name"></h3>
+            <p id="active-scenario-preview"></p>
+            <div class="active-scenario-actions"><button id="reopen-scenario" class="scenario-review-button" type="button"><span aria-hidden="true">◉</span> View full scenario</button><button id="clear-scenario" class="scenario-clear-button" type="button">Clear focus</button></div>
+          </section>
           <div id="chat-messages" class="messages" aria-live="polite" aria-label="Conversation"></div>
           <form id="chat-form">
             <label class="sr-only" for="chat-input">Tell the host what you are comfortable with</label>
-            <textarea id="chat-input" rows="4" maxlength="2000" placeholder="For example: Remember my settings so I don’t have to repeat myself, but please don’t let advertisers follow me." required></textarea>
-            <div class="composer-footer"><span class="composer-hint"><span aria-hidden="true">↵</span> One message can cover everyone</span><button id="send" type="submit"><span id="send-label">Send my note</span><span aria-hidden="true">↑</span></button></div>
+            <textarea id="chat-input" rows="3" maxlength="2000" placeholder="Ask about a guest, or tell the host what you’re comfortable with…" required></textarea>
+            <div class="composer-footer"><span class="composer-hint"><span aria-hidden="true">↵</span> Enter to send</span><button id="send" type="submit"><span id="send-label">Send message</span><span aria-hidden="true">↑</span></button></div>
           </form>
           <p id="notice" role="alert"></p>
           <p class="privacy-note"><span aria-hidden="true">♧</span> You can change your mind at any home.</p>
@@ -109,6 +118,13 @@
     </div>
     <footer class="page-footer"><span>Cookie Homes</span><span>Choices should feel like yours.</span></footer>
   </main>
+  <dialog id="scenario-dialog" class="scenario-dialog" aria-labelledby="scenario-dialog-title">
+    <div class="dialog-topline"><span class="dialog-kicker"><span class="dialog-spark" aria-hidden="true">✦</span> GUEST SCENARIO</span><button id="close-scenario" class="icon-button" type="button" aria-label="Close scenario">×</button></div>
+    <div class="dialog-guest-heading"><span id="dialog-avatar" class="dialog-avatar" aria-hidden="true">?</span><div><span id="dialog-status" class="dialog-status"></span><h2 id="scenario-dialog-title"></h2><p id="dialog-category" class="dialog-category"></p></div></div>
+    <div class="scenario-story"><p id="dialog-request"></p></div>
+    <details id="dialog-evidence" class="dialog-evidence" hidden><summary>What we know</summary><div id="dialog-evidence-copy"></div></details>
+    <div class="dialog-actions"><button id="discuss-scenario" class="primary-action" type="button">Talk about this guest <span aria-hidden="true">→</span></button><p>You stay in control. The helper only applies a choice when you make one clear.</p></div>
+  </dialog>
   <script type="module" src="src/ui/app.js"></script>
 </body>
 </html>

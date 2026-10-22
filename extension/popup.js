@@ -1,18 +1,96 @@
 const APP = "http://localhost:3000";
 const $ = (id) => document.getElementById(id);
 const status = (message) => { $("status").textContent = message; };
-const COOKIE_FIELDS = ["Name", "Provider", "Path", "HTTPOnly", "Secure", "ThirdParty", "Persistent", "ExpireSeconds", "ExpireDays", "ExpireDescription", "TrackerTypeName", "Category", "PurposeDescription", "Domain", "Host"];
+const COOKIE_FIELDS = ["Name", "Provider", "Path", "HTTPOnly", "Secure", "ThirdParty", "Persistent", "ExpireSeconds", "ExpireDays", "ExpireDescription", "TrackerTypeName", "Category", "PurposeDescription", "Domain", "Host", "DeclarationCount"];
 let scanDomain = "";
 let scanDetails = null;
 let providerHosts = [];
 let scannedTab = null;
 
-function sanitizeDetails(input) {
-  if (!input || !Array.isArray(input.cookies)) throw new Error("Cookiebot’s scan response did not contain a cookies list.");
+function inspectPublicDeclarationPage() {
+  const clean = (value) => String(value || "").replace(/\s+/g, " ").trim();
+  const categoryFromText = (value) => {
+    const text = clean(value).toLowerCase();
+    if (/necessary|essential/.test(text)) return "necessary";
+    if (/preferences|functionality/.test(text)) return "preferences";
+    if (/statistics|analytics/.test(text)) return "statistics";
+    if (/marketing|advertising/.test(text)) return "marketing";
+    return "";
+  };
+  const declarationTables = [];
+  const tables = [...document.querySelectorAll("table")];
+  for (const table of tables) {
+    const headerRow = table.querySelector("thead tr") || [...table.querySelectorAll("tr")].find((row) => row.querySelector("th"));
+    if (!headerRow) continue;
+    const headers = [...headerRow.querySelectorAll("th,td")].map((cell) => clean(cell.innerText || cell.textContent).toLowerCase());
+    const index = (pattern) => headers.findIndex((header) => pattern.test(header));
+    const nameIndex = index(/name|cookie/);
+    const providerIndex = index(/provider|host/);
+    const domainIndex = index(/cookie\s*domain|^domain$/);
+    const purposeIndex = index(/purpose|description/);
+    if (nameIndex < 0 || purposeIndex < 0) continue;
+
+    const section = table.closest(".CookieDeclarationType") || table.closest(".CookieDeclaration") || table.parentElement;
+    const sectionHeading = section?.querySelector("h1,h2,h3,h4");
+    let category = categoryFromText(sectionHeading?.innerText || "");
+    if (!category) {
+      let previous = table.previousElementSibling;
+      for (let depth = 0; previous && depth < 6 && !category; depth += 1, previous = previous.previousElementSibling) {
+        if (/^H[1-4]$/.test(previous.tagName)) category = categoryFromText(previous.innerText);
+      }
+    }
+
+    const rows = [...table.querySelectorAll("tr")].filter((row) => row !== headerRow && row.querySelector("td"));
+    for (const row of rows) {
+      const cells = [...row.querySelectorAll("td")].map((cell) => clean(cell.innerText || cell.textContent));
+      const declarationName = cells[nameIndex] || "";
+      const countMatch = declarationName.match(/\s*\[x\s*(\d+)\]\s*$/i);
+      const name = declarationName.replace(/\s*\[x\s*\d+\]\s*$/i, "").trim();
+      if (!name) continue;
+      const categoryIndex = index(/categor(y|ies)/);
+      declarationTables.push({
+        Name: name,
+        DeclarationCount: countMatch ? Number(countMatch[1]) : 1,
+        Provider: cells[providerIndex] || "",
+        Domain: domainIndex >= 0 ? cells[domainIndex] || "" : "",
+        PurposeDescription: cells[purposeIndex] || "Purpose not described in the public declaration.",
+        ExpireDescription: cells[index(/expir|duration|retention/)] || "",
+        TrackerTypeName: cells[index(/type/)] || "",
+        Category: (categoryIndex >= 0 && cells[categoryIndex]) || category,
+      });
+    }
+  }
+
+  const seen = new Set();
+  const cookies = declarationTables.filter((row) => {
+    const key = [row.Name, row.Provider, row.Category, row.PurposeDescription].join("\u0000");
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  }).slice(0, 2000);
+  const policyLinks = [...document.querySelectorAll("a[href]")].map((anchor) => {
+    const label = clean(anchor.innerText || anchor.getAttribute("aria-label"));
+    try {
+      const url = new URL(anchor.href, location.href);
+      if (url.origin !== location.origin || url.protocol !== "http:" && url.protocol !== "https:") return null;
+      if (!/(cookie|privacy|data[- ]protection)/i.test(`${label} ${url.pathname}`)) return null;
+      url.hash = "";
+      return { url: url.href, label };
+    } catch { return null; }
+  }).filter(Boolean);
+  const uniqueLinks = [...new Map(policyLinks.map((link) => [link.url, link])).values()]
+    .sort((left, right) => {
+      const score = (item) => /declaration|cookie.?policy|cookies/i.test(`${item.label} ${item.url}`) ? 2 : 1;
+      return score(right) - score(left);
+    }).slice(0, 8);
+  const lastUpdated = clean(document.querySelector(".CookieDeclarationLastUpdated")?.innerText || "");
   return {
-    domain: input.domain || scanDomain,
-    culture: input.culture || "default",
-    cookies: input.cookies.map((row) => Object.fromEntries(COOKIE_FIELDS.filter((key) => row?.[key] !== undefined).map((key) => [key, row[key]]))),
+    url: location.href,
+    language: document.documentElement.lang || "default",
+    cookies,
+    policyLinks: uniqueLinks,
+    lastUpdated,
+    hasCookieDeclarationScript: [...document.scripts].some((script) => /\/cd\.js(?:\?|$)/i.test(script.src || "")),
   };
 }
 
@@ -26,6 +104,10 @@ function providerHost(value) {
   } catch { return ""; }
 }
 
+function sameSite(left, right) {
+  return left === right || left.endsWith(`.${right}`) || right.endsWith(`.${left}`);
+}
+
 async function activeTab() {
   const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
   if (!tab?.id || !tab.url) throw new Error("Open the website you want to collect from, then reopen this extension.");
@@ -34,24 +116,113 @@ async function activeTab() {
   return { tab, url };
 }
 
-async function loadScan() {
-  const button = $("load-scan");
+function originPattern(url) {
+  return `${url.protocol}//${url.hostname}/*`;
+}
+
+async function inspectTab(tabId) {
+  const [injection] = await chrome.scripting.executeScript({ target: { tabId }, func: inspectPublicDeclarationPage });
+  return injection?.result || { cookies: [], policyLinks: [] };
+}
+
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function waitForTab(tabId, timeoutMs = 15000) {
+  const start = Date.now();
+  while (Date.now() - start < timeoutMs) {
+    const tab = await chrome.tabs.get(tabId);
+    if (tab.status === "complete") return;
+    await delay(200);
+  }
+  throw new Error("The cookie-policy page took too long to load.");
+}
+
+function declarationCandidates(page, pageUrl, manualUrl) {
+  const origin = new URL(pageUrl).origin;
+  const candidates = [];
+  if (manualUrl) {
+    const manual = new URL(manualUrl, pageUrl);
+    if (manual.origin !== origin) throw new Error("For safety, the declaration page must be on the same site as the active tab.");
+    candidates.push({ url: manual.href, label: "Provided declaration page" });
+  }
+  candidates.push(...(page.policyLinks || []));
+  for (const path of ["/cookie-policy", "/cookies", "/privacy-policy", "/privacy/cookies", "/legal/cookies"]) {
+    candidates.push({ url: new URL(path, origin).href, label: "Common cookie-policy path" });
+  }
+  return [...new Map(candidates.filter((item) => new URL(item.url).origin === origin).map((item) => [item.url, item])).values()]
+    .filter((item) => item.url !== pageUrl).slice(0, 8);
+}
+
+async function readCandidateDeclaration(candidate) {
+  let tempTabId = null;
+  try {
+    const tab = await chrome.tabs.create({ url: candidate.url, active: false });
+    tempTabId = tab.id;
+    await waitForTab(tempTabId);
+    for (let attempt = 0; attempt < 12; attempt += 1) {
+      const page = await inspectTab(tempTabId);
+      if (page.cookies?.length) return page;
+      await delay(350);
+    }
+    return null;
+  } catch {
+    return null;
+  } finally {
+    if (tempTabId !== null) await chrome.tabs.remove(tempTabId).catch(() => {});
+  }
+}
+
+async function findDeclaration() {
+  const button = $("find-declaration");
   button.disabled = true;
   $("scan-summary").hidden = true;
   try {
     const { tab, url } = await activeTab();
     scanDomain = url.hostname.toLowerCase();
-    scannedTab = { id: tab.id, url: tab.url };
+    scannedTab = { id: tab.id, url: tab.url, origin: url.origin };
     $("active-site").textContent = url.hostname;
-    status("Requesting the Cookiebot scan from the local backend…");
-    const response = await fetch(`${APP}/api/cookiebot/details?domain=${encodeURIComponent(scanDomain)}`, { cache: "no-store" });
-    const result = await response.json();
-    if (!response.ok) throw new Error(result.error || `Cookiebot details request failed (${response.status}).`);
-    scanDetails = sanitizeDetails(result);
-    providerHosts = [...new Set(scanDetails.cookies.map((row) => providerHost(row.Domain || row.Host || row.Provider)).filter((host) => host && host !== scanDomain))].slice(0, 24);
-    $("scan-info").textContent = `Loaded ${scanDetails.cookies.length} scanned cookie entries for ${scanDomain}. Collection may request access to the site and up to ${providerHosts.length} cookie-provider domains.`;
+    status("Requesting permission to inspect this site’s public pages…");
+    const granted = await chrome.permissions.request({ origins: [originPattern(url)] });
+    if (!granted) throw new Error("Site access was not granted. No site data was collected.");
+
+    status("Looking for a published Cookiebot declaration on this page…");
+    let page = await inspectTab(tab.id);
+    let declarationUrl = page.cookies?.length ? page.url : "";
+    const manualUrl = $("declaration-url").value.trim();
+    if (!declarationUrl) {
+      const candidates = declarationCandidates(page, tab.url, manualUrl);
+      for (const candidate of candidates) {
+        status(`Checking public declaration page: ${candidate.label}…`);
+        const candidatePage = await readCandidateDeclaration(candidate);
+        if (candidatePage?.cookies?.length) {
+          page = candidatePage;
+          declarationUrl = candidate.url;
+          break;
+        }
+      }
+    }
+
+    const rows = (page.cookies || []).map((row) => {
+      const declaredDomain = providerHost(row.Domain || row.Host);
+      const result = { ...row, Domain: declaredDomain };
+      if (declaredDomain) result.ThirdParty = !sameSite(declaredDomain, scanDomain);
+      return Object.fromEntries(COOKIE_FIELDS.filter((key) => result[key] !== undefined).map((key) => [key, result[key]]));
+    });
+    scanDetails = {
+      domain: scanDomain,
+      culture: page.language || "default",
+      source: rows.length ? "public-declaration" : "not-found",
+      declarationUrl: declarationUrl || "",
+      lastUpdated: page.lastUpdated || "",
+      cookies: rows,
+    };
+    providerHosts = [...new Set(rows.map((row) => providerHost(row.Domain || row.Host || row.Provider)).filter((host) => host && !sameSite(host, scanDomain)))].slice(0, 24);
+    const summary = rows.length
+      ? `Found ${rows.length} entries in the public declaration at ${new URL(declarationUrl).pathname}. Access may be requested for the site and ${providerHosts.length} provider domains.`
+      : "No public Cookiebot declaration was found. The extension can still collect browser metadata and the SDK; cookies without a disclosure match will stay unknown.";
+    $("scan-info").textContent = summary;
     $("scan-summary").hidden = false;
-    status("Scan loaded. Continue to review the browser permission prompt.");
+    status(rows.length ? "Declaration ready. Continue to collect the browser inputs." : "Fallback ready. Continue to collect available browser inputs.");
   } catch (error) {
     status(error.message);
   } finally { button.disabled = false; }
@@ -63,7 +234,7 @@ function permissionOrigins(hosts) {
 
 function cookieDomainMatches(cookieDomain, host) {
   const domain = String(cookieDomain || "").toLowerCase().replace(/^\.+/, "");
-  return domain === host || domain.endsWith(`.${host}`);
+  return domain === host || domain.endsWith(`.${host}`) || host.endsWith(`.${domain}`);
 }
 
 function safeCookie(cookie) {
@@ -98,31 +269,29 @@ async function cookiebotSnapshot(tabId) {
       if (current) return current;
       await Promise.race([
         new Promise((resolve) => window.addEventListener("CookiebotOnConsentReady", resolve, { once: true })),
-        new Promise((resolve) => setTimeout(resolve, 5000)),
+        new Promise((resolve) => setTimeout(resolve, 4000)),
       ]);
       return capture();
     },
   });
-  if (!injection?.result) throw new Error("Cookiebot’s browser SDK was not found on this page. Confirm the site uses Cookiebot and wait for its banner to load.");
-  return injection.result;
+  return injection?.result || {
+    hasResponse: false, consented: false, declined: false,
+    consent: { necessary: true, preferences: false, statistics: false, marketing: false, method: null },
+  };
 }
 
 async function collect() {
   const button = $("collect");
   button.disabled = true;
   try {
-    // Keep the permission request as the first async action so Chrome sees the button click as its user gesture.
     const tab = scannedTab;
-    if (!tab) throw new Error("Load the Cookiebot scan first.");
-    const url = new URL(tab.url);
-    if (url.hostname.toLowerCase() !== scanDomain) throw new Error("The active site changed after the scan loaded. Load the scan again for this tab.");
+    if (!tab || !scanDetails) throw new Error("Find the public declaration first.");
     const grantHosts = [...new Set([scanDomain, ...providerHosts])];
-    status(`Chrome will ask for access to ${grantHosts.length} site domain${grantHosts.length === 1 ? "" : "s"}.`);
-    const permissionRequest = chrome.permissions.request({ origins: permissionOrigins(grantHosts) });
-    const granted = await permissionRequest;
+    status(`Chrome will ask for access to the site and up to ${providerHosts.length} provider domains.`);
+    const granted = await chrome.permissions.request({ origins: permissionOrigins(grantHosts) });
     if (!granted) throw new Error("Site access was not granted. No cookie data was collected.");
     const currentTab = await chrome.tabs.get(tab.id);
-    if (currentTab.url !== tab.url) throw new Error("The tab navigated after the scan loaded. Load the scan again for the current page.");
+    if (currentTab.url !== tab.url) throw new Error("The active site changed. Find the declaration again for this tab.");
 
     const rows = [];
     const seen = new Set();
@@ -131,7 +300,6 @@ async function collect() {
       const key = `${safe.storeId || "0"}|${safe.domain}|${safe.path}|${safe.name}|${JSON.stringify(safe.partitionKey || null)}`;
       if (!seen.has(key)) { seen.add(key); rows.push(safe); }
     };
-    // Collect cookies relevant to the current page, then scanned provider cookies by domain/name.
     for (const cookie of await chrome.cookies.getAll({ url: currentTab.url })) add(cookie);
     for (const host of providerHosts) {
       const names = new Set(scanDetails.cookies.filter((row) => providerHost(row.Domain || row.Host || row.Provider) === host).map((row) => row.Name));
@@ -141,9 +309,9 @@ async function collect() {
       }
     }
 
-    status("Reading Cookiebot’s current consent snapshot…");
+    status("Reading the site’s current Cookiebot consent snapshot…");
     const cookiebotSdk = await cookiebotSnapshot(currentTab.id);
-    status("Sending value-free metadata to the local Cookie Homes app…");
+    status("Sending value-free metadata and public declaration rows to Cookie Homes…");
     const response = await fetch(`${APP}/api/input-scenarios`, {
       method: "POST", headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ siteDomain: scanDomain, chromeCookies: rows, cookiebotSdk, cookiebotDetails: scanDetails }),
@@ -151,12 +319,13 @@ async function collect() {
     const handoff = await response.json();
     if (!response.ok) throw new Error(handoff.error || `Could not create the scenario (${response.status}).`);
     await chrome.tabs.create({ url: `${APP}/input-demo.html?scenario=${encodeURIComponent(handoff.token)}`, active: true });
-    status(`Collected ${rows.length} cookie metadata records. Cookie values were removed. The input demo is opening for review.`);
+    const declarationMessage = scanDetails.cookies.length ? `${scanDetails.cookies.length} public declaration entries` : "no public declaration entries";
+    status(`Collected ${rows.length} cookie metadata records, ${declarationMessage}, and the available CMP snapshot. Cookie values were removed.`);
   } catch (error) {
     status(error.message);
   } finally { button.disabled = false; }
 }
 
-$("load-scan").addEventListener("click", loadScan);
+$("find-declaration").addEventListener("click", findDeclaration);
 $("collect").addEventListener("click", collect);
 activeTab().then(({ url }) => { $("active-site").textContent = url.hostname; }).catch((error) => { $("active-site").textContent = error.message; });

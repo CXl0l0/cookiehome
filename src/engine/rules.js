@@ -15,9 +15,8 @@ export function validateIntent(intent) {
   if (intent.guestIds !== undefined && (!Array.isArray(intent.guestIds) || !intent.guestIds.length || intent.guestIds.some((id) => typeof id !== "string") || new Set(intent.guestIds).size !== intent.guestIds.length)) {
     return "Guest targets must be a non-empty list of unique guest IDs.";
   }
-  if (intent.category === "unclassified" && intent.decision !== "reject") return "A guest with an unknown purpose cannot be welcomed until its purpose is verified.";
-  if (intent.category === "unclassified" && intent.scope === "all_homes") return "An unclassified guest can only be rejected for this home until its purpose is known.";
-  if (intent.category === "unclassified" && !intent.guestIds?.length) return "An unclassified guest must be rejected by its specific guest ID.";
+  if (intent.category === "unclassified" && intent.scope === "all_homes") return "A choice about an unknown-purpose guest can only apply to this home.";
+  if (intent.category === "unclassified" && !intent.guestIds?.length) return "An unknown-purpose guest must be accepted or rejected by its specific guest ID.";
   return null;
 }
 
@@ -90,7 +89,9 @@ export function applyIntent(state, intent) {
     const previousStatus = home.guests[guest.id];
     home.guests[guest.id] = nextStatus;
     say(g, intent.decision === "accept"
-      ? `You welcome ${guest.name} inside.`
+      ? guest.category === "unclassified"
+        ? `You welcome ${guest.name} inside despite its unverified purpose.`
+        : `You welcome ${guest.name} inside.`
       : previousStatus === "inside" ? `You ask ${guest.name} to leave.` : `You keep ${guest.name} outside.`);
   }
   return { state: g, ok: true };

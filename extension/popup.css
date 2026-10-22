@@ -13,5 +13,7 @@ button:disabled { opacity: .48; cursor: wait; }
 button.secondary { background: #172738; color: #8ef3d7; border: 1px solid #366357; }
 #scan-summary { border-top: 1px solid #26374a; margin-top: 14px; padding-top: 12px; }
 #scan-info { color: #c0cede; font-size: 12px; margin: 0 0 10px; }
+.declaration-field { display: grid; gap: 5px; color: #9bb0c5; font-size: 11px; margin: 12px 0; }
+.declaration-field input { width: 100%; border: 1px solid #293b50; border-radius: 8px; padding: 9px; background: #101a27; color: #e4edf8; font: inherit; font-size: 12px; }
 #status { min-height: 36px; color: #91a7bd; font-size: 12px; margin: 13px 0; }
 .privacy-note { border-top: 1px solid #26374a; padding-top: 12px; margin: 0; font-size: 11px; }

@@ -30,22 +30,28 @@ function expireDescription(row) {
   return "unknown";
 }
 
-/** Convert Cookiebot's scanned-cookie Data API response to the prototype's purpose catalog. */
+/** Convert a public Cookiebot declaration (or compatible catalog) into purpose evidence. */
 export function catalogFromCookiebotDetails(details) {
   if (!details || !Array.isArray(details.cookies)) throw new TypeError("Cookiebot details input must contain a cookies array.");
   return details.cookies.flatMap((row) => {
     if (!row?.Name) return [];
+    const declaredName = String(row.Name).trim();
+    const countMatch = declaredName.match(/\s*\[x\s*(\d+)\]\s*$/i);
+    const cookieName = declaredName.replace(/\s*\[x\s*\d+\]\s*$/i, "").trim();
+    if (!cookieName) return [];
     const info = categoryInfo(row.Category);
-    // Cookiebot's scan API may not include a per-cookie domain. Keep it blank
-    // in that case so the downstream matcher can use an unambiguous name match.
+    // Public declarations may omit cookie domains. Leave them blank so the
+    // downstream matcher can use a unique cookie-name match when safe.
     const domain = cleanDomain(row.Domain || row.Host || "");
     const provider = String(row.Provider || domain || "Unknown provider");
     const purpose = String(row.PurposeDescription || info?.label || "Purpose not described");
     return [{
-      cookieName: String(row.Name), domain, vendorId: slug(provider), purposeId: info?.label || slug(purpose),
-      vendorName: provider, guestName: `${provider} · ${String(row.Name)}`,
+      cookieName, declarationCount: Math.max(1, Number(row.DeclarationCount) || Number(countMatch?.[1]) || 1),
+      domain, vendorId: slug(provider), purposeId: info?.label || slug(purpose),
+      vendorName: provider, guestName: `${provider} · ${cookieName}`,
       category: info?.category || "unclassified", party: typeof row.ThirdParty === "boolean" ? (row.ThirdParty ? "third" : "first") : undefined,
-      request: purpose, evidence: "Cookiebot scanned-cookie details API",
+      request: purpose,
+      evidence: details.source === "public-declaration" ? "public Cookiebot declaration" : "Cookiebot cookie-purpose catalog",
       sourceCategory: row.Category ?? null, expire: expireDescription(row),
     }];
   });

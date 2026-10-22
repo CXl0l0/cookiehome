@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#080b12">
+  <meta name="theme-color" content="#f5f7f4">
   <title>How the inputs work — Cookie Homes</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="input-demo.css">
@@ -19,7 +19,7 @@
     <section class="input-intro">
       <p class="eyebrow">THE INPUT LAYER</p>
       <h1>Understand the signals before interpreting the person.</h1>
-      <p>Cookie Homes combines Chrome cookie metadata, Cookiebot’s recorded category choices, and Cookiebot’s scanned-cookie details. An adapter links and normalizes them into scenarios; neither source replaces asking the user what they want.</p>
+      <p>Cookie Homes combines Chrome cookie metadata, Cookiebot’s recorded category choices, and the site’s published Cookiebot declaration when available. An adapter links and normalizes them into scenarios; neither source replaces asking the user what they want.</p>
       <div class="input-principle"><span aria-hidden="true">✳</span><div><strong>Inputs matter just as much as the output.</strong><br><span>Good preference extraction starts with good context. Unknown evidence stays unknown; it never silently becomes consent.</span></div></div>
     </section>
 
@@ -41,15 +41,15 @@
       <article class="input-type-card catalog-type">
         <div class="input-type-top"><span class="input-number">LINKING INPUT</span><span class="type-icon" aria-hidden="true">⛓</span></div>
         <h2>Site purpose catalog</h2>
-        <p><strong>What does Cookiebot’s scan say each cookie does?</strong> Its Cookie Details API supplies provider, category, purpose description, and cookie properties.</p>
-        <div class="type-example"><span>Cookiebot Data API</span><code>cookies[] · Category · PurposeDescription</code></div>
-        <p class="type-caution"><span aria-hidden="true">↳</span> This third input links observed browser cookies to a disclosed purpose; unmapped cookies stay unknown.</p>
+        <p><strong>What does the site’s public declaration say?</strong> When published, its cookie table lists providers, categories, purposes, and expiry information.</p>
+        <div class="type-example"><span>Public Cookiebot declaration</span><code>cookies[] · Category · PurposeDescription</code></div>
+        <p class="type-caution"><span aria-hidden="true">↳</span> The declaration may be missing or stale. Unmatched cookies stay unknown.</p>
       </article>
     </section>
 
     <section class="lab-panel" aria-labelledby="lab-title">
       <div class="lab-heading">
-          <div><p class="eyebrow">INTERACTIVE TEST FIXTURE</p><h2 id="lab-title">See the source data become a scenario</h2><p class="lab-description">Paste raw Chrome cookie records, a Cookiebot SDK snapshot, and a Cookiebot scan response. The adapter normalizes them into the guest roster; unmatched cookies remain visible without being guessed.</p></div>
+          <div><p class="eyebrow">INTERACTIVE TEST FIXTURE</p><h2 id="lab-title">See the source data become a scenario</h2><p class="lab-description">Paste raw Chrome cookie records, a Cookiebot SDK snapshot, and rows from a public cookie declaration. The adapter normalizes them into the guest roster; unmatched cookies remain visible without being guessed.</p></div>
         <div class="mode-switch" role="group" aria-label="CMP signal availability">
           <button type="button" class="mode-button active" data-mode="missing" aria-pressed="true">No readable CMP</button>
           <button type="button" class="mode-button" data-mode="available" aria-pressed="false">CMP signal available</button>
@@ -94,24 +94,24 @@
           <div id="cmp-available" class="cmp-signal" hidden>
             <div class="signal-brand"><span class="signal-check" aria-hidden="true">✓</span><div><strong>Cookiebot JavaScript SDK</strong><small>Example snapshot · response recorded</small></div><span class="decoded-tag">READY</span></div>
             <div class="signal-choice"><div><span class="signal-kicker">PREFERENCES</span><strong>Allowed</strong></div><div><span class="signal-kicker">STATISTICS</span><strong class="deny-choice">Denied</strong></div><div><span class="signal-kicker">MARKETING</span><strong class="deny-choice">Denied</strong></div></div>
-            <p class="signal-footnote">Cookiebot choices apply to broad categories. Its scanned-cookie details identify which observed cookies are in each category.</p>
+            <p class="signal-footnote">Cookiebot choices apply to broad categories. Its published declaration describes each listed cookie and its category; the SDK signal shows the user's category choices.</p>
           </div>
           <div class="cmp-explainer"><span aria-hidden="true">i</span><p id="cmp-explanation">The metadata and catalog can still build a useful prompt when the CMP signal is missing.</p></div>
         </section>
       </div>
 
       <section class="mapping-stage input-contract" aria-labelledby="contract-title">
-        <div class="stage-heading"><div><p class="eyebrow">PROTOTYPE INPUT CONTRACT</p><h3 id="contract-title">Raw records in, guests out</h3><p>Paste source-shaped examples. The adapter maps Cookiebot categories to Cookiehome categories and links scanned cookie names to Chrome observations. References: <a href="https://www.cookiebot.com/us/developer/" target="_blank" rel="noreferrer">Cookiebot SDK</a> · <a href="https://support.cookiebot.com/hc/en-us/articles/360006346473-Extracting-cookie-information-via-API" target="_blank" rel="noreferrer">Cookie details API</a> · <a href="https://developer.chrome.com/docs/extensions/reference/api/cookies" target="_blank" rel="noreferrer">Chrome Cookies API</a>.</p></div><button type="button" id="build-guests" class="mode-button">Build guest roster</button></div>
+        <div class="stage-heading"><div><p class="eyebrow">PROTOTYPE INPUT CONTRACT</p><h3 id="contract-title">Raw records in, guests out</h3><p>Paste source-shaped examples. The adapter maps Cookiebot categories to Cookiehome categories and links declared cookie names to Chrome observations. References: <a href="https://www.cookiebot.com/us/developer/" target="_blank" rel="noreferrer">Cookiebot SDK</a> · <a href="https://support.cookiebot.com/hc/en-us/articles/360004374474-What-is-included-in-the-Cookie-Declaration-Cookiebot-Admin" target="_blank" rel="noreferrer">Cookiebot declaration</a> · <a href="https://developer.chrome.com/docs/extensions/reference/api/cookies" target="_blank" rel="noreferrer">Chrome Cookies API</a>.</p></div><button type="button" id="build-guests" class="mode-button">Build guest roster</button></div>
         <div class="contract-grid">
           <label class="site-domain-field"><strong>Site domain</strong><small>Used to distinguish first-party from third-party cookie domains.</small><input id="site-domain-input" type="text" value="shop.test" spellcheck="false" autocomplete="off" aria-label="Site domain"></label>
           <label><strong>01 · Chrome cookies.getAll() JSON</strong><small>Array of Chrome Cookie records. A real call requires an extension and host permission; values are discarded by the adapter.</small><textarea id="metadata-input" spellcheck="false" aria-label="Chrome cookies API input"></textarea></label>
           <label><strong>02 · Cookiebot SDK snapshot JSON</strong><small>Snapshot of <code>Cookiebot.hasResponse</code>, <code>Cookiebot.consent</code>, and method after consent is ready.</small><textarea id="cmp-input" spellcheck="false" aria-label="Cookiebot SDK consent input"></textarea></label>
-          <label class="catalog-input"><strong>03 · Cookiebot Cookie Details API JSON</strong><small>Scan response containing <code>cookies[]</code>, including Name, Provider, Category, and PurposeDescription. API key stays server-side in a live integration.</small><textarea id="catalog-input" spellcheck="false" aria-label="Cookiebot details API input"></textarea></label>
+          <label class="catalog-input"><strong>03 · Public Cookiebot declaration JSON</strong><small>Declaration rows containing <code>cookies[]</code>, including Name, Provider, Category, and PurposeDescription.</small><textarea id="catalog-input" spellcheck="false" aria-label="Public Cookiebot declaration input"></textarea></label>
         </div>
-        <p class="mapping-note">Live collection uses the unpacked extension in <code>extension/</code>. Configure the Cookiebot API credentials on the local server as described in the README, then click the extension while viewing a site.</p>
+        <p class="mapping-note">Live collection uses the unpacked extension in <code>extension/</code>. It checks the current page and same-site cookie/privacy pages for a published declaration. No Cookiebot API key is needed; if no declaration is found, browser metadata and the SDK can still be collected.</p>
         <p id="input-error" class="input-error" role="alert"></p>
         <div class="generated-roster"><div class="generated-roster-heading"><div><p class="eyebrow">ADAPTER OUTPUT</p><h4>Guest roster for this home</h4></div><span id="generated-count" class="stage-tag"></span></div><div id="generated-guests" class="generated-guest-grid" aria-live="polite"></div><div class="cmp-record-output"><h4>CMP records received</h4><div id="generated-cmp" class="generated-cmp-list" aria-live="polite"></div></div><button type="button" id="open-generated" class="mode-button open-generated" hidden>Open this generated home in the privacy journey →</button></div>
-        <p class="mapping-note">The adapter preserves each observation but drops Chrome cookie values. Cookiebot scan categories map to Cookiehome categories; SDK category choices initialize mapped optional guests. Necessary cookies start inside. Missing scan matches remain unclassified, and no consent is inferred when Cookiebot has no recorded response.</p>
+        <p class="mapping-note">The adapter preserves each observation but drops Chrome cookie values. Public declaration categories map to Cookiehome categories; SDK category choices initialize mapped optional guests. Necessary cookies start inside. Missing declaration matches remain unclassified, and no consent is inferred when Cookiebot has no recorded response.</p>
       </section>
 
       <section class="mapping-stage" aria-labelledby="mapping-title">
@@ -135,7 +135,7 @@
       </section>
 
       <section class="future-section" aria-labelledby="future-title">
-        <div class="future-icon" aria-hidden="true">↗</div><div><p class="eyebrow">GRACEFUL WHEN THE WEB CHANGES</p><h3 id="future-title">New cookie? New scan entry? Keep the pipeline; extend the data.</h3><p>Store new observations and scan versions without rejecting the record. A Chrome cookie matched to a Cookiebot scan entry can be assigned a category and explanation. Unmatched cookies remain unknown. This prototype supports pasted fixtures and authorized local collection through the unpacked extension; a broader deployment would need secure user accounts, permission controls, durable scan management, and review tools for ambiguous matches.</p></div>
+        <div class="future-icon" aria-hidden="true">↗</div><div><p class="eyebrow">GRACEFUL WHEN THE WEB CHANGES</p><h3 id="future-title">New cookie? New declaration entry? Keep the pipeline; extend the data.</h3><p>Store new observations and declaration versions without rejecting the record. A Chrome cookie matched to a public declaration entry can be assigned a category and explanation. Unmatched cookies remain unknown. This prototype supports pasted fixtures and authorized local collection through the unpacked extension; a broader deployment would need secure user accounts, permission controls, durable declaration management, and review tools for ambiguous matches.</p></div>
         <div class="future-steps"><span><b>01</b> Parse what is known</span><span><b>02</b> Preserve unknown fields</span><span><b>03</b> Ask, never assume</span></div>
       </section>
     </section>
