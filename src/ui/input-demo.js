@@ -97,13 +97,15 @@ function renderGuestRoster() {
       const title = document.createElement("strong"); title.textContent = guest.name;
       const state = document.createElement("span"); state.textContent = guest.initialStatus === "pending" ? "AT THE DOOR" : guest.initialStatus === "inside" ? "WELCOMED" : "OUTSIDE";
       top.append(title, state); card.append(top);
-      const category = document.createElement("p"); category.textContent = `Category: ${guest.category}`; card.append(category);
+      const category = document.createElement("p");
+      category.textContent = `Category: ${guest.category}${guest.category === "unclassified" && guest.purposeDescription ? " · purpose found" : ""}`;
+      card.append(category);
       const request = document.createElement("p"); request.textContent = guest.request; card.append(request);
       const meta = document.createElement("details");
-      const summary = document.createElement("summary"); summary.textContent = `Cookie metadata · ${guest.metadata.name}`;
-      const details = document.createElement("p");
-      details.textContent = `${guest.metadata.domain} · path ${guest.metadata.path} · ${guest.metadata.expires} · Secure ${guest.metadata.secure} · HttpOnly ${guest.metadata.httpOnly} · SameSite ${guest.metadata.sameSite} · ${guest.metadata.party}-party · purpose evidence: ${guest.purposeEvidence}${guest.cmpDecision ? ` · CMP: ${guest.cmpDecision}` : ""}`;
-      meta.append(summary, details); card.append(meta); host.append(card);
+      const summary = document.createElement("summary"); summary.textContent = `Purpose & cookie details · ${guest.metadata.name}`;
+      const detailsCopy = document.createElement("p");
+      detailsCopy.textContent = `Published purpose: ${guest.purposeDescription || "Not found in the declaration."}\nEvidence: ${guest.purposeEvidence}\nBrowser details: ${guest.metadata.domain} · path ${guest.metadata.path} · ${guest.metadata.expires} · Secure ${guest.metadata.secure} · HttpOnly ${guest.metadata.httpOnly} · SameSite ${guest.metadata.sameSite} · ${guest.metadata.party}-party${guest.cmpDecision ? `\nCMP choice: ${guest.cmpDecision}` : ""}`;
+      meta.append(summary, detailsCopy); card.append(meta); host.append(card);
     }
   } catch (error) {
     lastBuiltGuests = [];

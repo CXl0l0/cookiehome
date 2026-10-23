@@ -12,6 +12,9 @@ const PURPOSE_ANALOGIES = {
 function analogyForPurpose(category, requestText) {
   if (PURPOSE_ANALOGIES[category]) return PURPOSE_ANALOGIES[category];
   const text = requestText.toLowerCase();
+  if (/consent|cookie choice|privacy choice|consent state/.test(text)) {
+    return { title: "Consent note keeper", description: "a notebook remembering the cookie choices you made" };
+  }
   if (/cart|basket|shopping/.test(text)) return PURPOSE_ANALOGIES.basket;
   if (/session|login|log in|authenticat|sign.?in|identity/.test(text)) return PURPOSE_ANALOGIES.authentication;
   if (/statistic|analytic|measure|count|visit|page view|performance/.test(text)) return PURPOSE_ANALOGIES.analytics;
