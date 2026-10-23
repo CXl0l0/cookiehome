@@ -58,6 +58,13 @@
 
         <p id="home-brief" class="visit-brief">Choose a guest to hear their story, then talk it through with your host’s helper.</p>
 
+        <section id="focused-scenario" class="focused-scenario" aria-labelledby="focused-scenario-name" aria-live="polite" hidden>
+          <div class="focused-scenario-top"><span class="focused-scenario-kicker"><span class="active-scenario-dot" aria-hidden="true"></span> SCENARIO YOU’RE EXPLORING</span><span id="focused-scenario-status" class="active-scenario-status"></span></div>
+          <h3 id="focused-scenario-name"></h3>
+          <p id="focused-scenario-story" class="focused-scenario-story"></p>
+          <details id="focused-scenario-details" class="scenario-details"><summary>Purpose description &amp; evidence</summary><div id="focused-scenario-evidence"></div></details>
+        </section>
+
         <div id="follow-up" class="follow-up" aria-live="polite" hidden>
           <div class="follow-icon" aria-hidden="true">↳</div>
           <div><p class="follow-up-label">A quick follow-up</p><h3 id="follow-up-title"></h3><p id="follow-up-scene"></p><small id="follow-up-parent"></small></div>
@@ -89,12 +96,7 @@
             <div><p class="eyebrow">YOUR HOST’S HELPER</p><h2 id="chat-title">Talk it through</h2><small id="chat-context" class="chat-context"></small></div>
             <span class="online-indicator" title="Ready"></span>
           </div>
-          <section id="active-scenario" class="active-scenario" aria-label="Scenario in focus" aria-live="polite" hidden>
-            <div class="active-scenario-top"><span class="active-scenario-kicker"><span class="active-scenario-dot" aria-hidden="true"></span> SCENARIO IN FOCUS</span><span id="active-scenario-status" class="active-scenario-status"></span></div>
-            <h3 id="active-scenario-name"></h3>
-            <p id="active-scenario-preview"></p>
-            <div class="active-scenario-actions"><button id="reopen-scenario" class="scenario-review-button" type="button"><span aria-hidden="true">◉</span> View full scenario</button><button id="clear-scenario" class="scenario-clear-button" type="button">Clear focus</button></div>
-          </section>
+          <div id="chat-focused-guest" class="chat-focused-guest" aria-live="polite" hidden><span class="active-scenario-dot" aria-hidden="true"></span><span>Discussing <strong id="chat-focused-name"></strong></span><button id="clear-scenario" type="button" aria-label="Clear focused guest">×</button></div>
           <div id="chat-messages" class="messages" aria-live="polite" aria-label="Conversation"></div>
           <form id="chat-form">
             <label class="sr-only" for="chat-input">Tell the host what you are comfortable with</label>

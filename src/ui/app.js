@@ -36,6 +36,25 @@ const shortLabels = {
   advertising: "Ad tracking",
 };
 
+function purposeLabel(guest) {
+  if (guest.category === "unclassified") {
+    return guest.purposeDescription ? "Purpose known · category unclassified" : "Purpose not verified";
+  }
+  return shortLabels[guest.category] ?? guest.category;
+}
+
+function guestEvidence(guest) {
+  const evidence = [];
+  if (guest.purposeDescription) evidence.push(`Published purpose: ${guest.purposeDescription}`);
+  if (guest.purposeEvidence) evidence.push(`Evidence: ${guest.purposeEvidence}`);
+  if (guest.cmpDecision) evidence.push(`Consent setting: ${guest.cmpDecision}`);
+  if (guest.metadata) {
+    const m = guest.metadata;
+    evidence.push(`Browser details: ${m.name} · ${m.domain} · path ${m.path} · ${m.expires} · Secure ${m.secure} · HttpOnly ${m.httpOnly} · SameSite ${m.sameSite} · ${m.party}-party`);
+  }
+  return evidence.join("\n") || "No additional purpose details or evidence were found.";
+}
+
 function addMessage(role, content) {
   const bubble = el("p", `message ${role}`, content);
   $("chat-messages").append(bubble);
@@ -54,7 +73,7 @@ function guestCard(guest, status) {
   const stateLabel = status === "pending" ? "At the door" : status === "inside" ? "Welcomed" : "Outside";
   top.append(el("span", "guest-state", stateLabel));
   card.append(top);
-  const category = guest.category === "unclassified" ? "Purpose unknown" : shortLabels[guest.category] ?? guest.category;
+  const category = guest.category === "unclassified" && !guest.purposeDescription ? "Purpose unknown" : purposeLabel(guest);
   card.append(el("span", "guest-party", category));
   card.append(el("span", "guest-open-hint", status === "pending" ? "Explore this scenario" : "Review this scenario"));
   card.setAttribute("aria-label", `${guest.name}, ${category}, ${stateLabel}. Open scenario.`);
@@ -71,17 +90,9 @@ function openScenario(guestId) {
   $("dialog-avatar").textContent = guest.name.trim().charAt(0).toUpperCase();
   $("scenario-dialog-title").textContent = guest.name;
   $("dialog-status").textContent = status === "pending" ? "Waiting at the door" : status === "inside" ? "Welcomed inside" : "Staying outside";
-  $("dialog-category").textContent = guest.category === "unclassified" ? "Purpose not verified" : shortLabels[guest.category] ?? guest.category;
+  $("dialog-category").textContent = purposeLabel(guest);
   $("dialog-request").textContent = guest.request;
-  const evidence = [];
-  if (guest.purposeDescription) evidence.push(`Published purpose: ${guest.purposeDescription}`);
-  if (guest.purposeEvidence) evidence.push(`Evidence: ${guest.purposeEvidence}`);
-  if (guest.cmpDecision) evidence.push(`Consent setting: ${guest.cmpDecision}`);
-  if (guest.metadata) {
-    const m = guest.metadata;
-    evidence.push(`Browser details: ${m.name} · ${m.domain} · path ${m.path} · ${m.expires} · Secure ${m.secure} · HttpOnly ${m.httpOnly} · SameSite ${m.sameSite} · ${m.party}-party`);
-  }
-  $("dialog-evidence-copy").textContent = evidence.join("\n") || "No extra purpose evidence was found for this guest.";
+  $("dialog-evidence-copy").textContent = guestEvidence(guest);
   $("dialog-evidence").hidden = false;
   $("dialog-evidence").open = false;
   const dialog = $("scenario-dialog");
@@ -91,14 +102,15 @@ function openScenario(guestId) {
 function updateActiveGuest() {
   const scenario = currentScenario(game);
   const guest = scenario.guests.find((item) => item.id === activeGuestId);
-  $("active-scenario").hidden = !guest;
+  $("focused-scenario").hidden = !guest;
+  $("chat-focused-guest").hidden = !guest;
   if (guest) {
     const status = game.homes[scenario.id].guests[guest.id];
-    $("active-scenario-name").textContent = guest.name;
-    $("active-scenario-status").textContent = status === "inside" ? "Welcomed" : status === "left" ? "Outside" : "At the door";
-    $("active-scenario-preview").textContent = guest.category === "unclassified"
-      ? `No verified purpose was found. The browser details describe how ${guest.metadata?.name || "this cookie"} is stored, not why it is used. Would you accept the uncertainty?`
-      : guest.request;
+    $("focused-scenario-name").textContent = guest.name;
+    $("focused-scenario-status").textContent = status === "inside" ? "Welcomed" : status === "left" ? "Outside" : "At the door";
+    $("focused-scenario-story").textContent = guest.request;
+    $("focused-scenario-evidence").textContent = guestEvidence(guest);
+    $("chat-focused-name").textContent = guest.name;
   }
   $("chat-context").textContent = guest ? `A focused conversation · ${scenario.name}` : `Choose a guest to focus the chat · ${scenario.name}`;
 }
@@ -378,12 +390,14 @@ $("discuss-scenario").addEventListener("click", () => {
   if (!dialogGuestId) return;
   activeGuestId = dialogGuestId;
   $("scenario-dialog").close();
+  $("focused-scenario-details").open = false;
   updateActiveGuest();
   $("chat-input").placeholder = "Ask about this guest, or say what you want the host to do…";
-  $("chat-input").focus({ preventScroll: true });
-});
-$("reopen-scenario").addEventListener("click", () => {
-  if (activeGuestId) openScenario(activeGuestId);
+  const focusedScenario = $("focused-scenario");
+  const chatInput = $("chat-input");
+  const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+  focusedScenario.scrollIntoView({ behavior, block: "center" });
+  chatInput.focus({ preventScroll: true });
 });
 $("clear-scenario").addEventListener("click", () => {
   activeGuestId = null;

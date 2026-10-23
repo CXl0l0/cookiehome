@@ -127,11 +127,12 @@ async function inspectTab(tabId) {
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-async function waitForTab(tabId, timeoutMs = 15000) {
+async function waitForTab(tabId, timeoutMs = 5000, signal = null) {
   const start = Date.now();
   while (Date.now() - start < timeoutMs) {
+    if (signal?.aborted) return false;
     const tab = await chrome.tabs.get(tabId);
-    if (tab.status === "complete") return;
+    if (tab.status === "complete") return true;
     await delay(200);
   }
   throw new Error("The cookie-policy page took too long to load.");
@@ -150,19 +151,22 @@ function declarationCandidates(page, pageUrl, manualUrl) {
     candidates.push({ url: new URL(path, origin).href, label: "Common cookie-policy path" });
   }
   return [...new Map(candidates.filter((item) => new URL(item.url).origin === origin).map((item) => [item.url, item])).values()]
-    .filter((item) => item.url !== pageUrl).slice(0, 8);
+    .filter((item) => item.url !== pageUrl).slice(0, 6);
 }
 
-async function readCandidateDeclaration(candidate) {
+async function readCandidateDeclaration(candidate, signal) {
   let tempTabId = null;
   try {
+    if (signal.aborted) return null;
     const tab = await chrome.tabs.create({ url: candidate.url, active: false });
     tempTabId = tab.id;
-    await waitForTab(tempTabId);
-    for (let attempt = 0; attempt < 12; attempt += 1) {
+    if (signal.aborted) return null;
+    await waitForTab(tempTabId, 5000, signal);
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      if (signal.aborted) return null;
       const page = await inspectTab(tempTabId);
       if (page.cookies?.length) return page;
-      await delay(350);
+      if (attempt < 2) await delay(300);
     }
     return null;
   } catch {
@@ -170,6 +174,27 @@ async function readCandidateDeclaration(candidate) {
   } finally {
     if (tempTabId !== null) await chrome.tabs.remove(tempTabId).catch(() => {});
   }
+}
+
+function findFirstDeclaration(candidates) {
+  if (!candidates.length) return Promise.resolve(null);
+  const controller = new AbortController();
+  return new Promise((resolve) => {
+    let remaining = candidates.length;
+    let found = false;
+    for (const candidate of candidates) {
+      readCandidateDeclaration(candidate, controller.signal).then((page) => {
+        if (page && !found) {
+          found = true;
+          controller.abort();
+          resolve({ candidate, page });
+        }
+      }).finally(() => {
+        remaining -= 1;
+        if (remaining === 0 && !found) resolve(null);
+      });
+    }
+  });
 }
 
 async function findDeclaration() {
@@ -191,13 +216,12 @@ async function findDeclaration() {
     const manualUrl = $("declaration-url").value.trim();
     if (!declarationUrl) {
       const candidates = declarationCandidates(page, tab.url, manualUrl);
-      for (const candidate of candidates) {
-        status(`Checking public declaration page: ${candidate.label}…`);
-        const candidatePage = await readCandidateDeclaration(candidate);
-        if (candidatePage?.cookies?.length) {
-          page = candidatePage;
-          declarationUrl = candidate.url;
-          break;
+      if (candidates.length) {
+        status(`Checking ${candidates.length} likely public pages together. If no declaration is found, browser metadata and the CMP remain available as fallback…`);
+        const match = await findFirstDeclaration(candidates);
+        if (match) {
+          page = match.page;
+          declarationUrl = match.candidate.url;
         }
       }
     }

@@ -9,12 +9,6 @@ const PURPOSE_ANALOGIES = {
   basket: { title: "Basket keeper", description: "a basket keeper holding the items you gathered while browsing" },
 };
 
-function metadataClues(metadata) {
-  const party = metadata.party === "first" ? "first-party" : metadata.party === "third" ? "third-party" : "party not identified";
-  const path = metadata.path && metadata.path !== "/" ? ` It is limited to path ${metadata.path}.` : "";
-  return `The browser saw cookie ${metadata.name} on ${metadata.domain || "an unidentified domain"}; it is ${party}, lasts ${metadata.expires || "an unknown period"}, is ${metadata.secure ? "marked Secure" : "not marked Secure"}, is ${metadata.httpOnly ? "marked HttpOnly" : "not marked HttpOnly"}, and has SameSite set to ${metadata.sameSite || "unspecified"}.${path}`;
-}
-
 function analogyForPurpose(category, requestText) {
   if (PURPOSE_ANALOGIES[category]) return PURPOSE_ANALOGIES[category];
   const text = requestText.toLowerCase();
@@ -26,16 +20,14 @@ function analogyForPurpose(category, requestText) {
   return null;
 }
 
-function scenarioRequest({ metadata, mapping, requestText, hasPurposeEvidence, analogy }) {
+function scenarioRequest({ hasPurposeEvidence, analogy }) {
   if (!hasPurposeEvidence) {
-    return `An unnamed guest is at the door. We do not have a verified purpose for this cookie. ${metadataClues(metadata)} These details describe how the browser stores it, not what the guest intends to do. Would you let this guest in despite the uncertainty?`;
+    return "An unnamed guest is at the door, and we do not know their intention. Would you let them in despite the uncertainty?";
   }
-  const source = mapping.evidence === "public Cookiebot declaration" ? "The public declaration" : "The cookie-purpose record";
   if (analogy) {
-    const categoryNote = CATEGORIES.includes(mapping.category) ? "" : " The declaration does not provide a recognized category, so this remains an individual choice.";
-    return `Imagine this guest as ${analogy.description}. ${source} says: “${requestText}”${categoryNote} Would you let this guest use the house?`;
+    return `Imagine this guest as ${analogy.description}. Would you let them use the house?`;
   }
-  return `A guest arrives with a written purpose but no recognized category label. ${source} says: “${requestText}” Would you let this guest use the house?`;
+  return "A guest arrives with a purpose we cannot place. Would you let them use the house?";
 }
 
 // Stable input contract for the prototype. Metadata describes observations;
@@ -87,7 +79,7 @@ export function buildGuestsFromInputs({ cookieMetadata, purposeCatalog = [], cmp
       category: classified ? mapping.category : "unclassified",
       party: mapping?.party === "third" || mapping?.party === "first" ? mapping.party : cookie.party || "unknown",
       vendor: mapping?.vendorName || cookie.vendor || cookie.domain,
-      request: scenarioRequest({ metadata: guestMetadata, mapping, requestText, hasPurposeEvidence, analogy }),
+      request: scenarioRequest({ hasPurposeEvidence, analogy }),
       metadata: guestMetadata,
       purposeDescription: hasPurposeEvidence ? requestText : null,
       purposeEvidence: hasPurposeEvidence ? (mapping.evidence || "site disclosure") : "unmapped",
