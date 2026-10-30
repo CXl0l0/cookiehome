@@ -1,0 +1,114 @@
+\documentclass[12pt,a4paper]{report}
+
+% A small, readable starting point for a 10–15 page continual assessment report.
+% Compile with: pdflatex report.tex, then bibtex report, then pdflatex twice.
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage[backend=bibtex,style=ieee]{biblatex}
+\addbibresource{references.bib}
+\onehalfspacing
+
+\title{\textbf{[Project Title]}\\[0.5em]
+       \large Continual Assessment Report}
+\author{[Your Name]\\[0.3em] [Student ID]\\[0.3em] [Programme / Department]}
+\date{[Submission date]}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+% In about 150–250 words: problem, aim, approach, work completed, and next steps.
+[Write this after the main sections are drafted.]
+\end{abstract}
+
+\tableofcontents
+\clearpage
+
+\chapter{Introduction and Project Objectives}
+\section{Background and problem}
+[Introduce the area and explain the problem your project addresses. Support factual
+claims with sources, for example \cite{exampleSource}.]
+
+\section{Aim and objectives}
+The aim of this project is to [one-sentence overall aim]. The objectives are:
+\begin{enumerate}
+  \item [Objective 1: a specific, achievable action or outcome.]
+  \item [Objective 2.]
+  \item [Objective 3.]
+\end{enumerate}
+
+\section{Scope and report structure}
+[State what is in scope, important constraints, and briefly map the chapters.]
+
+\chapter{Literature Review}
+\section{Review approach}
+[Describe where and how you searched, search terms, date range, and how you selected sources.]
+
+\section{Key themes}
+\subsection{[Theme 1]}
+[Compare and synthesize relevant studies; do not just summarize one paper per paragraph.]
+
+\subsection{[Theme 2]}
+[Explain agreements, differences, limitations, and what remains unresolved.]
+
+\section{Research gap and implications for this project}
+[Show how the reviewed work motivates your objectives and design choices.]
+
+\chapter{Progress to Date}
+\section{Work completed}
+[Describe completed investigation, requirements, implementation, or other evidence of progress.]
+
+\section{Design or investigation alternatives}
+[Present plausible alternatives and compare them against clear criteria. A table can help.]
+\begin{table}[ht]
+\centering
+\caption{Example comparison of alternatives (replace with your own).}
+\begin{tabular}{p{0.24\textwidth}p{0.30\textwidth}p{0.30\textwidth}}
+\toprule
+Criterion & Alternative A & Alternative B \\
+\midrule
+{[Criterion]} & [Evidence / trade-off] & [Evidence / trade-off] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Preliminary design or investigation}
+[Describe the current preferred direction, why it was selected, assumptions, and open questions.]
+
+\section{Challenges and risks}
+[Explain issues encountered and what you did or will do about them.]
+
+\chapter{Research Plan for Next Semester}
+\section{Planned work and methods}
+[List the remaining activities, methods, tools, and expected outputs.]
+
+\section{Milestones}
+\begin{table}[ht]
+\centering
+\caption{Provisional next-semester plan. Replace weeks with actual dates.}
+\begin{tabular}{p{0.18\textwidth}p{0.56\textwidth}p{0.18\textwidth}}
+\toprule
+Period & Activity & Output \\
+\midrule
+Weeks 1--2 & [Refine design / protocol] & [Approved plan] \\
+Weeks 3--5 & [Build / collect / investigate] & [Intermediate result] \\
+Weeks 6--8 & [Evaluate / analyze] & [Evaluation findings] \\
+Weeks 9--12 & [Refine and write up] & [Final report / demonstration] \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Evaluation and success criteria}
+[State how you will judge whether objectives have been met and what evidence you will collect.]
+
+\chapter{Conclusion}
+[Briefly recap the problem, progress, current direction, and immediate next steps.]
+
+\printbibliography[title={References}]
+\end{document}

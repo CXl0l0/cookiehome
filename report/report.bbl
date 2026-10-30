@@ -1,0 +1,44 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.3 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\datalist[entry]{none/global//global/global/global}
+  \entry{exampleSource}{article}{}{}
+    \name{author}{1}{}{%
+      {{hash=SG}{%
+         family={Surname},
+         familyi={S\bibinitperiod},
+         given={Given},
+         giveni={G\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{SG1}
+    \strng{fullhash}{SG1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \verb{doi}
+    \verb 10.0000/example-doi
+    \endverb
+    \field{number}{1}
+    \field{pages}{1\bibrangedash 10}
+    \field{title}{Replace this with a real, relevant source}
+    \field{volume}{1}
+    \field{journaltitle}{Journal Name}
+    \field{year}{2024}
+  \endentry
+\enddatalist
+\endinput
