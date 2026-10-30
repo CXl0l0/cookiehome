@@ -130,5 +130,32 @@
     \field{month}{06}
     \field{year}{2025}
   \endentry
+
+  \entry{Shiel2025-no}{misc}{}{}
+    \name{author}{1}{}{%
+      {{hash=ST}{%
+         family={Shiel},
+         familyi={S\bibinitperiod},
+         given={Tim},
+         giveni={T\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \strng{namehash}{ST1}
+    \strng{fullhash}{ST1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{abstract}{%
+    Cookie consent is essential to the growing concern of data privacy. Learn about what a cookie is, user consent, and how cookie consent impacts data collection.%
+    }
+    \field{booktitle}{Mindgruve}
+    \field{howpublished}{\url{https://mindgruve.com/blog/analytics/cookie-consent-how-websites-manage-user-choice/}}
+    \field{note}{Accessed: 2026-10-30}
+    \field{title}{Cookie consent: How websites manage user choice}
+    \field{month}{01}
+    \field{year}{2025}
+  \endentry
 \enddatalist
 \endinput
