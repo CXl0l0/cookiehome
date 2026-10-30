@@ -17,28 +17,118 @@
 \endgroup
 
 \datalist[entry]{none/global//global/global/global}
-  \entry{exampleSource}{article}{}{}
-    \name{author}{1}{}{%
-      {{hash=SG}{%
-         family={Surname},
-         familyi={S\bibinitperiod},
-         given={Given},
-         giveni={G\bibinitperiod},
+  \entry{asif2022privacy}{inproceedings}{}{}
+    \name{author}{2}{}{%
+      {{hash=AH}{%
+         family={Asif},
+         familyi={A\bibinitperiod},
+         given={H.},
+         giveni={H\bibinitperiod},
+      }}%
+      {{hash=VJ}{%
+         family={Vaidya},
+         familyi={V\bibinitperiod},
+         given={J.},
+         giveni={J\bibinitperiod},
       }}%
     }
-    \strng{namehash}{SG1}
-    \strng{fullhash}{SG1}
+    \strng{namehash}{AHVJ1}
+    \strng{fullhash}{AHVJ1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
+    \field{booktitle}{Proceedings of the [conference name]}
     \verb{doi}
-    \verb 10.0000/example-doi
+    \verb 10.1145/3559613.3563202
     \endverb
-    \field{number}{1}
-    \field{pages}{1\bibrangedash 10}
-    \field{title}{Replace this with a real, relevant source}
-    \field{volume}{1}
-    \field{journaltitle}{Journal Name}
-    \field{year}{2024}
+    \field{pages}{109\bibrangedash 113}
+    \field{title}{A Study of Users' Privacy Preferences for Data Sharing on Symptoms-Tracking/Health App}
+    \field{month}{11}
+    \field{year}{2022}
+  \endentry
+
+  \entry{noauthor_undated-vk}{misc}{}{}
+    \list{language}{1}{%
+      {en}%
+    }
+    \list{publisher}{1}{%
+      {Youtube}%
+    }
+    \field{labeltitlesource}{title}
+    \field{abstract}{%
+    Enjoy the videos and music you love, upload original content, and share it all with friends, family, and the world on YouTube.%
+    }
+    \field{title}{{TipUp}: Managing your privacy settings}
+  \endentry
+
+  \entry{Cao2025-gx}{inproceedings}{}{}
+    \name{author}{3}{}{%
+      {{hash=CY}{%
+         family={Cao},
+         familyi={C\bibinitperiod},
+         given={Yang},
+         giveni={Y\bibinitperiod},
+      }}%
+      {{hash=ZW}{%
+         family={Zhang},
+         familyi={Z\bibinitperiod},
+         given={Wenying},
+         giveni={W\bibinitperiod},
+      }}%
+      {{hash=HC}{%
+         family={Han},
+         familyi={H\bibinitperiod},
+         given={Changhong},
+         giveni={C\bibinitperiod},
+      }}%
+    }
+    \list{publisher}{1}{%
+      {ACM}%
+    }
+    \strng{namehash}{CY+1}
+    \strng{fullhash}{CYZWHC1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{booktitle}{Proceedings of the 2025 International Conference on Machine Learning and Neural Networks}
+    \field{pages}{336\bibrangedash 342}
+    \field{title}{How to enhance user privacy via transparent cookie statements}
+    \list{location}{1}{%
+      {Chongqing China}%
+    }
+    \field{month}{04}
+    \field{year}{2025}
+    \warn{\item Can't use 'location' + 'address'}
+  \endentry
+
+  \entry{noauthor_undated-lq}{misc}{}{}
+    \field{howpublished}{\url{https://usercentrics.com/knowledge-hub/guide-what-is-a-cmp/}}
+    \field{note}{Accessed: 2026-10-30}
+  \endentry
+
+  \entry{Safna2025-ng}{misc}{}{}
+    \name{author}{1}{}{%
+      {{hash=S}{%
+         family={{Safna}},
+         familyi={S\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \list{publisher}{1}{%
+      {CookieYes}%
+    }
+    \strng{namehash}{S1}
+    \strng{fullhash}{S1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{abstract}{%
+    Discover cookie consent psychology. Learn what makes users accept or reject cookies. Optimise your banners for higher consent rates and compliance in 2025.%
+    }
+    \field{howpublished}{\url{https://www.cookieyes.com/blog/cookie-consent-psychology/}}
+    \field{note}{Accessed: 2026-10-30}
+    \field{title}{Cookie consent psychology: What makes users say yes or no?}
+    \field{month}{06}
+    \field{year}{2025}
   \endentry
 \enddatalist
 \endinput
