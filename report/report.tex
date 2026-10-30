@@ -8,6 +8,7 @@
 \usepackage{lmodern}
 \usepackage{setspace}
 \usepackage{graphicx}
+\usepackage{float}
 \usepackage{booktabs}
 \usepackage{hyperref}
 \usepackage[backend=bibtex,style=ieee]{biblatex}
@@ -51,8 +52,38 @@ With these 3 objectives as the foundational directive pointers for this report, 
 Before constructing the ideation of this project's solution, it is useful to understand where the current common practices stands, specifically how do most websites collect user's cookies consent preferences.
 \subsection{Review of Current Cookie Consent Practices}
 As mentioned briefly in the introduction of the report, most websites currently uses specialized tools called Consent Management Platforms (CMPs) to help them log user's consensual choices for cookies that their websites will be using \cite{Shiel2025-no}. In the form of popups, user will be asked to indicate their preferences whenever they visit a website that their browser does not have cached data recording their privacy preference choices for the cookies.
-\subsubsection{F1 Official Website}
-
+\clearpage
+\subsubsection{Exhibit A: F1 Official Website}
+We will be taking the F1 official website \cite{noauthor_undated-ym} as an example of how this looks practically. Upon entering the website for the first time, users are greeted with the popup window shown in Figure~\ref{fig:f1-cookie-banner}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth,height=0.4\textheight,keepaspectratio]{f1-cookie-consent.png}
+    \caption{Cookie consent banner displayed on the F1 official website.}
+    \label{fig:f1-cookie-banner}
+\end{figure}
+Users are presented with mainly 3 choices on the interface, one to accept only essential cookies, one to accept all, and the last one is to have more autonomy and manually manage settings for cookie consent choices. Observe how even though details regarding the cookies and what they are mainly used for is explicitly written on the interface, it is presented in a way that may seem overly verbose and irrelevant for the common public to understand. In addition, the options that are highlighted in red will also appeal more towards the user, which causes users to make choices that subject themselves to consent more cookies. This is a common practice among most websites known as dark patterns, that attempt to use manipulative UX designs to force user into making choices that often benefits the company behind \cite{Fich2025-yn}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth,height=0.4\textheight,keepaspectratio]{f1-manage-your-choices.png}
+    \caption{Cookie banner 'manage settings' window of F1 official website.}
+    \label{fig:f1-manage-your-choices}
+\end{figure}
+Upon clicking the 'No, manage settings' option, user can further indicate their preference for which purpose their collected data from the cookies can be used. The usage of cookies are split into different ways data collected through cookies can be used, such as to select advertising, or to create profiles for personalised advertising, as shown in Figure~\ref{fig:f1-manage-your-choices}. Though the user is able to have more autonomy, this also adds to the problem of a complex privacy preference extraction process as user has to go through each options to decide whether they want to consent to it or not.
+\subsubsection{Exhibit B: Fifa Official Website}
+Another example that we can look at is from the Fifa Official Website \cite{noauthor_undated-ca}. Similarly, they have a cookie banner for the user to indicate their privacy preference through 3 buttons as shown in Figure~\ref{fig:fifa-cookie-banner}.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth,height=0.4\textheight,keepaspectratio]{fifa-cookie-consent.png}
+    \caption{Cookie consent banner displayed on the Fifa official website.}
+    \label{fig:fifa-cookie-banner}
+\end{figure}
+If the user were to click the preference center option marked in white, the user would then be greeted with another interface as such under Figure~\ref{fig:fifa-privacy-preference-center}. Cookies that can be consented such as functional cookies are all compiled into one window in the privacy preference center interface. This may seem easier for the users to customize their privacy preference, it took away some autonomy from the user when they can't consent at a deeper level where they consent only to certain functional cookies instead of all functional cookies as a whole, comparatively to F1's cookie banner in  Figure~\ref{fig:f1-manage-your-choices} where user is able to indicate preference for each cookies' purpose. However, this is significantly more concise and easy for the user to go through.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth,height=0.4\textheight,keepaspectratio]{fifa-privacy-preference-center.png}
+    \caption{Privacy Preference Center of Fifa official website.}
+    \label{fig:fifa-privacy-preference-center}
+\end{figure}
 \subsection{Requirements}
 \subsection{Constructing the Solution}
 \subsubsection{Addressing the Requirements}

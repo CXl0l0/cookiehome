@@ -157,5 +157,56 @@
     \field{month}{01}
     \field{year}{2025}
   \endentry
+
+  \entry{noauthor_undated-ym}{misc}{}{}
+    \list{language}{1}{%
+      {en}%
+    }
+    \field{labeltitlesource}{title}
+    \field{abstract}{%
+    Enter the world of Formula 1. Your go-to source for the latest F1 news, video highlights, GP results, live timing, in-depth analysis and expert commentary.%
+    }
+    \field{booktitle}{Formula 1\textregistered{} - The Official F1\textregistered{} Website}
+    \field{howpublished}{\url{https://www.formula1.com/}}
+    \field{note}{Accessed: 2026-10-30}
+    \field{title}{{F1} - the official home of Formula 1\textregistered{} racing}
+  \endentry
+
+  \entry{Fich2025-yn}{misc}{}{}
+    \name{author}{1}{}{%
+      {{hash=FO}{%
+         family={Fich},
+         familyi={F\bibinitperiod},
+         given={Oliver},
+         giveni={O\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \strng{namehash}{FO1}
+    \strng{fullhash}{FO1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{abstract}{%
+    72\% of cookie banners contain dark patterns. But what are dark patterns and how do you avoid them when designing your cookie banner?%
+    }
+    \field{booktitle}{Cookie Information}
+    \field{howpublished}{\url{https://cookieinformation.com/blog/what-are-dark-patterns-in-cookie-banners/}}
+    \field{note}{Accessed: 2026-10-30}
+    \field{title}{Dark patterns in cookie banners: What are they and how do you avoid them?}
+    \field{month}{03}
+    \field{year}{2025}
+  \endentry
+
+  \entry{noauthor_undated-ca}{misc}{}{}
+    \list{language}{1}{%
+      {en}%
+    }
+    \field{labeltitlesource}{title}
+    \field{howpublished}{\url{https://www.fifa.com/en}}
+    \field{note}{Accessed: 2026-10-30}
+    \field{title}{No title}
+  \endentry
 \enddatalist
 \endinput
