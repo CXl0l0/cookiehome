@@ -1,4 +1,4 @@
-\documentclass[12pt,a4paper]{report}
+\documentclass[11pt,a4paper]{report}
 
 % A small, readable starting point for a 10–15 page continual assessment report.
 % Compile with: pdflatex report.tex, then bibtex report, then pdflatex twice.
@@ -13,7 +13,7 @@
 \usepackage{hyperref}
 \usepackage[backend=bibtex,style=ieee]{biblatex}
 \addbibresource{references.bib}
-\onehalfspacing
+\singlespacing
 
 \title{\textbf{Designing a Gamified Application for User Privacy Preference Extraction}\\[0.5em]
        \large Continual Assessment Report}
@@ -23,7 +23,7 @@
 \begin{document}
 \maketitle
 
-\tableofcontents
+{\small\tableofcontents}
 \clearpage
 
 \chapter{Introduction}
@@ -45,10 +45,9 @@ With these 3 objectives as the foundational directive pointers for this report, 
 
 \chapter{Ideation of Solution}
 Before constructing the ideation of this project's solution, it is useful to understand where the current common practices stands, specifically how do most websites collect user's cookies consent preferences.
-\subsection{Review of Current Cookie Consent Practices}
+\section{Review of Current Cookie Consent Practices}
 As mentioned briefly in the introduction of the report, most websites currently uses specialized tools called Consent Management Platforms (CMPs) to help them log user's consensual choices for cookies that their websites will be using \cite{Shiel2025-no}. In the form of popups, user will be asked to indicate their preferences whenever they visit a website that their browser does not have cached data recording their privacy preference choices for the cookies.
-\clearpage
-\subsubsection{Exhibit A: F1 Official Website}
+\subsection{Exhibit A: F1 Official Website}
 We will be taking the F1 official website \cite{noauthor_undated-ym} as an example of how this looks practically. Upon entering the website for the first time, users are greeted with the popup window shown in Figure~\ref{fig:f1-cookie-banner}.
 \begin{figure}[H]
     \centering
@@ -64,7 +63,7 @@ Users are presented with mainly 3 choices on the interface, one to accept only e
     \label{fig:f1-manage-your-choices}
 \end{figure}
 Upon clicking the 'No, manage settings' option, user can further indicate their preference for which purpose their collected data from the cookies can be used. The usage of cookies are split into different ways data collected through cookies can be used, such as to select advertising, or to create profiles for personalised advertising, as shown in Figure~\ref{fig:f1-manage-your-choices}. Though the user is able to have more autonomy, this also adds to the problem of a complex privacy preference extraction process as user has to go through each options to decide whether they want to consent to it or not.
-\subsubsection{Exhibit B: Fifa Official Website}
+\subsection{Exhibit B: Fifa Official Website}
 Another example that we can look at is from the Fifa Official Website \cite{noauthor_undated-ca}. Similarly, they have a cookie banner for the user to indicate their privacy preference through 3 buttons as shown in Figure~\ref{fig:fifa-cookie-banner}.
 \begin{figure}[H]
     \centering
@@ -79,38 +78,38 @@ If the user were to click the preference center option marked in white, the user
     \caption{Privacy Preference Center of Fifa official website.}
     \label{fig:fifa-privacy-preference-center}
 \end{figure}
-\subsection{Requirements}
+\section{Requirements}
 After reviewing the common cookie consent preference extraction practices of websites, we can come up with 5 requirements of how our solution should look like in order to solve the problems found above.
 \begin{enumerate}
   \item Concise
-  \subitem Users shouldn’t be looking at verbose content to understand the implication of their privacy preference choices, confusion should be avoided
+  \subitem Users shouldn’t be looking at verbose content to understand the implication of their privacy preference choices, confusion should be avoided.
   \item Convenient
-  \subitem User should be able to easily access and set up the application
+  \subitem User should be able to easily access and set up the application.
   \item Engaging
-  \subitem If there are a lot of privacy preferences to be extracted, users should be engaged when doing so
+  \subitem Users should be engaged during the process of privacy preference extraction.
   \item Informative
-  \subitem Provides sufficient information to the user on how their privacy preferences affects them
+  \subitem Provides sufficient information to the user on how their privacy preferences affects them.
   \item User-centric autonomous
-  \subitem Users should be able to have as much control as possible to their own cookie consent privacy preference
+  \subitem Users should be able to have as much control as possible to their own cookie consent privacy preference.
 \end{enumerate}
-\subsection{Constructing the Solution}
+\section{Constructing the Solution}
 A privacy companion that appears when you visit websites, explains what privacy choices are being requested, and turns privacy decisions into an interactive scenario-based experience.
-\subsubsection{Notion}
+\subsection{Notion}
 User privacy preference is a subject that each user passes by everyday as they visit different websites, yet most people ignore it. There are multiple reasons as to why this happens, but the most prominent and straightforward reason that users tend to overlook it is that the current way of presenting it is boring, verbose and inconvenient, encountering dozens of such popups would be mentally tiring for users \cite{Safna2025-ng}. Hence, the topic of designing a gamified application to represent the simulation of managing each user’s own privacy preference aims to solve the issue of the current method of extracting these preferences from users. The intrinsic details of user privacy preferences can be simplified and become more approachable for users. A visual representation of everything is useful to engage the user while presenting each cookie, third-parties, privacy preferences etc. in a new way that catches the attention of the user.
-\subsubsection{Use of analogy in scenario-based questions}
+\subsection{Use of analogy in scenario-based questions}
 \label{subsubsec:analogy}
 As browsing the internet and different websites is just like visiting different people’s homes, instead of presenting websites and cookies as technical terms, websites can be described as homes that users visit and the cookies are like guests in the home. Subsequently, they can be personified according to the purpose of each cookies. For example, authentication cookies that let websites recognizes users can be presented as the owner (company) of the home (website) wants to remember the user's name so that the user can re-enter their home anytime \cite{noauthor_undated-qc}. This usage of analogy can then be presented as different scenarios that the user has to go through to indicate their privacy preferences for cookies. 
 
 However, if the user wants to know more about specific cookies, the application retains the option for users to read the original details of the cookies without the analogy being applied and presented as scenario-based questions. In other words, in the form of the original cookie banner consent interface.
-\subsubsection{Chatbot interface}
+\subsection{Chatbot interface}
 When presented with different scenario-based questions, there are nuances that the user might be restricted to if a similar approach of binary choices presented by cookie banners is used. We have to acknowledge that there are deeper levels to every user's privacy preference. For that, an approach to allow users to respond with natural language would be able to help users to express their privacy preferences better. Hence, this project uses a chatbot interface for the users to communicate with the application, which would then translate the user's answers into decisions.
-\subsubsection{Dynamic questions}
+\subsection{Dynamic questions}
 As each websites use different cookies and request different consent permissions from the user, a fixed pool of scenario-based questions would not suffice to cover every cookies. This calls for the need of a way to generate dynamic scenario-based questions depending on the cookies. The solution would have to take in some input regarding the details of each cookies and what their purpose is, and generate these questions accordingly for users to go through. Additionally, dynamic questions can serve as clarifying questions and be used to rectify any ambiguity that may surface when users give unclear answers that require more information from the user in order to be translated into deterministic privacy preference decisions.
-\subsubsection{Translation from user answers into decisions}
+\subsection{Translation from user answers into decisions}
 Answers received from users through the chatbot as they go through the scenario-based questions would then be processed in backend to be translated into a deterministic decision made by the user. The decision would be applied through the application and be communicated with the CMPs to indicate user's privacy preferences.
-\subsubsection{Accessibility and Appearance}
+\subsection{Accessibility and Appearance}
 The solution would have to be easy for users to set up and use, hence an application that can be accessed as a simple browser extension would be ideal for our solution. Through this extension, the application should be able to collect cookie data, interact with users, and communicate with CMPs of each websites. Furthermore, the application would also have some kind of visual representation of their current privacy preferences, in the form of analogies mentioned under the 'Use of analogy in scenario-based questions' section~\ref{subsubsec:analogy}.
-\subsubsection{Addressing the Requirements}
+\subsection{Addressing the Requirements}
 Given the ideation of solution above, we can conclude how these aspects address the requirements that was established previously:
 \begin{enumerate}
   \item Conciseness
@@ -124,27 +123,23 @@ Given the ideation of solution above, we can conclude how these aspects address 
   \item User-centric Autonomy
   \subitem Users can change their preferences anytime by interacting with the chatbot.
 \end{enumerate}
-\subsection{Constraints}
+\section{Constraints}
 There are several constraints and concerns regarding the application that can be foresee at this stage of development.
-\subsubsection{Requesting permissions}
+\subsection{Requesting permissions}
 Accessing certain cookies' data requires the application to ask for permissions from the user. While developing the application, it is important to be careful in how the application handles requesting permission from the user and should be mindful of not requesting more permissions than necessary.
 
-\subsubsection{Supporting limited CMPs}
-Different websites use different CMPs and different cookies. The current ideation of the solution would be heavily limited by the breadth of how much CMPs it can support (i.e communicate with) as they have distinct APIs and categories for cookies. 
-\subsubsection{Handling data safely}
+\subsection{Supporting limited CMPs}
+Different websites use different CMPs and different cookies. The current ideation of the solution would be heavily limited by the breadth of how much CMPs it can support (i.e communicate with) as they have distinct APIs and categories for cookies. This project would be aiming to support one of the CMPs named CookieBot \cite{noauthor_undated-ze}.
+\subsection{Handling data safely}
 Messages from the user to the chatbot would be sent to an external natural language AI model service, the application has to navigate the handling of these data safely such that user's private information isn't leaked to external sources. Users should be told that this is the case and should avoid entering sensitive personal information when interacting with the chatbot.
-\subsubsection{Natural language misinterpretation}
+\subsection{Natural language misinterpretation}
 Natural language responses from users will be subjected to the risk of being ambiguous or unclear, which may lead to misinterpretation from the natural langauge model of exactly what the user wants to express. Clarifying questions must be asked in order to establish a firm understanding of user's decision. The application has to take a stance of taking no actions until it is certain of the user's intention.
 \chapter{Literature Review}
-\section{Review approach}
-[Describe where and how you searched, search terms, date range, and how you selected sources.]
+\section{CookieBlock: Automating Cookie Consent and GDPR Violation Detection}
+Among other works and solutions that strive to solve similar problems as this project does, is “CookieBlock: Automating Cookie Consent and GDPR Violation Detection” \cite{noauthor_undated-pu}. The similar points between CookieBlock and our project is how CookieBlock takes in input in order to automate the process of consenting cookies for users. CookieBlock requires a concrete mapping between cookies and what each of their purposes are in order to classify their purposes and decide whether or not it fits the user’s privacy preferences and can be consented automatically. For that, CookieBlock trained their own classifier to predict the purposes of each cookie by looking at attributes of the cookies, such as: name, domain, path, etc. From these they are able to extract some features and be classified with their trained classifier. CookieBlock is also a solution that takes on the form of a browser extension, something this project aims to become in view of convenience for users.
 
-\section{Key themes}
-\subsection{[Theme 1]}
-[Compare and synthesize relevant studies; do not just summarize one paper per paragraph.]
+For our project, in order to achieve the goal of presenting users with dynamic scenarios that they can run through, it is integral for us to have concrete cookie-to-purpose mappings. While our project’s goal wasn’t focused on correctly classifying each cookie's purpose live, we took on a limitation, relying heavily on the Cookiebot’s scanned database to look up each cookie’s purposes instead of trying to achieve the goal of identifying each cookie’s purpose on any arbitrary websites, which will be using all kinds of CMP. Instead, our project focuses on the idea of extracting user preferences using a natural language interface between the user and an agent that presents dynamic privacy-related scenarios disguised in a more digestible analogy. From there, our project then explores the topic on how this approach allows us to translate these preferences into tangible outcomes the user can review.
 
-\subsection{[Theme 2]}
-[Explain agreements, differences, limitations, and what remains unresolved.]
 
 \section{Research gap and implications for this project}
 [Show how the reviewed work motivates your objectives and design choices.]
