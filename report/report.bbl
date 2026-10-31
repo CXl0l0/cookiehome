@@ -41,8 +41,7 @@
     \verb 10.1145/3559613.3563202
     \endverb
     \field{pages}{109\bibrangedash 113}
-    \field{title}{A Study of Users' Privacy Preferences for Data Sharing on
-  Symptoms-Tracking/Health App}
+    \field{title}{A Study of Users' Privacy Preferences for Data Sharing on Symptoms-Tracking/Health App}
     \field{month}{11}
     \field{year}{2022}
   \endentry
@@ -56,8 +55,7 @@
     }
     \field{labeltitlesource}{title}
     \field{abstract}{%
-    Enjoy the videos and music you love, upload original content, and share it
-  all with friends, family, and the world on YouTube.%
+    Enjoy the videos and music you love, upload original content, and share it all with friends, family, and the world on YouTube.%
     }
     \field{title}{{TipUp}: Managing your privacy settings}
   \endentry
@@ -90,11 +88,9 @@
     \strng{fullhash}{CYZWHC1}
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
-    \field{booktitle}{Proceedings of the 2025 International Conference on
-  Machine Learning and Neural Networks}
+    \field{booktitle}{Proceedings of the 2025 International Conference on Machine Learning and Neural Networks}
     \field{pages}{336\bibrangedash 342}
-    \field{title}{How to enhance user privacy via transparent cookie
-  statements}
+    \field{title}{How to enhance user privacy via transparent cookie statements}
     \list{location}{1}{%
       {Chongqing China}%
     }
@@ -104,7 +100,7 @@
   \endentry
 
   \entry{noauthor_undated-lq}{misc}{}{}
-  \field{howpublished}{\url{https://usercentrics.com/knowledge-hub/guide-what-is-a-cmp/}}
+    \field{howpublished}{\url{https://usercentrics.com/knowledge-hub/guide-what-is-a-cmp/}}
     \field{note}{Accessed: 2026-10-30}
   \endentry
 
@@ -120,15 +116,10 @@
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
     \field{abstract}{%
-    An HTTP cookie (also called web cookie, Internet cookie, browser cookie, or
-  simply cookie) is a small block of data created by a web server while a user
-  is browsing a website and placed on the user's computer or other device by
-  the user's web browser. Cookies are placed on the device used to access a
-  website, and more than one cookie may be placed on a user's device during a
-  session.%
+    An HTTP cookie (also called web cookie, Internet cookie, browser cookie, or simply cookie) is a small block of data created by a web server while a user is browsing a website and placed on the user's computer or other device by the user's web browser. Cookies are placed on the device used to access a website, and more than one cookie may be placed on a user's device during a session.%
     }
     \field{booktitle}{Wikipedia, The Free Encyclopedia}
-  \field{howpublished}{\url{https://en.wikipedia.org/w/index.php?title=HTTP_cookie&oldid=1379243610}}
+    \field{howpublished}{\url{https://en.wikipedia.org/w/index.php?title=HTTP_cookie&oldid=1379243610}}
     \field{note}{Accessed: NA-NA-NA}
     \field{title}{{HTTP} cookie}
     \field{month}{10}
@@ -152,11 +143,10 @@
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
     \field{abstract}{%
-    Cookie permissions need to follow the law and strike the balance between
-  respecting user privacy and being user-friendly.%
+    Cookie permissions need to follow the law and strike the balance between respecting user privacy and being user-friendly.%
     }
     \field{booktitle}{Nielsen Norman Group}
-  \field{howpublished}{\url{https://www.nngroup.com/articles/cookie-permissions/}}
+    \field{howpublished}{\url{https://www.nngroup.com/articles/cookie-permissions/}}
     \field{note}{Accessed: 2026-10-31}
     \field{title}{Cookie permissions 101}
     \field{month}{11}
@@ -181,11 +171,9 @@
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
     \field{abstract}{%
-    Discover cookie consent psychology. Learn what makes users accept or reject
-  cookies. Optimise your banners for higher consent rates and compliance in
-  2025.%
+    Discover cookie consent psychology. Learn what makes users accept or reject cookies. Optimise your banners for higher consent rates and compliance in 2025.%
     }
-  \field{howpublished}{\url{https://www.cookieyes.com/blog/cookie-consent-psychology/}}
+    \field{howpublished}{\url{https://www.cookieyes.com/blog/cookie-consent-psychology/}}
     \field{note}{Accessed: 2026-10-30}
     \field{title}{Cookie consent psychology: What makes users say yes or no?}
     \field{month}{06}
@@ -209,12 +197,10 @@
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
     \field{abstract}{%
-    Cookie consent is essential to the growing concern of data privacy. Learn
-  about what a cookie is, user consent, and how cookie consent impacts data
-  collection.%
+    Cookie consent is essential to the growing concern of data privacy. Learn about what a cookie is, user consent, and how cookie consent impacts data collection.%
     }
     \field{booktitle}{Mindgruve}
-  \field{howpublished}{\url{https://mindgruve.com/blog/analytics/cookie-consent-how-websites-manage-user-choice/}}
+    \field{howpublished}{\url{https://mindgruve.com/blog/analytics/cookie-consent-how-websites-manage-user-choice/}}
     \field{note}{Accessed: 2026-10-30}
     \field{title}{Cookie consent: How websites manage user choice}
     \field{month}{01}
@@ -227,16 +213,12 @@
     }
     \field{labeltitlesource}{title}
     \field{abstract}{%
-    Enter the world of Formula 1. Your go-to source for the latest F1 news,
-  video highlights, GP results, live timing, in-depth analysis and expert
-  commentary.%
+    Enter the world of Formula 1. Your go-to source for the latest F1 news, video highlights, GP results, live timing, in-depth analysis and expert commentary.%
     }
-    \field{booktitle}{Formula 1\textregistered{} - The Official
-  F1\textregistered{} Website}
+    \field{booktitle}{Formula 1\textregistered{} - The Official F1\textregistered{} Website}
     \field{howpublished}{\url{https://www.formula1.com/}}
     \field{note}{Accessed: 2026-10-30}
-    \field{title}{{F1} - the official home of Formula 1\textregistered{}
-  racing}
+    \field{title}{{F1} - the official home of Formula 1\textregistered{} racing}
   \endentry
 
   \entry{Fich2025-yn}{misc}{}{}
@@ -256,14 +238,12 @@
     \field{labelnamesource}{author}
     \field{labeltitlesource}{title}
     \field{abstract}{%
-    72\% of cookie banners contain dark patterns. But what are dark patterns
-  and how do you avoid them when designing your cookie banner?%
+    72\% of cookie banners contain dark patterns. But what are dark patterns and how do you avoid them when designing your cookie banner?%
     }
     \field{booktitle}{Cookie Information}
-  \field{howpublished}{\url{https://cookieinformation.com/blog/what-are-dark-patterns-in-cookie-banners/}}
+    \field{howpublished}{\url{https://cookieinformation.com/blog/what-are-dark-patterns-in-cookie-banners/}}
     \field{note}{Accessed: 2026-10-30}
-    \field{title}{Dark patterns in cookie banners: What are they and how do you
-  avoid them?}
+    \field{title}{Dark patterns in cookie banners: What are they and how do you avoid them?}
     \field{month}{03}
     \field{year}{2025}
   \endentry
@@ -284,47 +264,59 @@
     }
     \field{labeltitlesource}{title}
     \field{abstract}{%
-    An authentication cookie is a browser-stored token that preserves a
-  logged-in session after the password step is complete. In practice, it can
-  function…%
+    An authentication cookie is a browser-stored token that preserves a logged-in session after the password step is complete. In practice, it can function…%
     }
     \field{booktitle}{{NHI} Management Group}
-  \field{howpublished}{\url{https://nhimg.org/glossary/authentication-cookie/}}
+    \field{howpublished}{\url{https://nhimg.org/glossary/authentication-cookie/}}
     \field{note}{Accessed: 2026-10-31}
     \field{title}{Authentication cookie}
   \endentry
 
   \entry{noauthor_undated-ze}{misc}{}{}
-  \field{howpublished}{\url{https://www.cookiebot.com/en/what-is-behind-powered-by-cookiebot/}}
+    \field{howpublished}{\url{https://www.cookiebot.com/en/what-is-behind-powered-by-cookiebot/}}
     \field{note}{Accessed: 2026-10-31}
   \endentry
 
   \entry{noauthor_undated-pu}{misc}{}{}
     \field{labeltitlesource}{title}
     \field{abstract}{%
-    The European Union's General Data Protection Regulation (GDPR) requires
-  websites to inform users about personal data collection and request consent
-  for cookies. Yet the majority of websites do not give users any choices, and
-  others attempt to deceive them into accepting all cookies. We document the
-  severity of this situation through an analysis of potential GDPR violations
-  in cookie banners in almost 30k websites. We identify six novel violation
-  types, such as incorrect category assignments and misleading expiration
-  times, and we find at least one potential violation in a surprising 94.7\% of
-  the analyzed websites. We address this issue by giving users the power to
-  protect their privacy. We develop a browser extension, called CookieBlock,
-  that uses machine learning to enforce GDPR cookie consent at the client. It
-  automatically categorizes cookies by usage purpose using only the information
-  provided in the cookie itself. At a mean validation accuracy of 84.4\%, our
-  model attains a prediction quality competitive with expert knowledge in the
-  field. Additionally, our approach differs from prior work by not relying on
-  the cooperation of websites themselves. We empirically evaluate CookieBlock
-  on a set of 100 randomly sampled websites, on which it filters roughly 90\%
-  of the privacy-invasive cookies without significantly impairing website
-  functionality.%
+    The European Union's General Data Protection Regulation (GDPR) requires websites to inform users about personal data collection and request consent for cookies. Yet the majority of websites do not give users any choices, and others attempt to deceive them into accepting all cookies. We document the severity of this situation through an analysis of potential GDPR violations in cookie banners in almost 30k websites. We identify six novel violation types, such as incorrect category assignments and misleading expiration times, and we find at least one potential violation in a surprising 94.7\% of the analyzed websites. We address this issue by giving users the power to protect their privacy. We develop a browser extension, called CookieBlock, that uses machine learning to enforce GDPR cookie consent at the client. It automatically categorizes cookies by usage purpose using only the information provided in the cookie itself. At a mean validation accuracy of 84.4\%, our model attains a prediction quality competitive with expert knowledge in the field. Additionally, our approach differs from prior work by not relying on the cooperation of websites themselves. We empirically evaluate CookieBlock on a set of 100 randomly sampled websites, on which it filters roughly 90\% of the privacy-invasive cookies without significantly impairing website functionality.%
     }
-  \field{howpublished}{\url{https://people.inf.ethz.ch/basin/pubs/usenix22.pdf}}
+    \field{howpublished}{\url{https://people.inf.ethz.ch/basin/pubs/usenix22.pdf}}
     \field{note}{Accessed: 2026-10-31}
     \field{title}{Automating cookie consent and {GDPR} violation detection}
+  \endentry
+
+  \entry{cybotCookieDeclaration}{misc}{}{}
+    \name{author}{1}{}{%
+      {{hash=C}{%
+         family={{Cybot}},
+         familyi={C\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{C2}
+    \strng{fullhash}{C2}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{howpublished}{\url{https://www.cybot.com/cookie-declaration/}}
+    \field{note}{Accessed: October 31, 2026}
+    \field{title}{Cookie Declaration}
+  \endentry
+
+  \entry{cookiebotCookieScripts}{misc}{}{}
+    \name{author}{1}{}{%
+      {{hash=C}{%
+         family={{Cookiebot}},
+         familyi={C\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{C1}
+    \strng{fullhash}{C1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{howpublished}{\url{https://www.cookiebot.com/en/cookie-scripts/}}
+    \field{note}{Accessed: October 31, 2026}
+    \field{title}{Cookie Scripts}
   \endentry
 \enddatalist
 \endinput

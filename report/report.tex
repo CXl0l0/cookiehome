@@ -41,7 +41,6 @@ Given the background of the project, the project aims to address the problems th
   \item Design a solution that presents the management of cookies in a gamified interface
   \item Evaluate how a gamified process may be effective in helping users manage their privacy preferences within their own initiative
 \end{enumerate}
-With these 3 objectives as the foundational directive pointers for this report, the report will be detailing how the solution for this project came to ideation, the project's progress so far and it's subsequent analysis on how effective it is in achieving the objectives.
 
 \chapter{Ideation of Solution}
 Before constructing the ideation of this project's solution, it is useful to understand where the current common practices stands, specifically how do most websites collect user's cookies consent preferences.
@@ -51,7 +50,7 @@ As mentioned briefly in the introduction of the report, most websites currently 
 We will be taking the F1 official website \cite{noauthor_undated-ym} as an example of how this looks practically. Upon entering the website for the first time, users are greeted with the popup window shown in Figure~\ref{fig:f1-cookie-banner}.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.9\textwidth,height=0.4\textheight,keepaspectratio]{f1-cookie-consent.png}
+    \includegraphics[width=0.8\textwidth,height=0.3\textheight,keepaspectratio]{f1-cookie-consent.png}
     \caption{Cookie consent banner displayed on the F1 official website.}
     \label{fig:f1-cookie-banner}
 \end{figure}
@@ -129,20 +128,19 @@ There are several constraints and concerns regarding the application that can be
 Accessing certain cookies' data requires the application to ask for permissions from the user. While developing the application, it is important to be careful in how the application handles requesting permission from the user and should be mindful of not requesting more permissions than necessary.
 
 \subsection{Supporting limited CMPs}
-Different websites use different CMPs and different cookies. The current ideation of the solution would be heavily limited by the breadth of how much CMPs it can support (i.e communicate with) as they have distinct APIs and categories for cookies. This project would be aiming to support one of the CMPs named CookieBot \cite{noauthor_undated-ze}.
+Different websites use different CMPs and different cookies. The current ideation of the solution would be heavily limited by the breadth of how much CMPs it can support (i.e. communicate with) as they have distinct APIs and categories for cookies. This project would be aiming to support one of the CMPs named CookieBot \cite{noauthor_undated-ze}.
 \subsection{Handling data safely}
 Messages from the user to the chatbot would be sent to an external natural language AI model service, the application has to navigate the handling of these data safely such that user's private information isn't leaked to external sources. Users should be told that this is the case and should avoid entering sensitive personal information when interacting with the chatbot.
 \subsection{Natural language misinterpretation}
 Natural language responses from users will be subjected to the risk of being ambiguous or unclear, which may lead to misinterpretation from the natural langauge model of exactly what the user wants to express. Clarifying questions must be asked in order to establish a firm understanding of user's decision. The application has to take a stance of taking no actions until it is certain of the user's intention.
 \chapter{Literature Review}
 \section{CookieBlock: Automating Cookie Consent and GDPR Violation Detection}
-Among other works and solutions that strive to solve similar problems as this project does, is “CookieBlock: Automating Cookie Consent and GDPR Violation Detection” \cite{noauthor_undated-pu}. The similar points between CookieBlock and our project is how CookieBlock takes in input in order to automate the process of consenting cookies for users. CookieBlock requires a concrete mapping between cookies and what each of their purposes are in order to classify their purposes and decide whether or not it fits the user’s privacy preferences and can be consented automatically. For that, CookieBlock trained their own classifier to predict the purposes of each cookie by looking at attributes of the cookies, such as: name, domain, path, etc. From these they are able to extract some features and be classified with their trained classifier. CookieBlock is also a solution that takes on the form of a browser extension, something this project aims to become in view of convenience for users.
-
-For our project, in order to achieve the goal of presenting users with dynamic scenarios that they can run through, it is integral for us to have concrete cookie-to-purpose mappings. While our project’s goal wasn’t focused on correctly classifying each cookie's purpose live, we took on a limitation, relying heavily on the Cookiebot’s scanned database to look up each cookie’s purposes instead of trying to achieve the goal of identifying each cookie’s purpose on any arbitrary websites, which will be using all kinds of CMP. Instead, our project focuses on the idea of extracting user preferences using a natural language interface between the user and an agent that presents dynamic privacy-related scenarios disguised in a more digestible analogy. From there, our project then explores the topic on how this approach allows us to translate these preferences into tangible outcomes the user can review.
-
+Among other works and solutions that strive to solve similar problems as this project does, is “CookieBlock: Automating Cookie Consent and GDPR Violation Detection” \cite{noauthor_undated-pu}. The similar points between CookieBlock and this project is how CookieBlock takes in input and classifies cookies into different categories. CookieBlock trained their own classifier with concrete mappings between cookies and their purposes, and used this classifier to identify cookies and categorize them to decide whether or not they fit the user’s privacy preferences, and should be accepted or denied. CookieBlock trained their own classifier to predict the purposes of each cookie by looking at attributes of the cookies, such as: name, domain, path, etc. to extract different features and be used in machine learning. CookieBlock is also a solution that takes on the form of a browser extension, something this project aims to become in view of convenience for users. 
 
 \section{Research gap and implications for this project}
-[Show how the reviewed work motivates your objectives and design choices.]
+On the other hand, this project will be taking inputs such as the browser cookie metadata, CMP signals, and cookie-purpose mappings to categorize cookies and integrate them into scenario-based questions via the analogy's personification. Contrary to CookieBlock where it is stated that cookie-to-purpose mapping in websites' privacy policy is generally not useful as the policy varies across websites, this project is able to ignore this concern as we've limited the project's capacity to support only CookieBot's cookie declaration format and will be able to scan websites' HTML for such declarations \cite{cybotCookieDeclaration,cookiebotCookieScripts}.
+
+In order to achieve the goal of presenting users with dynamic scenarios that they can run through, it is integral for this project to have concrete cookie-to-purpose mappings. While this project’s goal isn’t focused on correctly classifying each cookie's purpose live, we took on a limitation, relying on the Cookiebot’s scanned database to look up each cookie’s purposes instead of trying to achieve the goal of identifying each cookie’s purpose on any arbitrary websites, which will be using all kinds of CMPs. Instead, this project focuses on the idea of extracting user preferences using a natural language interface between the user and an agent that presents dynamic privacy-related scenarios disguised in a more digestible analogy. This project will then explore the topic on how this approach can smoothen the privacy preference extraction process and elevates users' interest in cookie consent management through gamified engagements, which is a question that CookieBlock only addressed indirectly.
 
 \chapter{Progress to Date}
 \section{Work completed}

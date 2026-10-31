@@ -1,8 +1,8 @@
-PWD C:/Users/User/Desktop/cookiehome/report
+PWD c:/Users/User/Desktop/cookiehome/report
 INPUT c:/texlive/2026/texmf.cnf
 INPUT c:/texlive/2026/texmf-dist/web2c/texmf.cnf
 INPUT c:/texlive/2026/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT report.tex
+INPUT c:/Users/User/Desktop/cookiehome/report/report.tex
 OUTPUT report.log
 INPUT c:/texlive/2026/texmf-dist/tex/latex/base/report.cls
 INPUT c:/texlive/2026/texmf-dist/tex/latex/base/report.cls
