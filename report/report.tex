@@ -23,11 +23,6 @@
 \begin{document}
 \maketitle
 
-\begin{abstract}
-% In about 150–250 words: problem, aim, approach, work completed, and next steps.
-[Write this after the main sections are drafted.]
-\end{abstract}
-
 \tableofcontents
 \clearpage
 
@@ -48,7 +43,7 @@ Given the background of the project, the project aims to address the problems th
 \end{enumerate}
 With these 3 objectives as the foundational directive pointers for this report, the report will be detailing how the solution for this project came to ideation, the project's progress so far and it's subsequent analysis on how effective it is in achieving the objectives.
 
-\section{Ideation of Solution}
+\chapter{Ideation of Solution}
 Before constructing the ideation of this project's solution, it is useful to understand where the current common practices stands, specifically how do most websites collect user's cookies consent preferences.
 \subsection{Review of Current Cookie Consent Practices}
 As mentioned briefly in the introduction of the report, most websites currently uses specialized tools called Consent Management Platforms (CMPs) to help them log user's consensual choices for cookies that their websites will be using \cite{Shiel2025-no}. In the form of popups, user will be asked to indicate their preferences whenever they visit a website that their browser does not have cached data recording their privacy preference choices for the cookies.
@@ -99,14 +94,47 @@ After reviewing the common cookie consent preference extraction practices of web
   \subitem Users should be able to have as much control as possible to their own cookie consent privacy preference
 \end{enumerate}
 \subsection{Constructing the Solution}
-A cozy/pixel-art privacy companion that appears when you visit websites, explains what privacy choices are being requested, and turns privacy decisions into an interactive scenario-based experience.
+A privacy companion that appears when you visit websites, explains what privacy choices are being requested, and turns privacy decisions into an interactive scenario-based experience.
 \subsubsection{Notion}
 User privacy preference is a subject that each user passes by everyday as they visit different websites, yet most people ignore it. There are multiple reasons as to why this happens, but the most prominent and straightforward reason that users tend to overlook it is that the current way of presenting it is boring, verbose and inconvenient, encountering dozens of such popups would be mentally tiring for users \cite{Safna2025-ng}. Hence, the topic of designing a gamified application to represent the simulation of managing each user’s own privacy preference aims to solve the issue of the current method of extracting these preferences from users. The intrinsic details of user privacy preferences can be simplified and become more approachable for users. A visual representation of everything is useful to engage the user while presenting each cookie, third-parties, privacy preferences etc. in a new way that catches the attention of the user.
 \subsubsection{Use of analogy in scenario-based questions}
-As browsing the internet and different websites is just like visiting different people’s homes, instead of presenting websites and cookies as technical terms, websites can be described as homes that users visit and the cookies are like guests in the home. Subsequently, they can be personified according to the purpose of each cookies. For example, authentication cookies that let websites recognizes users can be presented as the owner (company) of the home (website) wants to remember the user's name so that the user can re-enter their home anytime \cite{noauthor_undated-qc}.
-\subsubsection{Addressing the Requirements}
-\subsection{Constraints}
+\label{subsubsec:analogy}
+As browsing the internet and different websites is just like visiting different people’s homes, instead of presenting websites and cookies as technical terms, websites can be described as homes that users visit and the cookies are like guests in the home. Subsequently, they can be personified according to the purpose of each cookies. For example, authentication cookies that let websites recognizes users can be presented as the owner (company) of the home (website) wants to remember the user's name so that the user can re-enter their home anytime \cite{noauthor_undated-qc}. This usage of analogy can then be presented as different scenarios that the user has to go through to indicate their privacy preferences for cookies. 
 
+However, if the user wants to know more about specific cookies, the application retains the option for users to read the original details of the cookies without the analogy being applied and presented as scenario-based questions. In other words, in the form of the original cookie banner consent interface.
+\subsubsection{Chatbot interface}
+When presented with different scenario-based questions, there are nuances that the user might be restricted to if a similar approach of binary choices presented by cookie banners is used. We have to acknowledge that there are deeper levels to every user's privacy preference. For that, an approach to allow users to respond with natural language would be able to help users to express their privacy preferences better. Hence, this project uses a chatbot interface for the users to communicate with the application, which would then translate the user's answers into decisions.
+\subsubsection{Dynamic questions}
+As each websites use different cookies and request different consent permissions from the user, a fixed pool of scenario-based questions would not suffice to cover every cookies. This calls for the need of a way to generate dynamic scenario-based questions depending on the cookies. The solution would have to take in some input regarding the details of each cookies and what their purpose is, and generate these questions accordingly for users to go through. Additionally, dynamic questions can serve as clarifying questions and be used to rectify any ambiguity that may surface when users give unclear answers that require more information from the user in order to be translated into deterministic privacy preference decisions.
+\subsubsection{Translation from user answers into decisions}
+Answers received from users through the chatbot as they go through the scenario-based questions would then be processed in backend to be translated into a deterministic decision made by the user. The decision would be applied through the application and be communicated with the CMPs to indicate user's privacy preferences.
+\subsubsection{Accessibility and Appearance}
+The solution would have to be easy for users to set up and use, hence an application that can be accessed as a simple browser extension would be ideal for our solution. Through this extension, the application should be able to collect cookie data, interact with users, and communicate with CMPs of each websites. Furthermore, the application would also have some kind of visual representation of their current privacy preferences, in the form of analogies mentioned under the 'Use of analogy in scenario-based questions' section~\ref{subsubsec:analogy}.
+\subsubsection{Addressing the Requirements}
+Given the ideation of solution above, we can conclude how these aspects address the requirements that was established previously:
+\begin{enumerate}
+  \item Conciseness
+  \subitem The application filters out verbose words and simplifies them into scenario questions.
+  \item Conveniency
+  \subitem Easily accessed via installing a browser extension. Users can interact with the extension in the same window and same tab as the websites.
+  \item Engagement
+  \subitem With the help of visual representation and chatbot interface, the application presents the concept of privacy preferences and cookies with analogies to make it more interesting and immersive.
+  \item Informativity
+  \subitem Always the option available for the user to know more about the details, this will make the application less concise but is optional for the user.
+  \item User-centric Autonomy
+  \subitem Users can change their preferences anytime by interacting with the chatbot.
+\end{enumerate}
+\subsection{Constraints}
+There are several constraints and concerns regarding the application that can be foresee at this stage of development.
+\subsubsection{Requesting permissions}
+Accessing certain cookies' data requires the application to ask for permissions from the user. While developing the application, it is important to be careful in how the application handles requesting permission from the user and should be mindful of not requesting more permissions than necessary.
+
+\subsubsection{Supporting limited CMPs}
+Different websites use different CMPs and different cookies. The current ideation of the solution would be heavily limited by the breadth of how much CMPs it can support (i.e communicate with) as they have distinct APIs and categories for cookies. 
+\subsubsection{Handling data safely}
+Messages from the user to the chatbot would be sent to an external natural language AI model service, the application has to navigate the handling of these data safely such that user's private information isn't leaked to external sources. Users should be told that this is the case and should avoid entering sensitive personal information when interacting with the chatbot.
+\subsubsection{Natural language misinterpretation}
+Natural language responses from users will be subjected to the risk of being ambiguous or unclear, which may lead to misinterpretation from the natural langauge model of exactly what the user wants to express. Clarifying questions must be asked in order to establish a firm understanding of user's decision. The application has to take a stance of taking no actions until it is certain of the user's intention.
 \chapter{Literature Review}
 \section{Review approach}
 [Describe where and how you searched, search terms, date range, and how you selected sources.]

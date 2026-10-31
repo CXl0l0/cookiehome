@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.10.30)  31 OCT 2026 12:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.10.30)  31 OCT 2026 15:19
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -589,12 +589,7 @@ Package biblatex Info: Reference section=0 on input line 23.
 Package biblatex Info: Reference segment=0 on input line 23.
  [1
 
-{c:/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}]
-pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.29 \end{abstract}
-                    [1] (./report.toc
+{c:/texlive/2026/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}] (./report.toc
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 2.
  (c:/texlive/2026/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
@@ -625,7 +620,7 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.32 \clearpage
+l.27 \clearpage
                 [1
 
 ]
@@ -634,68 +629,76 @@ Chapter 1.
 
 
 ] [3]
-<f1-cookie-consent.png, id=168, 474.27188pt x 353.82187pt>
-File: f1-cookie-consent.png Graphic file (type png)
-<use f1-cookie-consent.png>
-Package pdftex.def Info: f1-cookie-consent.png  used on input line 60.
-(pdftex.def)             Requested size: 375.58975pt x 280.20186pt.
-<f1-manage-your-choices.png, id=171, 452.4403pt x 401.24907pt>
-File: f1-manage-your-choices.png Graphic file (type png)
-<use f1-manage-your-choices.png>
-Package pdftex.def Info: f1-manage-your-choices.png  used on input line 67.
-(pdftex.def)             Requested size: 315.96736pt x 280.21732pt.
- [4
-
- <./f1-cookie-consent.png>]
-<fifa-cookie-consent.png, id=184, 1407.75937pt x 67.75313pt>
-File: fifa-cookie-consent.png Graphic file (type png)
-<use fifa-cookie-consent.png>
-Package pdftex.def Info: fifa-cookie-consent.png  used on input line 76.
-(pdftex.def)             Requested size: 407.65979pt x 19.61998pt.
-<fifa-privacy-preference-center.png, id=187, 540.51938pt x 450.18187pt>
-File: fifa-privacy-preference-center.png Graphic file (type png)
-<use fifa-privacy-preference-center.png>
-Package pdftex.def Info: fifa-privacy-preference-center.png  used on input line 83.
-(pdftex.def)             Requested size: 336.43817pt x 280.20895pt.
- [5 <./f1-manage-your-choices.png> <./fifa-cookie-consent.png>] [6 <./fifa-privacy-preference-center.png>] [7]
 Chapter 2.
-[8
+
+Package hyperref Warning: Difference (2) between bookmark levels is greater 
+(hyperref)                than one, level fixed on input line 48.
+
+[4
 
 ]
+<f1-cookie-consent.png, id=169, 474.27188pt x 353.82187pt>
+File: f1-cookie-consent.png Graphic file (type png)
+<use f1-cookie-consent.png>
+Package pdftex.def Info: f1-cookie-consent.png  used on input line 55.
+(pdftex.def)             Requested size: 375.58975pt x 280.20186pt.
+<f1-manage-your-choices.png, id=172, 452.4403pt x 401.24907pt>
+File: f1-manage-your-choices.png Graphic file (type png)
+<use f1-manage-your-choices.png>
+Package pdftex.def Info: f1-manage-your-choices.png  used on input line 62.
+(pdftex.def)             Requested size: 315.96736pt x 280.21732pt.
+ [5
+
+ <./f1-cookie-consent.png>]
+<fifa-cookie-consent.png, id=185, 1407.75937pt x 67.75313pt>
+File: fifa-cookie-consent.png Graphic file (type png)
+<use fifa-cookie-consent.png>
+Package pdftex.def Info: fifa-cookie-consent.png  used on input line 71.
+(pdftex.def)             Requested size: 407.65979pt x 19.61998pt.
+<fifa-privacy-preference-center.png, id=188, 540.51938pt x 450.18187pt>
+File: fifa-privacy-preference-center.png Graphic file (type png)
+<use fifa-privacy-preference-center.png>
+Package pdftex.def Info: fifa-privacy-preference-center.png  used on input line 78.
+(pdftex.def)             Requested size: 336.43817pt x 280.20895pt.
+ [6 <./f1-manage-your-choices.png> <./fifa-cookie-consent.png>] [7 <./fifa-privacy-preference-center.png>] [8] [9] [10] [11]
 Chapter 3.
-[9
+[12
 
 ]
 Chapter 4.
+[13
 
-Underfull \hbox (badness 10000) in paragraph at lines 161--162
+]
+Chapter 5.
+
+Underfull \hbox (badness 10000) in paragraph at lines 189--190
 []\T1/lmr/m/n/12 [Intermediate
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 162--163
+Underfull \hbox (badness 10000) in paragraph at lines 190--191
 []\T1/lmr/m/n/12 [Evaluation
  []
 
-[10
+[14
 
 ]
-Chapter 5.
-[11
+Chapter 6.
+[15
 
 ]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 174.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 202.
  (c:/texlive/2026/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-Overfull \hbox (5.94424pt too wide) in paragraph at lines 174--174
+Overfull \hbox (5.94424pt too wide) in paragraph at lines 202--202
 []\T1/lmr/m/n/12 T. Shiel, \T1/lmr/m/it/12 Cookie con-sent: How web-sites man-age user choice\T1/lmr/m/n/12 , en, []$\T1/lmtt/m/n/12 https : / / mindgruve .
  []
 
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 174.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 202.
 (c:/texlive/2026/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [12
+) [16
 
 {c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}] (./report.aux)
  ***********
@@ -707,7 +710,7 @@ L3 programming layer <2026-09-09>
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: A5DCD8D6B077336ACBCC333D3FD788E0;3839.
+(rerunfilecheck)             Checksum: FA3D9945C7B2802F02400E047820BECE;3841.
 
 Package biblatex Warning: Please (re)run BibTeX on the file(s):
 (biblatex)                report
@@ -718,18 +721,18 @@ Package logreq Info: Writing requests to 'report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 17213 strings out of 467050
- 304500 string characters out of 5410549
- 938521 words of memory out of 5000000
- 46333 multiletter control sequences out of 15000+600000
+ 17229 strings out of 467050
+ 304603 string characters out of 5410549
+ 938594 words of memory out of 5000000
+ 46332 multiletter control sequences out of 15000+600000
  678399 words of font info for 66 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  74i,10n,79p,1923b,1313s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmcsc10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmri12.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmtt12.pfb>
-Output written on report.pdf (14 pages, 356143 bytes).
+Output written on report.pdf (17 pages, 361540 bytes).
 PDF statistics:
- 309 PDF objects out of 1000 (max. 8388607)
- 271 compressed objects within 3 object streams
- 70 named destinations out of 1000 (max. 500000)
+ 340 PDF objects out of 1000 (max. 8388607)
+ 299 compressed objects within 3 object streams
+ 87 named destinations out of 1000 (max. 500000)
  213 words of extra memory for PDF output out of 10000 (max. 10000000)
 
