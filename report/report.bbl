@@ -104,6 +104,55 @@
     \field{note}{Accessed: 2026-10-30}
   \endentry
 
+  \entry{Wikipedia_contributors2026-wp}{misc}{}{}
+    \name{author}{1}{}{%
+      {{hash=W}{%
+         family={{Wikipedia contributors}},
+         familyi={W\bibinitperiod},
+      }}%
+    }
+    \strng{namehash}{W1}
+    \strng{fullhash}{W1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{abstract}{%
+    An HTTP cookie (also called web cookie, Internet cookie, browser cookie, or simply cookie) is a small block of data created by a web server while a user is browsing a website and placed on the user's computer or other device by the user's web browser. Cookies are placed on the device used to access a website, and more than one cookie may be placed on a user's device during a session.%
+    }
+    \field{booktitle}{Wikipedia, The Free Encyclopedia}
+    \field{howpublished}{\url{https://en.wikipedia.org/w/index.php?title=HTTP_cookie&oldid=1379243610}}
+    \field{note}{Accessed: NA-NA-NA}
+    \field{title}{{HTTP} cookie}
+    \field{month}{10}
+    \field{year}{2026}
+  \endentry
+
+  \entry{Tankala2023-ay}{misc}{}{}
+    \name{author}{1}{}{%
+      {{hash=TS}{%
+         family={Tankala},
+         familyi={T\bibinitperiod},
+         given={Samhita},
+         giveni={S\bibinitperiod},
+      }}%
+    }
+    \list{language}{1}{%
+      {en}%
+    }
+    \strng{namehash}{TS1}
+    \strng{fullhash}{TS1}
+    \field{labelnamesource}{author}
+    \field{labeltitlesource}{title}
+    \field{abstract}{%
+    Cookie permissions need to follow the law and strike the balance between respecting user privacy and being user-friendly.%
+    }
+    \field{booktitle}{Nielsen Norman Group}
+    \field{howpublished}{\url{https://www.nngroup.com/articles/cookie-permissions/}}
+    \field{note}{Accessed: 2026-10-31}
+    \field{title}{Cookie permissions 101}
+    \field{month}{11}
+    \field{year}{2023}
+  \endentry
+
   \entry{Safna2025-ng}{misc}{}{}
     \name{author}{1}{}{%
       {{hash=S}{%
@@ -207,6 +256,20 @@
     \field{howpublished}{\url{https://www.fifa.com/en}}
     \field{note}{Accessed: 2026-10-30}
     \field{title}{No title}
+  \endentry
+
+  \entry{noauthor_undated-qc}{misc}{}{}
+    \list{language}{1}{%
+      {en}%
+    }
+    \field{labeltitlesource}{title}
+    \field{abstract}{%
+    An authentication cookie is a browser-stored token that preserves a logged-in session after the password step is complete. In practice, it can function…%
+    }
+    \field{booktitle}{{NHI} Management Group}
+    \field{howpublished}{\url{https://nhimg.org/glossary/authentication-cookie/}}
+    \field{note}{Accessed: 2026-10-31}
+    \field{title}{Authentication cookie}
   \endentry
 \enddatalist
 \endinput
