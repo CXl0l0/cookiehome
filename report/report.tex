@@ -8,6 +8,7 @@
 \usepackage{lmodern}
 \usepackage{setspace}
 \usepackage{graphicx}
+\usepackage{caption}
 \usepackage{float}
 \usepackage{booktabs}
 \usepackage{hyperref}
@@ -154,15 +155,24 @@ With the implementation of an adapter in the form of a browser extension, the pr
   \item CMP signal data: records the user's existing consent choices for categories of cookies on the website \cite{Kavya2021-ex}.
   \item Public cookie declaration: a published list of cookie-purpose mapping for cookies used on the website \cite{noauthor_undated-dv}.
 \end{enumerate}
-After collecting these information, the adapter would be able to map each cookies detected to a purpose through the public cookie declaration (if available) and be categorized.
-\begin{figure}[H]
+The adapter uses the public declaration to map cookies to purposes, then presents them as 'guests' in the 'Home' analogy (Section~\ref{subsubsec:analogy}).
+\par\noindent
+\begin{minipage}[t]{0.48\textwidth}
     \centering
-    \includegraphics[width=0.9\textwidth,height=0.4\textheight,keepaspectratio]{cookiehome-adapter.png}
-    \caption{A browser extension cookie data adapter.}
-    \label{fig:cookiehome-adapter}
-\end{figure}
+    \includegraphics[width=\linewidth,height=0.28\textheight,keepaspectratio]{cookiehome-adapter.png}
+    \captionsetup{width=0.45\textwidth,justification=centering}
+    \captionof{figure}{A browser extension cookie data adapter.}
+    \label{fig:cookiehomes-adapter}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\textwidth}
+    \centering
+    \includegraphics[width=\linewidth,height=0.28\textheight,keepaspectratio]{cookiehomes-interface.png}
+    \captionsetup{width=0.45\textwidth,justification=centering}
+    \captionof{figure}{The main page of Cookie Homes.}
+    \label{fig:cookiehomes-interface}
+\end{minipage}
 \subsection{'Home' analogy interface}
-With a concrete cookie-purpose mapping, the application is able to personify each cookies as a 'guest' in the 'Home' analogy under section~\ref{subsubsec:analogy}.
+A functional prototype - cookiehomes, has been developed to demonstrate the proposed scenario-based privacy preference journey that lets user indicate their preferences through different questions via an AI chatbot interface. Users can discuss cookie purposes through a natural-language interface, receive clarification when a request is ambiguous, and apply choices through a deterministic rules engine. The prototype includes a visual home-and-guest analogy, progress tracking, and a summary of choices. The current implementation demonstrates the interaction concept, but does not yet apply choices back to a website’s CMP. The cookies can also be seen personified as guests under each home that represents a website.
 \section{Design or investigation alternatives}
 [Present plausible alternatives and compare them against clear criteria. A table can help.]
 \begin{table}[ht]

@@ -40,6 +40,10 @@ INPUT c:/texlive/2026/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
 INPUT c:/texlive/2026/texmf-dist/tex/latex/graphics-def/pdftex.def
 INPUT c:/texlive/2026/texmf-dist/tex/latex/graphics-def/pdftex.def
 INPUT c:/texlive/2026/texmf-dist/tex/latex/graphics-def/pdftex.def
+INPUT c:/texlive/2026/texmf-dist/tex/latex/caption/caption.sty
+INPUT c:/texlive/2026/texmf-dist/tex/latex/caption/caption.sty
+INPUT c:/texlive/2026/texmf-dist/tex/latex/caption/caption3.sty
+INPUT c:/texlive/2026/texmf-dist/tex/latex/caption/caption3.sty
 INPUT c:/texlive/2026/texmf-dist/tex/latex/float/float.sty
 INPUT c:/texlive/2026/texmf-dist/tex/latex/float/float.sty
 INPUT c:/texlive/2026/texmf-dist/tex/latex/booktabs/booktabs.sty
@@ -241,6 +245,11 @@ INPUT ./cookiehome-adapter.png
 INPUT ./cookiehome-adapter.png
 INPUT ./cookiehome-adapter.png
 INPUT ./cookiehome-adapter.png
+INPUT ./cookiehomes-interface.png
+INPUT ./cookiehomes-interface.png
+INPUT ./cookiehomes-interface.png
+INPUT ./cookiehomes-interface.png
+INPUT ./cookiehomes-interface.png
 INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/lm/rm-lmr10.tfm
 INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/lm/rm-lmr8.tfm
 INPUT c:/texlive/2026/texmf-dist/fonts/tfm/public/lm/rm-lmr6.tfm
