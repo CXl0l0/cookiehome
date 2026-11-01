@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.10.30)  31 OCT 2026 21:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.10.30)  1 NOV 2026 22:19
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -659,38 +659,45 @@ Chapter 3.
 
 ]
 Chapter 4.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 154.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 154.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 154.
+<cookiehome-adapter.png, id=297, 250.68657pt x 422.32782pt>
+File: cookiehome-adapter.png Graphic file (type png)
+<use cookiehome-adapter.png>
+Package pdftex.def Info: cookiehome-adapter.png  used on input line 160.
+(pdftex.def)             Requested size: 166.32578pt x 280.2065pt.
 [10
 
 ]
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <10.95> on input line 171.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <8> on input line 171.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <6> on input line 171.
+ [11 <./cookiehome-adapter.png>]
 Chapter 5.
 
-Underfull \hbox (badness 3009) in paragraph at lines 184--185
+Underfull \hbox (badness 3009) in paragraph at lines 198--199
 []\T1/lmr/m/n/10.95 [Final re-port /
  []
 
-[11
-
-]
-Chapter 6.
 [12
 
 ]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 195.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 206.
  (c:/texlive/2026/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 195.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 206.
  (c:/texlive/2026/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [13
 
-{c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}] [14
+{c:/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
+Overfull \hbox (8.23117pt too wide) in paragraph at lines 206--206
+[]\T1/lmr/m/n/10.95 Kavya, \T1/lmr/m/it/10.95 Con-sent man-age-ment plat-form (cmp): How to choose\T1/lmr/m/n/10.95 , en, []$\T1/lmtt/m/n/10.95 https : / / www . cookieyes .
+ []
+
+[14] [15
 
 ] (./report.aux)
  ***********
@@ -702,7 +709,7 @@ L3 programming layer <2026-09-09>
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `report.out' has not changed.
-(rerunfilecheck)             Checksum: 5D665E18C662180B73CFEAFEF836F198;6538.
+(rerunfilecheck)             Checksum: 8F6AA1F37D5AD2AFC78AF118D54EBFC7;6457.
 
 Package biblatex Warning: Please (re)run BibTeX on the file(s):
 (biblatex)                report
@@ -713,18 +720,18 @@ Package logreq Info: Writing requests to 'report.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 17279 strings out of 467050
- 306040 string characters out of 5410549
- 942928 words of memory out of 5000000
- 46375 multiletter control sequences out of 15000+600000
+ 17312 strings out of 467050
+ 307210 string characters out of 5410549
+ 944261 words of memory out of 5000000
+ 46399 multiletter control sequences out of 15000+600000
  698167 words of font info for 78 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 74i,10n,79p,1923b,1313s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 74i,10n,79p,1923b,1467s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmcsc10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/texlive/2026/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on report.pdf (15 pages, 425419 bytes).
+Output written on report.pdf (16 pages, 446061 bytes).
 PDF statistics:
- 397 PDF objects out of 1000 (max. 8388607)
- 353 compressed objects within 4 object streams
- 87 named destinations out of 1000 (max. 500000)
- 301 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 426 PDF objects out of 1000 (max. 8388607)
+ 379 compressed objects within 4 object streams
+ 96 named destinations out of 1000 (max. 500000)
+ 306 words of extra memory for PDF output out of 10000 (max. 10000000)
 

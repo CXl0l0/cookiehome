@@ -8,7 +8,7 @@
 \contentsline {section}{\numberline {2.2}Requirements}{5}{section.2.2}%
 \contentsline {section}{\numberline {2.3}Constructing the Solution}{6}{section.2.3}%
 \contentsline {subsection}{\numberline {2.3.1}Notion}{6}{subsection.2.3.1}%
-\contentsline {subsection}{\numberline {2.3.2}Use of analogy in scenario-based questions}{6}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.2}The 'Home' analogy}{6}{subsection.2.3.2}%
 \contentsline {subsection}{\numberline {2.3.3}Chatbot interface}{6}{subsection.2.3.3}%
 \contentsline {subsection}{\numberline {2.3.4}Dynamic questions}{6}{subsection.2.3.4}%
 \contentsline {subsection}{\numberline {2.3.5}Translation from user answers into decisions}{7}{subsection.2.3.5}%
@@ -24,12 +24,12 @@
 \contentsline {section}{\numberline {3.2}Research gap and implications for this project}{9}{section.3.2}%
 \contentsline {chapter}{\numberline {4}Progress to Date}{10}{chapter.4}%
 \contentsline {section}{\numberline {4.1}Work completed}{10}{section.4.1}%
-\contentsline {section}{\numberline {4.2}Design or investigation alternatives}{10}{section.4.2}%
-\contentsline {section}{\numberline {4.3}Preliminary design or investigation}{10}{section.4.3}%
-\contentsline {section}{\numberline {4.4}Challenges and risks}{10}{section.4.4}%
-\contentsline {chapter}{\numberline {5}Research Plan for Next Semester}{11}{chapter.5}%
-\contentsline {section}{\numberline {5.1}Planned work and methods}{11}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Milestones}{11}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Evaluation and success criteria}{11}{section.5.3}%
-\contentsline {chapter}{\numberline {6}Conclusion}{12}{chapter.6}%
-\contentsline {chapter}{Acknowledgement of AI Use}{14}{chapter*.3}%
+\contentsline {subsection}{\numberline {4.1.1}Browser extension adapter}{10}{subsection.4.1.1}%
+\contentsline {subsection}{\numberline {4.1.2}'Home' analogy interface}{11}{subsection.4.1.2}%
+\contentsline {section}{\numberline {4.2}Design or investigation alternatives}{11}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Challenges and risks}{11}{section.4.3}%
+\contentsline {chapter}{\numberline {5}Research Plan for Next Semester}{12}{chapter.5}%
+\contentsline {section}{\numberline {5.1}Planned work and methods}{12}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Milestones}{12}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Evaluation and success criteria}{12}{section.5.3}%
+\contentsline {chapter}{Acknowledgement of AI Use}{15}{chapter*.3}%

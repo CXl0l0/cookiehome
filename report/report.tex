@@ -95,7 +95,7 @@ After reviewing the common cookie consent preference extraction practices of web
 A privacy companion that appears when you visit websites, explains what privacy choices are being requested, and turns privacy decisions into an interactive scenario-based experience.
 \subsection{Notion}
 User privacy preference is a subject that each user passes by everyday as they visit different websites, yet most people ignore it. There are multiple reasons as to why this happens, but the most prominent and straightforward reason that users tend to overlook it is that the current way of presenting it is boring, verbose and inconvenient, encountering dozens of such popups would be mentally tiring for users \cite{Safna2025-ng}. Hence, the topic of designing a gamified application to represent the simulation of managing each user’s own privacy preference aims to solve the issue of the current method of extracting these preferences from users. The intrinsic details of user privacy preferences can be simplified and become more approachable for users. A visual representation of everything is useful to engage the user while presenting each cookie, third-parties, privacy preferences etc. in a new way that catches the attention of the user.
-\subsection{Use of analogy in scenario-based questions}
+\subsection{The 'Home' analogy}
 \label{subsubsec:analogy}
 As browsing the internet and different websites is just like visiting different people’s homes, instead of presenting websites and cookies as technical terms, websites can be described as homes that users visit and the cookies are like guests in the home. Subsequently, they can be personified according to the purpose of each cookies. For example, authentication cookies that let websites recognizes users can be presented as the owner (company) of the home (website) wants to remember the user's name so that the user can re-enter their home anytime \cite{noauthor_undated-qc}. This usage of analogy can then be presented as different scenarios that the user has to go through to indicate their privacy preferences for cookies. 
 
@@ -107,7 +107,7 @@ As each websites use different cookies and request different consent permissions
 \subsection{Translation from user answers into decisions}
 Answers received from users through the chatbot as they go through the scenario-based questions would then be processed in backend to be translated into a deterministic decision made by the user. The decision would be applied through the application and be communicated with the CMPs to indicate user's privacy preferences.
 \subsection{Accessibility and Appearance}
-The solution would have to be easy for users to set up and use, hence an application that can be accessed as a simple browser extension would be ideal for our solution. Through this extension, the application should be able to collect cookie data, interact with users, and communicate with CMPs of each websites. Furthermore, the application would also have some kind of visual representation of their current privacy preferences, in the form of analogies mentioned under the 'Use of analogy in scenario-based questions' section~\ref{subsubsec:analogy}.
+The solution would have to be easy for users to set up and use, hence an application that can be accessed as a simple browser extension would be ideal for our solution. Through this extension, the application should be able to collect cookie data, interact with users, and communicate with CMPs of each websites. Furthermore, the application would also have some kind of visual representation of their current privacy preferences, in the form of analogies mentioned under section~\ref{subsubsec:analogy}.
 \subsection{Addressing the Requirements}
 Given the ideation of solution above, we can conclude how these aspects address the requirements that was established previously:
 \begin{enumerate}
@@ -144,8 +144,25 @@ In order to achieve the goal of presenting users with dynamic scenarios that the
 
 \chapter{Progress to Date}
 \section{Work completed}
-[Describe completed investigation, requirements, implementation, or other evidence of progress.]
+The project has shown progress in the aspect of realizing privacy choices into the 'Home' analogy mentioned under section~\ref{subsubsec:analogy}. This is achieved with the implementation of mainly two features: a browser cookie data adapter and an implementation of the 'Home' analogy interface. The combination of these two features allows the application to generate dynamic scenario-based questions based on cookie data collected from the adapter for users to go through.
+\subsection{Browser extension adapter}
+In order to implement a system where dynamic scenarios can be generated based on each cookies' purpose, the necessity of a cookie input adapter is integral to the project. Without an interpreter standardizing each cookie’s metadata, their CMP signal data, and categorizing them into different purpose, the project can’t present dynamic text-based scenarios for the user, which means that it can’t fulfill the purpose of extracting user’s privacy preferences at all.
 
+With the implementation of an adapter in the form of a browser extension, the project is now able to collect cookie data from websites that use CookieBot as their CMP. The data that the extension collects includes:
+\begin{enumerate}
+  \item Cookie metadata: describes cookie properties such as its name, lifespan, security attributes, and scope. These properties indicate how the cookie may be stored, transmitted, and when it expires \cite{noauthor_undated-bg,Narasimha2025-az}.
+  \item CMP signal data: records the user's existing consent choices for categories of cookies on the website \cite{Kavya2021-ex}.
+  \item Public cookie declaration: a published list of cookie-purpose mapping for cookies used on the website \cite{noauthor_undated-dv}.
+\end{enumerate}
+After collecting these information, the adapter would be able to map each cookies detected to a purpose through the public cookie declaration (if available) and be categorized.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth,height=0.4\textheight,keepaspectratio]{cookiehome-adapter.png}
+    \caption{A browser extension cookie data adapter.}
+    \label{fig:cookiehome-adapter}
+\end{figure}
+\subsection{'Home' analogy interface}
+With a concrete cookie-purpose mapping, the application is able to personify each cookies as a 'guest' in the 'Home' analogy under section~\ref{subsubsec:analogy}.
 \section{Design or investigation alternatives}
 [Present plausible alternatives and compare them against clear criteria. A table can help.]
 \begin{table}[ht]
@@ -159,9 +176,6 @@ Criterion & Alternative A & Alternative B \\
 \bottomrule
 \end{tabular}
 \end{table}
-
-\section{Preliminary design or investigation}
-[Describe the current preferred direction, why it was selected, assumptions, and open questions.]
 
 \section{Challenges and risks}
 [Explain issues encountered and what you did or will do about them.]
@@ -188,9 +202,6 @@ Weeks 9--12 & [Refine and write up] & [Final report / demonstration] \\
 
 \section{Evaluation and success criteria}
 [State how you will judge whether objectives have been met and what evidence you will collect.]
-
-\chapter{Conclusion}
-[Briefly recap the problem, progress, current direction, and immediate next steps.]
 
 \printbibliography[title={References}]
 
