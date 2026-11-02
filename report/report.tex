@@ -29,132 +29,122 @@
 
 \chapter{Introduction}
 \section{Background}
-Even in this day and age of absurd technological advancements, user privacy preference remains an alien topic for the general public. There are several ways user privacy preferences can be collected online, some common ways that are used may be through surveys \cite{asif2022privacy}, device settings parsing \cite{noauthor_undated-vk}, and cookies' consent banner interaction \cite{Cao2025-gx}. This project will specifically be exploring how user privacy preferences are extracted through cookies, commonly presented to users with the interface of a popup provided by CMPs (Consent Management Platforms) called cookie banners \cite{noauthor_undated-lq} each time they visit a website. These cookie banners would then request permissions from users to indicate their consent preferences for cookies, which are small blocks of data placed on the user's device that allows the websites to store stateful information regarding the user or the user's browsing activity \cite{Wikipedia_contributors2026-wp}.
+Despite rapid advances in technology, privacy preferences remain an unfamiliar topic for many members of the general public. Online privacy preferences can be collected in several ways, including through surveys \cite{asif2022privacy}, the parsing of device settings \cite{noauthor_undated-vk}, and interactions with cookie consent banners \cite{Cao2025-gx}. This project focuses on eliciting user privacy preferences in relation to cookies, whose use is commonly disclosed through pop-up banners provided by Consent Management Platforms (CMPs) when users visit a website \cite{noauthor_undated-lq}. These banners ask users to indicate their consent preferences for cookies. Cookies are small blocks of data stored on a user's device that allow websites to retain state information about the user or their browsing activity \cite{Wikipedia_contributors2026-wp}.
 
-Most people don’t really pay close attention to the user privacy preferences that they (have to) set each time they visit a new website on the Internet and is presented with a cookie banner. Whenever people are presented with a popup-like interface with verbose texts that they have to read through, the instinct for most people would be to get rid of the popup window \cite{Tankala2023-ay}. As such when combined with the assumption that the general public isn't sufficiently educated on the topic of the importance of user privacy preferences and how to manage them well, users tend to click the options presented on the interface that allows them to proceed immediately (i.e. usually the "Accept All" or "Deny All" options). Some reasons why people tend to ignore how user privacy preference extraction works in cookie banners is likely driven by the cookie banners' deliberately complex design and users' knowledge limitations \cite{Safna2025-ng}.
+Most users pay little attention to the privacy choices they are asked to make when visiting a new website and encountering a cookie banner. When presented with a pop-up containing lengthy text, they may be inclined to dismiss it quickly \cite{Tankala2023-ay}. Combined with limited knowledge of privacy preferences and how to manage them, this may lead users to choose whichever option lets them proceed immediately, often ``Accept All'' or ``Deny All.'' The complexity of cookie banners and users' knowledge limitations may help explain why users overlook the choices they present \cite{Safna2025-ng}.
 
-In view of this problem presented and potential causes that are established, this project aims to solve this issue by gamifying the process of user privacy preference extraction through cookie banners.
+In response to this problem and its possible causes, this project explores whether gamification can make the process of eliciting privacy preferences through cookie banners more approachable.
 
-\section{Project Objectives}
-Given the background of the project, the project aims to address the problems through primarily 3 objectives:
+\section{Project objectives}
+Based on this background, the project has three main objectives:
 \begin{enumerate}
-  \item Investigate existing solutions that attempts to address similar issues
-  \item Design a solution that presents the management of cookies in a gamified interface
-  \item Evaluate how a gamified process may be effective in helping users manage their privacy preferences within their own initiative
+  \item Investigate existing solutions that address similar issues.
+  \item Design a solution that presents cookie management through a gamified interface.
+  \item Evaluate whether a gamified process can help users manage their privacy preferences on their own initiative.
 \end{enumerate}
 
-\chapter{Ideation of Solution}
-Before constructing the ideation of this project's solution, it is useful to understand where the current common practices stands, specifically how do most websites collect user's cookies consent preferences.
-\section{Review of Current Cookie Consent Practices}
-As mentioned briefly in the introduction of the report, most websites currently uses specialized tools called Consent Management Platforms (CMPs) to help them log user's consensual choices for cookies that their websites will be using \cite{Shiel2025-no}. In the form of popups, user will be asked to indicate their preferences whenever they visit a website that their browser does not have cached data recording their privacy preference choices for the cookies.
-\subsection{Exhibit A: F1 Official Website}
-We will be taking the F1 official website \cite{noauthor_undated-ym} as an example of how this looks practically. Upon entering the website for the first time, users are greeted with the popup window shown in Figure~\ref{fig:f1-cookie-banner}.
+\chapter{Ideation of the Solution}
+Before developing the proposed solution, it is useful to review common practices for collecting users' cookie consent preferences.
+\section{Review of current cookie consent practices}
+As noted in the introduction, most websites use specialised tools called Consent Management Platforms (CMPs) to record users' consent choices for cookies \cite{Shiel2025-no}. These platforms commonly present a pop-up asking users to indicate their preferences when the browser has no stored record of a choice for that website.
+\subsection{Exhibit A: F1 official website}
+The official F1 website \cite{noauthor_undated-ym} provides an example of this process. When users first visit the website, they are greeted by the pop-up shown in Figure~\ref{fig:f1-cookie-banner}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth,height=0.3\textheight,keepaspectratio]{f1-cookie-consent.png}
     \caption{Cookie consent banner displayed on the F1 official website.}
     \label{fig:f1-cookie-banner}
 \end{figure}
-Users are presented with mainly 3 choices on the interface, one to accept only essential cookies, one to accept all, and the last one is to have more autonomy and manually manage settings for cookie consent choices. Observe how even though details regarding the cookies and what they are mainly used for is explicitly written on the interface, it is presented in a way that may seem overly verbose and irrelevant for the common public to understand. In addition, the options that are highlighted in red will also appeal more towards the user, which causes users to make choices that subject themselves to consent more cookies. This is a common practice among most websites known as dark patterns, that attempt to use manipulative UX designs to force user into making choices that often benefits the company behind \cite{Fich2025-yn}.
+The interface presents three main choices: accept only essential cookies, accept all cookies, or open the settings to manage consent preferences. Although the interface provides information about cookies and their purposes, the wording may appear lengthy or difficult for a general audience to understand. The red highlighting may also draw users' attention towards options that permit more cookies. This is an example of a dark pattern: a manipulative user experience design that can steer users towards choices that benefit the company \cite{Fich2025-yn}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth,height=0.4\textheight,keepaspectratio]{f1-manage-your-choices.png}
-    \caption{Cookie banner 'manage settings' window of F1 official website.}
+    \caption{F1 cookie settings window for managing consent preferences.}
     \label{fig:f1-manage-your-choices}
 \end{figure}
-Upon clicking the 'No, manage settings' option, user can further indicate their preference for which purpose their collected data from the cookies can be used. The usage of cookies are split into different ways data collected through cookies can be used, such as to select advertising, or to create profiles for personalised advertising, as shown in Figure~\ref{fig:f1-manage-your-choices}. Though the user is able to have more autonomy, this also adds to the problem of a complex privacy preference extraction process as user has to go through each options to decide whether they want to consent to it or not.
-\subsection{Exhibit B: Fifa Official Website}
-Another example that we can look at is from the Fifa Official Website \cite{noauthor_undated-ca}. Similarly, they have a cookie banner for the user to indicate their privacy preference through 3 buttons as shown in Figure~\ref{fig:fifa-cookie-banner}.
+After selecting ``No, manage settings,'' users can indicate the purposes for which data collected through cookies may be used. These purposes include selecting advertisements and creating profiles for personalised advertising, as shown in Figure~\ref{fig:f1-manage-your-choices}. Although this gives users more control, it also adds complexity because they must consider each option and decide whether to consent.
+\subsection{Exhibit B: FIFA official website}
+The official FIFA website \cite{noauthor_undated-ca} provides another example. Its cookie banner offers users three buttons for indicating their preferences, as shown in Figure~\ref{fig:fifa-cookie-banner}.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth,height=0.4\textheight,keepaspectratio]{fifa-cookie-consent.png}
-    \caption{Cookie consent banner displayed on the Fifa official website.}
+    \caption{Cookie consent banner displayed on the FIFA official website.}
     \label{fig:fifa-cookie-banner}
 \end{figure}
-If the user were to click the preference center option marked in white, the user would then be greeted with another interface as such under Figure~\ref{fig:fifa-privacy-preference-center}. Cookies that can be consented such as functional cookies are all compiled into one window in the privacy preference center interface. This may seem easier for the users to customize their privacy preference, it took away some autonomy from the user when they can't consent at a deeper level where they consent only to certain functional cookies instead of all functional cookies as a whole, comparatively to F1's cookie banner in  Figure~\ref{fig:f1-manage-your-choices} where user is able to indicate preference for each cookies' purpose. However, this is significantly more concise and easy for the user to go through.
+If users select the white ``Preference Center'' option, they are taken to the interface shown in Figure~\ref{fig:fifa-privacy-preference-center}. Cookies that require consent, such as functional cookies, are grouped together in one window. This may make it easier to customise preferences, but it offers less granular control: users cannot consent to selected functional cookies while rejecting others in the same category. By comparison, F1's settings interface in Figure~\ref{fig:f1-manage-your-choices} lets users indicate preferences for different cookie purposes. FIFA's interface is nevertheless more concise and easier to review.
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth,height=0.4\textheight,keepaspectratio]{fifa-privacy-preference-center.png}
-    \caption{Privacy Preference Center of Fifa official website.}
+    \caption{Privacy preference centre on the FIFA official website.}
     \label{fig:fifa-privacy-preference-center}
 \end{figure}
 \section{Requirements}
-After reviewing the common cookie consent preference extraction practices of websites, we can come up with 5 requirements of how our solution should look like in order to solve the problems found above.
+The review of current cookie consent practices suggests five requirements for the proposed solution:
 \begin{enumerate}
-  \item Concise
-  \subitem Users shouldn’t be looking at verbose content to understand the implication of their privacy preference choices, confusion should be avoided.
-  \item Convenient
-  \subitem User should be able to easily access and set up the application.
-  \item Engaging
-  \subitem Users should be engaged during the process of privacy preference extraction.
-  \item Informative
-  \subitem Provides sufficient information to the user on how their privacy preferences affects them.
-  \item User-centric autonomous
-  \subitem Users should be able to have as much control as possible to their own cookie consent privacy preference.
+  \item \textbf{Conciseness:} Users should not have to read lengthy content to understand the implications of their privacy choices; the interface should minimise confusion.
+  \item \textbf{Convenience:} Users should be able to access and set up the application easily.
+  \item \textbf{Engagement:} The process of eliciting privacy preferences should hold users' attention.
+  \item \textbf{Information:} The application should provide sufficient information about how users' privacy choices affect them.
+  \item \textbf{User autonomy:} Users should retain as much control as possible over their cookie consent preferences.
 \end{enumerate}
-\section{Constructing the Solution}
-A privacy companion that appears when you visit websites, explains what privacy choices are being requested, and turns privacy decisions into an interactive scenario-based experience.
-\subsection{Notion}
-User privacy preference is a subject that each user passes by everyday as they visit different websites, yet most people ignore it. There are multiple reasons as to why this happens, but the most prominent and straightforward reason that users tend to overlook it is that the current way of presenting it is boring, verbose and inconvenient, encountering dozens of such popups would be mentally tiring for users \cite{Safna2025-ng}. Hence, the topic of designing a gamified application to represent the simulation of managing each user’s own privacy preference aims to solve the issue of the current method of extracting these preferences from users. The intrinsic details of user privacy preferences can be simplified and become more approachable for users. A visual representation of everything is useful to engage the user while presenting each cookie, third-parties, privacy preferences etc. in a new way that catches the attention of the user.
-\subsection{The 'Home' analogy}
+\section{Constructing the solution}
+The proposed solution is a privacy companion that explains the choices a website requests and turns privacy decisions into an interactive, scenario-based experience.
+\subsection{Concept}
+Users encounter privacy choices whenever they visit websites, yet many overlook them. One reason may be that current consent interfaces can feel dull, lengthy, and inconvenient; encountering many such pop-ups may be tiring \cite{Safna2025-ng}. This project therefore explores a gamified application that simulates the process of managing privacy preferences. It aims to simplify technical details and make them more approachable. Visual representations of cookies, third parties, and privacy choices may also help engage users and present the subject in a more attention-grabbing way.
+\subsection{The ``Home'' analogy}
 \label{subsec:analogy}
-As browsing the internet and different websites is just like visiting different people’s homes, instead of presenting websites and cookies as technical terms, websites can be described as homes that users visit and the cookies are like guests in the home. Subsequently, they can be personified according to the purpose of each cookies. For example, authentication cookies that let websites recognizes users can be presented as the owner (company) of the home (website) wants to remember the user's name so that the user can re-enter their home anytime \cite{noauthor_undated-qc}. This usage of analogy can then be presented as different scenarios that the user has to go through to indicate their privacy preferences for cookies. 
+Browsing websites can be compared to visiting people's homes. Instead of presenting websites and cookies only through technical terms, the application can describe websites as homes that users visit and cookies as guests in those homes. Guests can then be personified according to each cookie's purpose. For example, an authentication cookie that lets a website recognise a returning user could be represented as the homeowner wanting to remember the visitor's name so they can enter again more easily \cite{noauthor_undated-qc}. This analogy can be presented through scenarios in which users indicate their cookie preferences.
 
-However, if the user wants to know more about specific cookies, the application retains the option for users to read the original details of the cookies without the analogy being applied and presented as scenario-based questions. In other words, in the form of the original cookie banner consent interface.
+If users want more information about a specific cookie, the application should also let them inspect its original details without relying on the analogy or scenario-based presentation. This provides access to information in a form closer to a conventional cookie consent interface.
 \subsection{Chatbot interface}
-When presented with different scenario-based questions, there are nuances that the user might be restricted to if a similar approach of binary choices presented by cookie banners is used. We have to acknowledge that there are deeper levels to every user's privacy preference. For that, an approach to allow users to respond with natural language would be able to help users to express their privacy preferences better. Hence, this project uses a chatbot interface for the users to communicate with the application, which would then translate the user's answers into decisions.
+Binary choices, like those often presented in cookie banners, may not capture the nuances of users' privacy preferences. A natural-language interface could give users more room to express those preferences. This project therefore uses a chatbot through which users can communicate with the application. The chatbot interprets their answers and translates them into decisions.
 \subsection{Dynamic questions}
-As each websites use different cookies and request different consent permissions from the user, a fixed pool of scenario-based questions would not suffice to cover every cookies. This calls for the need of a way to generate dynamic scenario-based questions depending on the cookies. The solution would have to take in some input regarding the details of each cookies and what their purpose is, and generate these questions accordingly for users to go through. Additionally, dynamic questions can serve as clarifying questions and be used to rectify any ambiguity that may surface when users give unclear answers that require more information from the user in order to be translated into deterministic privacy preference decisions.
-\subsection{Translation from user answers into decisions}
-Answers received from users through the chatbot as they go through the scenario-based questions would then be processed in backend to be translated into a deterministic decision made by the user. The decision would be applied through the application and be communicated with the CMPs to indicate user's privacy preferences.
-\subsection{Accessibility and Appearance}
-The solution would have to be easy for users to set up and use, hence an application that can be accessed as a simple browser extension would be ideal for our solution. Through this extension, the application should be able to collect cookie data, interact with users, and communicate with CMPs of each websites. Furthermore, the application would also have some kind of visual representation of their current privacy preferences, in the form of analogies mentioned under section~\ref{subsec:analogy}.
-\subsection{Addressing the Requirements}
-Given the ideation of solution above, we can conclude how these aspects address the requirements that was established previously:
+Websites use different cookies and request different forms of consent, so a fixed set of scenarios may not cover every cookie. The solution should generate scenarios dynamically from information about each cookie and its purpose. Dynamic scenarios can also serve as clarifying questions when a user's response is unclear and more information is needed before it can be translated into a deterministic preference decision.
+\subsection{Translating user answers into decisions}
+The backend processes users' chatbot responses to derive deterministic decisions. The application then applies those decisions and communicates users' preferences to the relevant CMPs.
+\subsection{Accessibility and appearance}
+The solution should be easy to set up and use. A browser extension would provide a convenient way to access the application. It should collect cookie data, support user interaction, and communicate with the CMPs used by websites. It should also provide a visual representation of users' current privacy preferences through the analogy described in Section~\ref{subsec:analogy}.
+\subsection{Addressing the requirements}
+The proposed design addresses the requirements as follows:
 \begin{enumerate}
-  \item Conciseness
-  \subitem The application filters out verbose words and simplifies them into scenario questions.
-  \item Conveniency
-  \subitem Easily accessed via installing a browser extension. Users can interact with the extension in the same window and same tab as the websites.
-  \item Engagement
-  \subitem With the help of visual representation and chatbot interface, the application presents the concept of privacy preferences and cookies with analogies to make it more interesting and immersive.
-  \item Informativity
-  \subitem Always the option available for the user to know more about the details, this will make the application less concise but is optional for the user.
-  \item User-centric Autonomy
-  \subitem Users can change their preferences anytime by interacting with the chatbot.
+  \item \textbf{Conciseness:} The application simplifies lengthy information into scenario-based questions.
+  \item \textbf{Convenience:} A browser extension provides access in the same browser window and tab as the website.
+  \item \textbf{Engagement:} Visual representations and the chatbot use analogies to make privacy preferences and cookies more approachable and immersive.
+  \item \textbf{Information:} Users can choose to inspect further details when they want more information, while keeping those details optional.
+  \item \textbf{User autonomy:} Users can change their preferences by interacting with the chatbot.
 \end{enumerate}
 \section{Constraints}
-There are several constraints and concerns regarding the application that can be foresee at this stage of development.
+Several constraints and concerns are foreseeable at this stage of development.
 \subsection{Requesting permissions}
-Accessing certain cookies' data requires the application to ask for permissions from the user. While developing the application, it is important to be careful in how the application handles requesting permission from the user and should be mindful of not requesting more permissions than necessary.
+Accessing cookie data requires the application to request permission from the user. The application should request only the permissions it needs and should handle permission requests carefully.
 
-\subsection{Supporting limited CMPs}
+\subsection{Limited CMP support}
 \label{subsec:supporting-limited-cmps}
-Different websites use different CMPs and different cookies. The current ideation of the solution would be heavily limited by the breadth of how much CMPs it can support (i.e. communicate with) as they have distinct APIs and categories for cookies. This project would be aiming to support one of the CMPs named CookieBot \cite{noauthor_undated-ze}.
+Websites use different CMPs and cookies, and CMPs have distinct APIs and cookie categories. The solution's reach will therefore depend on how many CMPs it supports. This project will focus on Cookiebot \cite{noauthor_undated-ze}.
 \subsection{Handling data safely}
-Messages from the user to the chatbot would be sent to an external natural language AI model service, the application has to navigate the handling of these data safely such that user's private information isn't leaked to external sources. Users should be told that this is the case and should avoid entering sensitive personal information when interacting with the chatbot.
+Chatbot messages are sent to an external natural-language AI service. The application must handle this data carefully to reduce the risk of exposing users' private information. Users should be informed about this data flow and advised not to enter sensitive personal information.
 \chapter{Literature Review}
 \section{CookieBlock: Automating Cookie Consent and GDPR Violation Detection}
-Among other works and solutions that strive to solve similar problems as this project does, is “CookieBlock: Automating Cookie Consent and GDPR Violation Detection” \cite{noauthor_undated-pu}. The similar points between CookieBlock and this project is how CookieBlock takes in input and classifies cookies into different categories. CookieBlock trained their own classifier with concrete mappings between cookies and their purposes, and used this classifier to identify cookies and categorize them to decide whether or not they fit the user’s privacy preferences, and should be accepted or denied. CookieBlock trained their own classifier to predict the purposes of each cookie by looking at attributes of the cookies, such as: name, domain, path, etc. to extract different features and be used in machine learning. CookieBlock is also a solution that takes on the form of a browser extension, something this project aims to become in view of convenience for users. 
+One related solution is CookieBlock, which addresses cookie classification and consent management \cite{noauthor_undated-pu}. Like this project, CookieBlock takes cookie information as input and classifies cookies into categories. It uses a trained classifier and mappings between cookies and their purposes to determine whether cookies align with users' privacy preferences and should be accepted or rejected. The classifier predicts cookie purposes from attributes such as name, domain, and path. CookieBlock is also delivered as a browser extension, a format this project aims to adopt for convenience.
 
 \section{Research gap and implications for this project}
-On the other hand, this project will be taking inputs such as the browser cookie metadata, CMP signals, and cookie-purpose mappings to categorize cookies and integrate them into scenario-based questions via the analogy's personification. Contrary to CookieBlock where it is stated that cookie-to-purpose mapping in websites' privacy policy is generally not useful as the policy varies across websites, this project is able to ignore this concern as we've limited the project's capacity to support only CookieBot's cookie declaration format and will be able to scan websites' HTML for such declarations \cite{cybotCookieDeclaration,cookiebotCookieScripts}.
+This project uses browser cookie metadata, CMP signals, and cookie-purpose mappings to categorise cookies and incorporate them into scenario-based questions through the personification analogy. CookieBlock notes that cookie-purpose mappings in website privacy policies may be unreliable because policies vary between websites. This project narrows its scope to Cookiebot declarations, which it can find in website HTML \cite{cybotCookieDeclaration,cookiebotCookieScripts}.
 
-In order to achieve the goal of presenting users with dynamic scenarios that they can run through, it is integral for this project to have concrete cookie-to-purpose mappings. While this project’s goal isn’t focused on correctly classifying each cookie's purpose live, we took on a limitation, relying on the Cookiebot’s scanned database to look up each cookie’s purposes instead of trying to achieve the goal of identifying each cookie’s purpose on any arbitrary websites, which will be using all kinds of CMPs. Instead, this project focuses on the idea of extracting user preferences using a natural language interface between the user and an agent that presents dynamic privacy-related scenarios disguised in a more digestible analogy. This project will then explore the topic on how this approach can smoothen the privacy preference extraction process and elevates users' interest in cookie consent management through gamified engagements, which is a question that CookieBlock only addressed indirectly.
+Concrete cookie-purpose mappings are needed to generate dynamic scenarios. This project does not aim to classify every cookie's purpose in real time. Instead, it is scoped to use Cookiebot's scanned database and declarations to look up purposes, rather than identify cookies across websites that use different CMPs. Its focus is on eliciting user preferences through a natural-language interface that presents dynamic privacy scenarios using an accessible analogy. The project will explore whether this approach can make preference elicitation easier and increase users' interest in cookie consent management through gamified interaction, an issue that CookieBlock addresses only indirectly.
 
 \chapter{Progress to Date}
 \section{Work completed}
-The project has shown progress in the aspect of realizing privacy choices into the 'Home' analogy mentioned under section~\ref{subsec:analogy}. This is achieved with the implementation of mainly two features: a browser cookie data adapter and an implementation of the 'Home' analogy interface. The combination of these two features allows the application to generate dynamic scenario-based questions based on cookie data collected from the adapter for users to go through.
+The project has progressed towards representing privacy choices through the ``Home'' analogy described in Section~\ref{subsec:analogy}. Two main features have been implemented: a browser cookie data adapter and the ``Home'' analogy interface. Together, they allow the application to generate dynamic, scenario-based questions from cookie data collected by the adapter.
 \subsection{Browser extension adapter}
-In order to implement a system where dynamic scenarios can be generated based on each cookies' purpose, the necessity of a cookie input adapter is integral to the project. Without an interpreter standardizing each cookie’s metadata, their CMP signal data, and categorizing them into different purpose, the project can’t present dynamic text-based scenarios for the user, which means that it can’t fulfill the purpose of extracting user’s privacy preferences at all.
+Generating dynamic scenarios based on cookie purposes requires a cookie input adapter. The adapter standardises cookie metadata and CMP signals, then categorises cookies by purpose. Without this step, the project cannot generate the text-based scenarios needed to elicit users' privacy preferences.
 
-With the implementation of an adapter in the form of a browser extension, the project is now able to collect cookie data from websites that use CookieBot as their CMP. The data that the extension collects includes:
+The browser extension adapter can collect cookie data from websites that use Cookiebot as their CMP. The collected data include:
 \begin{enumerate}
-  \item Cookie metadata: describes cookie properties such as its name, lifespan, security attributes, and scope. These properties indicate how the cookie may be stored, transmitted, and when it expires \cite{noauthor_undated-bg,Narasimha2025-az}.
-  \item CMP signal data: records the user's existing consent choices for categories of cookies on the website \cite{Kavya2021-ex}.
-  \item Public cookie declaration: a published list of cookie-purpose mapping for cookies used on the website \cite{noauthor_undated-dv}.
+  \item \textbf{Cookie metadata:} Properties such as the cookie's name, lifespan, security attributes, and scope, which describe how it may be stored and transmitted and when it expires \cite{noauthor_undated-bg,Narasimha2025-az}.
+  \item \textbf{CMP signal data:} The user's existing consent choices for cookie categories on the website \cite{Kavya2021-ex}.
+  \item \textbf{Public cookie declaration:} A published list mapping cookies used on the website to their purposes \cite{noauthor_undated-dv}.
 \end{enumerate}
-The adapter uses the public declaration to map cookies to purposes, then presents them as 'guests' in the 'Home' analogy (Section~\ref{subsec:analogy}).
+The adapter uses the public declaration to map cookies to purposes, then presents them as ``guests'' in the ``Home'' analogy (Section~\ref{subsec:analogy}).
 \par\noindent
 \begin{minipage}[t]{0.48\textwidth}
     \centering
@@ -170,8 +160,8 @@ The adapter uses the public declaration to map cookies to purposes, then present
     \captionof{figure}{The main page of Cookie Homes.}
     \label{fig:cookiehomes-interface}
 \end{minipage}
-\subsection{'Home' analogy interface}
-A functional prototype - cookiehomes, has been developed to demonstrate the proposed scenario-based privacy preference journey that lets user indicate their preferences through different questions via an AI chatbot interface. Users can discuss cookie purposes through a natural-language interface, receive clarification when a request is ambiguous, and apply choices through a deterministic rules engine. The prototype includes a visual home-and-guest analogy, progress tracking, and a summary of choices. The current implementation demonstrates the interaction concept, but does not yet apply choices back to a website’s CMP. The cookies can also be seen personified as guests under each home that represents a website.
+\subsection{``Home'' analogy interface}
+A functional prototype, Cookie Homes, demonstrates the proposed scenario-based journey in which users express their preferences through questions and an AI chatbot. Users can discuss cookie purposes through a natural-language interface, receive clarification when a request is ambiguous, and apply choices through a deterministic rules engine. The prototype includes the home-and-guest analogy, progress tracking, and a summary of choices. It demonstrates the interaction concept but does not yet apply choices to a website's CMP. Cookies are personified as guests in each home's website scenario.
 \section{Design alternatives}
 Three interface approaches were considered and compared using clarity, user control, engagement, and implementation feasibility as criteria.
 \begin{table}[H]
@@ -180,26 +170,28 @@ Three interface approaches were considered and compared using clarity, user cont
 \caption{Comparison of alternative interfaces for privacy preference elicitation.}
 \begin{tabular}{p{0.22\textwidth}p{0.34\textwidth}p{0.34\textwidth}}
 \toprule
-Approach & Advantages & Limitations \\
+\textbf{Approach} & \textbf{Advantages} & \textbf{Limitations} \\
 \midrule
-Cookie category dashboard & Familiar controls give users direct choices for categories such as statistics and marketing. It is straightforward to implement. & Users still need to understand category labels, and the interface may feel similar to a conventional consent panel. \\
-Fixed-choice scenario cards & Short descriptions make requests easier to scan, and allow/deny buttons keep decisions predictable without AI interpretation. & Choices are mostly binary and provide limited support for questions, explanations, or nuanced preferences. \\
-Conversational home-and-guest interface (selected) & The home analogy makes cookie purposes more approachable. Conversation lets users ask questions, explain preferences, and clarify choices. & Natural-language interpretation can be incorrect, so clarification and rule-based validation are needed. The AI service also adds implementation and data-handling considerations. \\
+\textbf{Cookie category dashboard} & Familiar controls give users direct choices for categories such as statistics and marketing. It is straightforward to implement. & Users still need to understand category labels, and the interface may feel similar to a conventional consent panel. \\
+\textbf{Fixed-choice scenario cards} & Short descriptions make requests easier to scan, and allow/deny buttons keep decisions predictable without AI interpretation. & Choices are mostly binary and provide limited support for questions, explanations, or nuanced preferences. \\
+\textbf{Conversational home-and-guest interface (selected)} & The home analogy makes cookie purposes more approachable. Conversation lets users ask questions, explain preferences, and clarify choices. & Natural-language interpretation can be incorrect, so clarification and rule-based validation are needed. The AI service also adds implementation and data-handling considerations. \\
 \bottomrule
 \end{tabular}
 \end{table}
-The conversational home-and-guest interface was selected because it best supports the project's aims of making privacy choices understandable and engaging while allowing users to express preferences in their own words. Its risks are addressed in the prototype by asking follow-up questions when intent is unclear and passing clear choices through a deterministic rules engine. The current prototype demonstrates this interaction, while evaluation with users remains future work.
+\begin{samepage}
+The conversational home-and-guest interface was selected because it best supports the project's aims: making privacy choices understandable and engaging while allowing users to express preferences in their own words. The prototype addresses some of its risks by asking follow-up questions when intent is unclear and passing clear choices through a deterministic rules engine. The interaction is implemented, but user evaluation remains future work.
+\end{samepage}
 
 \section{Challenges and risks}
-\subsection{Limited CMPs support}
-Similar to the constraint mentioned under section~\ref{subsec:supporting-limited-cmps}, as different websites uses different CMPs, this project faces a huge challenge of only being able to support a certain CMP (i.e. CookieBot) in order to get the proof of concept working in this project. Practically, it would be a challenge for this solution at this current stage to be applied to most websites which use a different CMP and hence, extraction of cookie data such as CMP consent signal and the cookie-purpose mapping would require further consideration.
-\subsection{Uncertain cookie purpose}
-Currently the cookie-purpose mapping relies on the public cookies declaration of websites, which might not be available for some websites. To reduce the risk of misleading users, the prototype keeps unmatched cookies unclassified rather than inferring a purpose from the cookie name alone. It can show the available data such as cookie metadata and let users make a choice for that cookie in the current scenario.
-\subsection{Misinterpretation of natural language}
-As the current chatbot agent interface uses external AI natural language model to process user's intent, natural language responses from users will be subjected to the risk of being ambiguous or unclear, which may lead to misinterpretation from the natural langauge model of exactly what the user wants to express. Clarifying questions must be asked in order to establish a firm understanding of user's decision. The application has to take a stance of taking no actions until it is certain of the user's intention.
+\subsection{Limited CMP support}
+As discussed in Section~\ref{subsec:supporting-limited-cmps}, websites use different CMPs. The current prototype supports Cookiebot, which is sufficient to demonstrate the concept but limits the number of websites on which it can be used. Supporting other CMPs would require further work to collect consent signals and map cookies to their purposes.
+\subsection{Uncertain cookie purposes}
+The current cookie-purpose mapping relies on public cookie declarations, which may not be available for every website. To reduce the risk of misleading users, the prototype keeps unmatched cookies unclassified rather than inferring their purpose from cookie names alone. It can show the available information, such as cookie metadata, and let users make a choice about an unclassified cookie in the current scenario.
+\subsection{Natural-language misinterpretation}
+The chatbot uses an external natural-language AI model to interpret users' intent. Responses may be ambiguous or unclear, creating a risk that the model will misinterpret what a user means. The application should ask clarifying questions when needed and should not act until it has a sufficiently clear understanding of the user's decision.
 \chapter{Research Plan for Next Semester}
 \section{Planned work}
-The next stage will focus on completing a safe, usable end-to-end prototype and evaluating whether it helps people make informed privacy choices. A further research question is whether answers across different scenarios can be combined into a useful, explainable profile that predicts a user's preferences in a new scenario. Work will be prioritized so that a single-CMP extension, a preliminary profile model, and a controlled user evaluation are completed before attempting broad CMP coverage.
+The next stage will focus on completing a safe, usable end-to-end prototype and evaluating whether it helps people make informed privacy choices. A further research question is whether answers across different scenarios can be combined into a useful, explainable profile that predicts a user's preferences in a new scenario. Work will be prioritised so that a single-CMP extension, a preliminary profile model, and a controlled user evaluation are completed before attempting broad CMP coverage.
 \begin{enumerate}
   \item \textbf{Move the journey into a browser extension.} Rework the current website interface into an extension side panel or similarly persistent browser view, so users can review a site and make choices without switching to a separate local website. Keep site access permission-based and request only the access needed for the active site and supported CMP. Test installation, navigation between sites, permission denial, and recovery from connection errors. The expected output is an installable prototype with clear onboarding and privacy notices.
 
@@ -209,13 +201,13 @@ The next stage will focus on completing a safe, usable end-to-end prototype and 
 
   \item \textbf{Extend the home-and-guest analogy.} Add optional explanations for relevant attributes such as who provides a cookie, whether it is first- or third-party, how long it lasts, and what its security attributes mean. Retain the original technical details as inspectable evidence, and avoid implying that an analogy proves a cookie's purpose or safety. Use brief formative feedback sessions to check whether the new explanations improve understanding without making the journey too long.
 
-  \item \textbf{Explore an explainable privacy preference profile.} Define a small set of preference dimensions that can be supported by the scenarios, such as choices about analytics, advertising, or personalization. Investigate how explicit answers across multiple homes could be summarized to predict a choice in a new scenario. Keep recorded choices separate from inferred tendencies; show the answers and evidence behind each profile entry, indicate uncertainty, and allow users to correct or delete the profile. When answers are sparse or inconsistent, the system should report that it cannot make a reliable prediction. Treat profile output as a recommendation for the user to review: it must not silently grant or withdraw consent or be written to a website without the user's explicit confirmation. The expected output is a simple, inspectable profile model and a prototype for testing its usefulness.
+  \item \textbf{Explore an explainable privacy preference profile.} Define a small set of preference dimensions that the scenarios can support, such as choices about analytics, advertising, or personalisation. Investigate how explicit answers across multiple homes could be summarised to predict a choice in a new scenario. Keep recorded choices separate from inferred tendencies; show the answers and evidence behind each profile entry, indicate uncertainty, and allow users to correct or delete the profile. When answers are sparse or inconsistent, the system should report that it cannot make a reliable prediction. Treat the profile as a recommendation for the user to review: it must not silently grant or withdraw consent or be written to a website without the user's explicit confirmation. The expected output is a simple, inspectable profile model and a prototype for testing its usefulness.
 
-  \item \textbf{Strengthen decision and data safeguards.} Add a concise review of the choices the system is about to apply, and an undo path for supported changes. Test that ambiguous messages do not change state and that essential cookies cannot be rejected. Minimize the chat context sent to the external AI service, explain that processing to users, avoid collecting sensitive participant information, and document data retention and deletion. If profile data are persisted, provide clear controls to view, edit, export where appropriate, and erase them.
+  \item \textbf{Strengthen decision and data safeguards.} Add a concise review of the choices the system is about to apply and an undo path for supported changes. Test that ambiguous messages do not change state and that essential cookies cannot be rejected. Minimise the chat context sent to the external AI service, explain this processing to users, avoid collecting sensitive participant information, and document data retention and deletion. If profile data are persisted, provide clear controls to view, edit, export where appropriate, and erase them.
 
   \item \textbf{Evaluate the interface and profile with users.} After a small pilot, conduct a task-based study comparing the home-and-guest interface with a conventional category dashboard or fixed-choice scenario cards. Counterbalance the order of interfaces where practical. Before the tasks, record each participant's direct preferences using a short questionnaire; compare these with choices expressed through each interface. For profile evaluation, use answers from some scenarios to form the profile, then compare its predictions on held-out scenarios with both the participant's direct questionnaire and their explicit choices. Collect task completion, time, comprehension, interpretation errors, clarification frequency, prediction coverage and accuracy, and usability, trust, and engagement feedback. Use short interviews to understand confusion and whether users consider the profile faithful and controllable. Obtain the required supervisor or institutional approval and informed consent before recruitment; treat a small student sample as exploratory evidence rather than proof of general effectiveness.
 
-  \item \textbf{Check accessibility and technical reliability.} Review keyboard-only use, screen-reader labels, contrast, readable language, and responsive layout. Add or refine automated checks for cookie normalization, consent write-back safeguards, ambiguous AI replies, profile uncertainty and deletion, and essential-cookie invariants, then run end-to-end checks in the target browser. Record unsupported sites and failure cases.
+  \item \textbf{Check accessibility and technical reliability.} Review keyboard-only use, screen-reader labels, contrast, readable language, and responsive layout. Add or refine automated checks for cookie normalisation, consent write-back safeguards, ambiguous AI replies, profile uncertainty and deletion, and essential-cookie invariants, then run end-to-end checks in the target browser. Record unsupported sites and failure cases.
 \end{enumerate}
 
 \clearpage
@@ -226,7 +218,7 @@ The next stage will focus on completing a safe, usable end-to-end prototype and 
 \caption{Provisional next-semester milestones. Adjust periods to the approved semester calendar.}
 \begin{tabular}{p{0.14\textwidth}p{0.50\textwidth}p{0.28\textwidth}}
 \toprule
-Period & Activity & Expected output \\
+\textbf{Period} & \textbf{Activity} & \textbf{Expected output} \\
 \midrule
 Weeks 1--2 & Define profile dimensions and prediction protocol, compare interface baselines, review CMP write-back options, and prepare the study protocol. & Agreed design, profile safeguards, and study protocol submitted for required review. \\
 Weeks 3--5 & Build the extension interface, implement the supported Cookiebot write-back path, improve the analogy, and create an inspectable profile prototype. & Installable prototype with reviewed choices, uncertainty states, profile review and deletion, and documented limitations. \\
