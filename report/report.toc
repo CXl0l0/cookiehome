@@ -32,6 +32,6 @@
 \contentsline {subsection}{\numberline {4.3.3}Natural-language misinterpretation}{11}{subsection.4.3.3}%
 \contentsline {chapter}{\numberline {5}Research Plan for Next Semester}{12}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Planned work}{12}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Milestones}{14}{section.5.2}%
-\contentsline {section}{\numberline {5.3}Evaluation and success criteria}{14}{section.5.3}%
-\contentsline {chapter}{Acknowledgement of AI Use}{18}{chapter*.9}%
+\contentsline {section}{\numberline {5.2}Milestones}{13}{section.5.2}%
+\contentsline {section}{\numberline {5.3}Evaluation and success criteria}{13}{section.5.3}%
+\contentsline {chapter}{Acknowledgement of AI Use}{17}{chapter*.9}%
