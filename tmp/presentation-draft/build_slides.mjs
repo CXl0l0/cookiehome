@@ -1,0 +1,83 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import {pathToFileURL} from 'node:url';
+const dep='C:/Program Files/WindowsApps/OpenAI.CodexPrimaryRuntime.v26-1112-611-0_26.1112.611.0_x64__3k8sg7r9htsxt/dependencies';
+process.env.RUNTIME_NODE_MODULES=dep+'/node/node_modules';
+const {Presentation,PresentationFile}=await import(pathToFileURL(dep+'/node/node_modules/@oai/artifact-tool/dist/artifact_tool.mjs'));
+const root='C:/Users/User/Desktop/cookiehome';
+const build=root+'/tmp/presentation-draft';
+const out=root+'/output/presentation-draft';
+await fs.mkdir(out,{recursive:true}); await fs.mkdir(build+'/slides',{recursive:true});
+const p=Presentation.create({slideSize:{width:1280,height:720}});
+const C={bg:'#F5F3ED',ink:'#203E35',body:'#3C4944',muted:'#66736C',light:'#DFE7DF',rust:'#9D5D37',white:'#FFFFFF'};
+function text(s,str,x,y,w,h,size=28,color=C.body,bold=false){const q=s.shapes.add({geometry:'textbox',position:{left:x,top:y,width:w,height:h},fill:'none',line:{fill:'none',width:0}});q.text=str;q.text.style={fontFamily:'Arial',fontSize:size,color,bold};return q;}
+function slide(title,notes){const s=p.slides.add();s.background.fill=C.bg;text(s,title,64,42,1150,75,42,C.ink,true);text(s,String(p.slides.items.length).padStart(2,'0'),1175,660,60,28,16,C.muted);s.speakerNotes.text=notes;return s;}
+const assets={};for(const file of ['f1-cookie-consent.png','cookiehomes-interface.png'])assets[file]=new Uint8Array(await fs.readFile(root+'/report/'+file));
+function img(s,file,x,y,w,h){s.images.add({blob:assets[file],contentType:'image/png',alt:file.replaceAll('-',' ').replace('.png',''),fit:'contain',position:{left:x,top:y,width:w,height:h}});}
+const ref1='Nouwens, M., Liccardi, I., Veale, M., Karger, D. and Kagal, L. (2020). Dark Patterns after the GDPR: Scraping Consent Pop-ups and Demonstrating their Influence. CHI 2020. https://doi.org/10.1145/3313831.3376321 ; https://arxiv.org/abs/2001.02479';
+const ref2='Bollinger, D., Kubicek, K., Cotrini, C. and Basin, D. (2022). Automating Cookie Consent and GDPR Violation Detection. USENIX Security 2022, pp. 2893–2910. https://www.usenix.org/conference/usenixsecurity22/presentation/bollinger';
+let s=slide('Cookie Homes','Introduce the project as an investigation of how a gamified interface can help people express cookie preferences. The interface has been prototyped; its effectiveness has not yet been evaluated. Source: project report, Chapters 1, 4 and 5.');
+text(s,'A gamified interface for\nunderstanding cookie choices',68,215,1080,150,49,C.ink);
+text(s,'Lee Chen Xuan\nSchool of Computing',70,540,800,75,24,C.muted);
+s=slide('Motivation in everyday browsing','Use the F1 consent banner captured in the report as a concrete example. A user arrives to read or use a website, and encounters another decision first. The screenshot is an illustration, not evidence about every site or every user. Source: project report, Section 2.1.1; report/f1-cookie-consent.png.');
+img(s,'f1-cookie-consent.png',565,165,650,390);
+text(s,'A website visit begins\nwith a privacy choice',65,188,470,135,36,C.ink,true);
+text(s,'Users must understand cookie\npurposes while trying to browse.',65,355,480,125,28);
+text(s,'Can this decision become easier to understand?',65,570,1110,55,30,C.ink);
+s=slide('The problem is the quality of the choice',ref1+'\nIn a field experiment with 40 participants, removing the opt-out button from the first page increased consent by 22–23 percentage points. This supports the importance of interface design. It does not prove that gamification helps. The project must preserve accurate meaning and user control, handle uncertain cookie purposes, and avoid interpreting ambiguous responses as consent.');
+text(s,'22–23',65,170,500,115,92,C.ink,true);
+text(s,'percentage-point increase in consent',70,297,520,60,27,C.ink);
+text(s,'when the first-page opt-out was removed\nNouwens et al., 2020 · 40 participants',70,365,540,80,23,C.muted);
+text(s,'Design can influence decisions.',685,185,500,60,33,C.ink,true);
+text(s,'The challenge is to explain cookie\npurposes clearly and preserve\nthe user’s intended choice.',685,290,510,160,30);
+text(s,'Gamification is a hypothesis to evaluate.',685,500,500,80,28,C.rust,true);
+s=slide('Related work and the focus of this project',ref1+'\n'+ref2+'\nThe gap is scoped to these reviewed works. CookieBlock classifies cookies and enforces consent preferences; it does not evaluate the home-and-guest conversational experience proposed here. Do not claim that no gamified privacy system exists. The report’s F1/FIFA cases are interface examples, not controlled comparative studies.');
+text(s,'Consent interface research',70,172,400,60,29,C.ink,true);
+text(s,'Shows that the way choices are presented can change consent.',500,172,710,90,28);
+text(s,'CookieBlock',70,300,400,60,29,C.ink,true);
+text(s,'Classifies cookies with machine learning and enforces preferences.',500,300,710,90,28);
+text(s,'Cookie Homes',70,453,400,60,34,C.ink,true);
+text(s,'Studies whether scenarios and conversation help\nusers understand requests and express preferences.',500,453,710,120,28,C.ink);
+text(s,'Focus: user understanding and preference elicitation',70,615,1100,40,24,C.rust);
+s=slide('Prototype architecture','Current code path: extension/popup.js collects metadata, a window.Cookiebot consent snapshot and rendered public declaration tables; it sends value-free inputs to the local server. src/engine/cookiebot-adapter.js normalises inputs. input-adapter.js matches purpose evidence and constructs guests. src/ui/app.js provides scenarios and chat. server.js uses Gemini to interpret messages and validates structured responses. rules.js validates and applies explicit intents to local state. Ambiguous responses should produce clarification without state changes; the browser UI returns to ask the user. Unknown-purpose matches remain unclassified. Dashed consent write-back is planned, not implemented. The full journey currently runs in the local website; the connector is already an extension.');
+function box(label,x,y,w=242,h=146,f=C.white,planned=false){const q=s.shapes.add({geometry:'rect',position:{left:x,top:y,width:w,height:h},fill:f,line:{fill:planned?C.rust:C.ink,width:2,style:planned?'dashed':'solid'}});q.text=label;q.text.style={fontFamily:'Arial',fontSize:24,color:C.ink};return q;}
+const a=box('Website inputs\nCookie metadata\nCookiebot consent\nPublic declaration',60,160);
+const b=box('Extension connector\nCollect and send\nvalue-free inputs',366,160);
+const c=box('Purpose matching\nNormalise inputs\nKeep uncertainty',672,160);
+const d=box('Cookie Homes\nScenarios + chatbot\nUser response',978,160);
+const e=box('AI interpretation\nLocal server\n↔ Gemini',978,414);
+const f=box('Rules engine\nValidate intent\nProtect essentials',672,414);
+const g=box('Local choice state\nUpdate guests\nand summary',366,414);
+const h=box('Planned write-back\nReview and confirm\nApply to site CMP',60,414,242,146,C.bg,true);
+function arrow(a,b,from='right',to='left',dash=false){s.shapes.connect(a,b,{kind:'straight',fromSide:from,toSide:to,line:{fill:dash?C.rust:C.ink,width:2,style:dash?'dashed':'solid'},tail:{type:'triangle',width:'med',length:'med'}});}
+arrow(a,b);arrow(b,c);arrow(c,d);arrow(d,e,'bottom','top');arrow(e,f,'left','right');arrow(f,g,'left','right');arrow(g,h,'left','right',true);
+text(s,'Current prototype: local website + extension connector',60,603,900,40,25,C.ink);
+text(s,'Solid = implemented     Dashed = planned',60,646,900,30,20,C.muted);
+s=slide('What the prototype can do today','Source: project report Chapter 4; screenshot report/cookiehomes-interface.png; implementation files src/ui/app.js and src/engine/rules.js. The prototype supports inspecting purpose evidence, responding through the chatbot, changing local decisions, and reviewing progress. No claim of effectiveness or successful website consent write-back is made.');
+img(s,'cookiehomes-interface.png',60,158,805,455);
+text(s,'Implemented',915,170,300,50,31,C.ink,true);
+text(s,'Cookiebot data adapter\n\nHome and guest scenarios\n\nChat and local decisions',915,240,300,260,26);
+text(s,'User study and website\nwrite-back are still planned.',915,546,300,85,24,C.rust);
+s=slide('How success will be measured','Proposed evaluation, not results. Pilot tasks before the main study. Compare the gamified journey with a category dashboard using matched privacy information and tasks; counterbalance order. Record initial stated preferences, then debrief apparent mismatches because learning can legitimately change preferences. Questionnaire agreement is a reference, not objective privacy truth. To isolate gamification from chatbot effects, use a simplified variant with the same choice logic if feasible; otherwise report results as a comparison of the full interfaces. Avoid invented sample sizes or targets; agree them before recruitment. Report comprehension, choice fidelity, errors, time, usability and engagement. A small sample gives exploratory evidence. Source: report Chapter 5 and proposed refinements for this presentation.');
+text(s,'Compare with a conventional category dashboard using matched tasks',65,145,1150,75,27,C.ink);
+const vals=[['Outcome','Proposed measure'],['Understanding','Questions about cookie purposes and consequences'],['Choice fidelity','Agreement with stated intent; interpretation errors'],['Effort and usability','Completion rate, task time and perceived difficulty'],['Engagement','Interest, attention and willingness to use again']];
+const tbl=s.tables.add({rows:5,columns:2,left:65,top:250,width:1150,height:315,columnWidths:[330,820],values:vals});
+tbl.borders.assign({fill:'#CAD3CB',width:1,style:'solid'});
+for(let r=0;r<5;r++)for(let c=0;c<2;c++){const cell=tbl.getCell(r,c);cell.fill=r===0?C.ink:C.white;cell.text.style={fontFamily:'Arial',fontSize:24,bold:r===0,color:r===0?C.white:C.body};}
+text(s,'Pilot first • Counterbalance order • Use interviews to explain differences',65,598,1150,50,23,C.muted);
+s=slide('Planned work and expected outcomes','Source: report Chapter 5. First complete extension delivery and investigate a documented Cookiebot consent update mechanism. Provide a hand-off to native controls if no supported mechanism is suitable. Improve analogy explanations and uncertainty handling. Then conduct pilot and main comparison. Expected deliverables are an installable prototype within Cookiebot scope, evaluation findings and design recommendations. No preference-profile prediction component is planned. Improvements in comprehension or engagement are hypotheses, not promised findings.');
+text(s,'Complete the consent journey',68,165,620,55,32,C.ink,true);
+text(s,'Extension interface, confirmed write-back\nand clearer uncertainty explanations',68,238,660,100,28);
+text(s,'Evaluate the gamified experience',68,385,680,55,32,C.ink,true);
+text(s,'Pilot, comparative user study\nand refinements from feedback',68,458,660,100,28);
+text(s,'Expected outputs',830,168,380,50,31,C.ink,true);
+text(s,'A usable prototype\n\nEvidence about user benefit\n\nPractical design guidance',830,255,380,275,27);
+s=slide('Conclusion','Close with the project’s central question. The prototype demonstrates feasibility of the interaction concept, but the research contribution depends on evaluating understanding, fidelity to intent and usability. A preference for one interface alone will not establish informed consent. Report mixed or negative outcomes as findings. Source: report Chapters 1, 4 and 5.');
+text(s,'Can a home and guest experience help users\nmake informed cookie choices?',68,190,1130,180,45,C.ink,true);
+text(s,'The interaction prototype is in place.\nThe next step is to measure how it helps users—and where it does not.',70,455,1100,125,29);
+await (await PresentationFile.exportPptx(p)).save(build+'/candidate.pptx');
+for(let i=0;i<p.slides.items.length;i++){const blob=await p.export({slide:p.slides.items[i],format:'png',scale:1});await fs.writeFile(build+'/slides/slide-'+(i+1)+'.png',new Uint8Array(await blob.arrayBuffer()));}
+const skill='C:/Users/User/.codex/plugins/cache/openai-primary-runtime/presentations/26.1112.11011/skills/presentations';
+const {finalizePresentation}=await import(pathToFileURL(skill+'/container_tools/artifact_tool_utils.mjs'));
+const result=await finalizePresentation({workspaceDir:root,candidatePath:build+'/candidate.pptx',finalPath:out+'/Cookie_Homes_Presentation.pptx',pythonExecutable:dep+'/python/python.exe',integrityValidatorPath:skill+'/container_tools/inspect_presentation_package_integrity.py',layoutValidatorPath:skill+'/container_tools/inspect_presentation_layout_geometry.py',layoutArgs:['--expected-slide-size-emu','12192000,6858000','--validate-bullet-geometry','--validate-heading-fit','--require-native-table-slide','7'],explicitTotalSlideCount:9,requiredNativeTableOwnerSlides:[7],fontPolicy:{basis:'design',families:['Arial']},verifyArtifactToolImport:true,receiptPath:build+'/validation.json'});
+console.log(JSON.stringify(result));

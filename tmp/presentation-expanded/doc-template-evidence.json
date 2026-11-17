@@ -1,0 +1,254 @@
+{
+  "sha256": "ba1e11258ff52659318a321462a5e598c7bed33cf991329eb91150788fcd1a7b",
+  "sections": [
+    {
+      "w": 8.5,
+      "h": 11.0,
+      "top": 1.0,
+      "bottom": 1.0,
+      "left": 1.0,
+      "right": 1.0
+    },
+    {
+      "w": 8.5,
+      "h": 11.0,
+      "top": 1.0,
+      "bottom": 1.0,
+      "left": 1.0,
+      "right": 1.0
+    }
+  ],
+  "paragraphs": [
+    {
+      "text": "",
+      "style": "normal"
+    },
+    {
+      "text": "",
+      "style": "normal"
+    },
+    {
+      "text": "Report title",
+      "style": "Title"
+    },
+    {
+      "text": "",
+      "style": "normal"
+    },
+    {
+      "text": "Contents",
+      "style": "normal"
+    },
+    {
+      "text": "",
+      "style": "normal"
+    },
+    {
+      "text": "Executive summary",
+      "style": "Heading 1"
+    },
+    {
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "style": "normal"
+    },
+    {
+      "text": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      "style": "normal"
+    },
+    {
+      "text": "At a glance",
+      "style": "Heading 2"
+    },
+    {
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.",
+      "style": "normal"
+    },
+    {
+      "text": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "style": "normal"
+    },
+    {
+      "text": "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      "style": "normal"
+    },
+    {
+      "text": "Introduction",
+      "style": "Heading 2"
+    },
+    {
+      "text": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+      "style": "normal"
+    },
+    {
+      "text": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.",
+      "style": "normal"
+    },
+    {
+      "text": "Key findings",
+      "style": "Heading 1"
+    },
+    {
+      "text": "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.",
+      "style": "normal"
+    },
+    {
+      "text": "Context and conditions",
+      "style": "Heading 2"
+    },
+    {
+      "text": "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur.",
+      "style": "normal"
+    },
+    {
+      "text": "Patterns in the evidence",
+      "style": "Heading 2"
+    },
+    {
+      "text": "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat.",
+      "style": "normal"
+    },
+    {
+      "text": "",
+      "style": "normal"
+    },
+    {
+      "text": "Key takeaway. At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti.",
+      "style": "normal"
+    },
+    {
+      "text": "",
+      "style": "Heading 2"
+    },
+    {
+      "text": "Implications",
+      "style": "Heading 2"
+    },
+    {
+      "text": "Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit.",
+      "style": "normal"
+    },
+    {
+      "text": "Recommendations",
+      "style": "Heading 1"
+    },
+    {
+      "text": "Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae.",
+      "style": "normal"
+    },
+    {
+      "text": "Clarify the objective. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "style": "normal"
+    },
+    {
+      "text": "Sequence the work. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+      "style": "normal"
+    },
+    {
+      "text": "Review the outcome. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
+      "style": "normal"
+    },
+    {
+      "text": "Conclusion",
+      "style": "Heading 2"
+    },
+    {
+      "text": "Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.",
+      "style": "normal"
+    },
+    {
+      "text": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      "style": "normal"
+    },
+    {
+      "text": "Appendix",
+      "style": "Heading 1"
+    },
+    {
+      "text": "Notes",
+      "style": "Heading 2"
+    },
+    {
+      "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.",
+      "style": "normal"
+    },
+    {
+      "text": "Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices.",
+      "style": "normal"
+    },
+    {
+      "text": "Source placeholders",
+      "style": "Heading 2"
+    },
+    {
+      "text": "[Author or organization]. [Source title]. [Publisher], [Year].",
+      "style": "normal"
+    },
+    {
+      "text": "[Author or organization]. [Report or article title]. [Month Year].",
+      "style": "normal"
+    },
+    {
+      "text": "[Dataset owner]. [Dataset name and version]. Accessed [Month Year].",
+      "style": "normal"
+    },
+    {
+      "text": "[Interviewee or team]. [Interview or workshop notes]. [Date].",
+      "style": "normal"
+    },
+    {
+      "text": "",
+      "style": "normal"
+    },
+    {
+      "text": "Template note. Replace bracketed placeholders, update the table of contents, and confirm page references before publishing.",
+      "style": "normal"
+    }
+  ],
+  "styles": [
+    {
+      "name": "Title",
+      "font": null,
+      "size": 40.0,
+      "bold": true,
+      "before": null,
+      "after": 5.0,
+      "line": 1.1583333333333334
+    },
+    {
+      "name": "Subtitle",
+      "font": null,
+      "size": 14.0,
+      "bold": null,
+      "before": null,
+      "after": null,
+      "line": null
+    },
+    {
+      "name": "Heading 1",
+      "font": "Helvetica Neue",
+      "size": 24.0,
+      "bold": false,
+      "before": 18.0,
+      "after": 10.0,
+      "line": null
+    },
+    {
+      "name": "Heading 2",
+      "font": "Helvetica Neue",
+      "size": 15.0,
+      "bold": false,
+      "before": 14.0,
+      "after": 6.0,
+      "line": null
+    },
+    {
+      "name": "Heading 3",
+      "font": "Helvetica Neue",
+      "size": 12.0,
+      "bold": true,
+      "before": 10.0,
+      "after": 4.0,
+      "line": null
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "word/header1.xml": {
+    "size": 5686,
+    "sha256": "3010e591f2a36dffc2b64e362fe20e67a65e993a8607f06b63a8daa061bb393a"
+  },
+  "word/footer1.xml": {
+    "size": 3248,
+    "sha256": "bf540216c35427463c8c0641aec21807b95db0d662051dcc4dbf1c8ec53bdbbc"
+  },
+  "word/footer2.xml": {
+    "size": 1791,
+    "sha256": "9b3d2efc0305fd83c2d8e706dc066614dc476c0cb3d5275537e59d50fc50f181"
+  },
+  "word/numbering.xml": {
+    "size": 5294,
+    "sha256": "e06753dacb14f81f7fec96c6d45d9e35fe031a807121b6e5ebac5aa3d79c51ee"
+  },
+  "word/settings.xml": {
+    "size": 2152,
+    "sha256": "fb088d0a3dbf7f5e5a5a399b898acf16aa2a6fc3b2984bc3eb0d4946f73ac005"
+  },
+  "word/fontTable.xml": {
+    "size": 2143,
+    "sha256": "43f86ee5fbc73932537006fb375424be633a07b66ab157c1f63194dfcf7fcc5d"
+  },
+  "word/_rels/fontTable.xml.rels": {
+    "size": 739,
+    "sha256": "6287d4b5dba5a4965a3c4581749ed74393d8e7832e0c4d292c6f009845045c6d"
+  },
+  "word/styles.xml": {
+    "size": 6707,
+    "sha256": "89f4471adfbd672d18aa2cb7aa969543133b6ff3e31e720582bb23ecf259f91b"
+  },
+  "word/document.xml": {
+    "size": 67073,
+    "sha256": "e3aaa8fc42f0fe391f97c652e965e7376ad2211c1815b98a8eef4c92bb3d1f93"
+  },
+  "word/_rels/document.xml.rels": {
+    "size": 1329,
+    "sha256": "636f3b58420223a4801ff80504e3e5789eb4a11e97ef784d2b1a9c231e54ff1d"
+  },
+  "_rels/.rels": {
+    "size": 298,
+    "sha256": "77494e8e16bbf29213e494792349e3d49d2397a4007b2816a058337d804e79a1"
+  },
+  "word/fonts/HelveticaNeue-bold.ttf": {
+    "size": 89720,
+    "sha256": "d55d0ca5a027475c35cfc5a9ebf038e5d0d7c5140083ec2732a67727eaeb20c5"
+  },
+  "word/fonts/HelveticaNeue-regular.ttf": {
+    "size": 90892,
+    "sha256": "f4b06f1a460c24da8a2a62210250f662064d1ec9ed3b0ef1d673f281e5445426"
+  },
+  "word/theme/theme1.xml": {
+    "size": 7642,
+    "sha256": "742bf86bb312d06389e21644f7e861273fe4f124f422c57cce0c28360b06f32d"
+  },
+  "word/media/image1.png": {
+    "size": 2711351,
+    "sha256": "2216d532a1983232b57b9fc9f5763d7ecc1592dbe55a1a4c4e7d29291327302e"
+  },
+  "word/fonts/HelveticaNeue-boldItalic.ttf": {
+    "size": 91516,
+    "sha256": "ba7822562fd8133eef9d83d197cdb19e55cfc5a4077029e081aa38f07a7981e5"
+  },
+  "word/fonts/HelveticaNeue-italic.ttf": {
+    "size": 92888,
+    "sha256": "a627c106749fdc7c3893c3e1385de3f73f7c311c8cf841c5a2176f55a6883cae"
+  },
+  "[Content_Types].xml": {
+    "size": 1669,
+    "sha256": "817fdf94119684bbf6273ffc41f29c687ffb90948e62c2896c08f8cd8fb2d853"
+  }
+}

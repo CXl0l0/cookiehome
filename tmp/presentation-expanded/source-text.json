@@ -1,0 +1,247 @@
+[
+  {
+    "slide": 1,
+    "part": "ppt/slides/slide1.xml",
+    "texts": [
+      "C",
+      "   ",
+      "kie",
+      " ",
+      "   ",
+      "omes",
+      "01",
+      "A gamified interface for",
+      "understanding cookie choices",
+      "Lee Chen Xuan",
+      "A0276149U",
+      "Super",
+      "visor: Prof Prasanna",
+      "Main Evaluator: Pro",
+      "f Alan Cheng",
+      "School of Computing"
+    ]
+  },
+  {
+    "slide": 2,
+    "part": "ppt/slides/slide2.xml",
+    "texts": [
+      "Why is it so complicated?",
+      "02",
+      "A website visit begins",
+      "with a privacy choice",
+      "Users",
+      "\u2019 lack of understanding on privacy settings",
+      "Interface is too verbose",
+      "Not user-friendly interface",
+      "Inconvenient",
+      "Can this ",
+      "process",
+      " be ",
+      "simpler",
+      "?"
+    ]
+  },
+  {
+    "slide": 3,
+    "part": "ppt/slides/slide3.xml",
+    "texts": [
+      "Consent? Whatever",
+      "03",
+      "22\u201323",
+      "percentage-point increase in consent",
+      "when the first-page opt-out was removed",
+      "Nouwens",
+      " et al., 2020 \u00b7 40 participants",
+      "Design can influence decisions.",
+      "The challenge is to explain cookie",
+      "purposes clearly and preserve",
+      "the user\u2019s intended choice.",
+      "Can we\u2026. ",
+      "g",
+      "amify it with an analogy?"
+    ]
+  },
+  {
+    "slide": 4,
+    "part": "ppt/slides/slide4.xml",
+    "texts": [
+      "It\u2019s not as easy as it sounds",
+      "04",
+      "Simplify without distorting",
+      "An analogy must preserve the cookie\u2019s purpose.",
+      "Handle uncertain purposes",
+      "Missing declarations limit what we can explain.",
+      "Interpret ambiguous answers",
+      "Answers like \u201cMaybe\u201d doesn\u2019t mean consent.",
+      "Make engagement useful",
+      "Enjoyment must lead to better understanding."
+    ]
+  },
+  {
+    "slide": 5,
+    "part": "ppt/slides/slide5.xml",
+    "texts": [
+      "How each feature addresses the problem",
+      "05",
+      "Each feature has a proposed benefit to evaluate",
+      "User difficulty",
+      "Design response",
+      "Intended benefit",
+      "Technical cookie descriptions",
+      "Home and guest analogy",
+      "Understand the purpose",
+      "Abstract privacy choices",
+      "Concrete scenarios",
+      "Connect requests to wishes",
+      "Questions or unclear answers",
+      "Chatbot and clarification",
+      "Express the intended choice",
+      "Limited attention",
+      "Scenario journey and progress",
+      "Stay engaged with the decision",
+      "Uncertain purpose evidence",
+      "Details and uncertainty labels",
+      "Recognise what is unknown"
+    ]
+  },
+  {
+    "slide": 6,
+    "part": "ppt/slides/slide6.xml",
+    "texts": [
+      "The research gap",
+      "06",
+      "Existing work",
+      "Consent interface studies explain how design affects choices.",
+      "CookieBlock classifies cookies and enforces preferences.",
+      "Gap in reviewed work",
+      "The reviewed works do not evaluate ",
+      "a gamified approach",
+      ".",
+      "Its effect on understanding and choice accuracy is untested.",
+      "Our contribution",
+      "A working Cookie Homes prototype and a planned",
+      "comparison with conventional consent controls."
+    ]
+  },
+  {
+    "slide": 7,
+    "part": "ppt/slides/slide7.xml",
+    "texts": [
+      "Prototype architecture",
+      "07",
+      "Website inputs",
+      "Cookie metadata",
+      "Cookiebot consent",
+      "Public declaration",
+      "Extension connector",
+      "Collect and send",
+      "value-free inputs",
+      "Purpose matching",
+      "Normalise inputs",
+      "Keep uncertainty",
+      "Cookie Homes",
+      "Scenarios + chatbot",
+      "User response",
+      "AI interpretation",
+      "Local server",
+      "\u2194 Gemini",
+      "Rules engine",
+      "Validate intent",
+      "Protect essentials",
+      "Local choice state",
+      "Update guests",
+      "and summary",
+      "Planned write-back",
+      "Review and confirm",
+      "Apply to site CMP",
+      "Current prototype: local website + extension connector",
+      "Solid = implemented     Dashed = planned"
+    ]
+  },
+  {
+    "slide": 8,
+    "part": "ppt/slides/slide8.xml",
+    "texts": [
+      "What the prototype can do today",
+      "08",
+      "Cookiebot",
+      " data adapter",
+      "Home and guest scenarios",
+      "Chat and local decisions"
+    ]
+  },
+  {
+    "slide": 9,
+    "part": "ppt/slides/slide9.xml",
+    "texts": [
+      "Live Demo",
+      "11"
+    ]
+  },
+  {
+    "slide": 10,
+    "part": "ppt/slides/slide10.xml",
+    "texts": [
+      "Evaluation Metrics",
+      "09",
+      "Outcome",
+      "Proposed measure",
+      "Reliability",
+      "Uncertain consent choices are not written back, unclear cookie purposes remains visibly unclear to the user",
+      "Understanding",
+      "Questions about cookie purposes and consequences",
+      "Choice fidelity",
+      "Agreement with stated intent; interpretation errors",
+      "Effort and usability",
+      "Completion rate, task time and perceived difficulty",
+      "Engagement",
+      "Interest, attention and willingness to use again"
+    ]
+  },
+  {
+    "slide": 11,
+    "part": "ppt/slides/slide11.xml",
+    "texts": [
+      "Planned work and expected outcomes",
+      "10",
+      "Complete the consent journey",
+      "Extension interface, confirmed write-back",
+      "and clearer uncertainty explanations",
+      "Evaluate the gamified experience",
+      "With comparative ",
+      "user study",
+      " ",
+      "and refinements",
+      " of the overall experience",
+      " from ",
+      "user ",
+      "feedback",
+      "Expected outputs",
+      "A usable prototype",
+      "Evidence about user benefit",
+      "Practical design guidance"
+    ]
+  },
+  {
+    "slide": 12,
+    "part": "ppt/slides/slide12.xml",
+    "texts": [
+      "Conclusion",
+      "11",
+      "Can a",
+      "n gamified analogy ",
+      "help users",
+      "make informed cookie choices?",
+      "The interaction prototype is in place.",
+      "The next step is to measure how it helps users\u2014and where it does not."
+    ]
+  },
+  {
+    "slide": 13,
+    "part": "ppt/slides/slide13.xml",
+    "texts": [
+      "Thank You",
+      "11"
+    ]
+  }
+]

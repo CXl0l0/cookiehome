@@ -1,0 +1,950 @@
+[
+  {
+    "slide": 1,
+    "id": "y90nupkv",
+    "shapes": [
+      {
+        "id": "5",
+        "text": "C   kie    omes",
+        "position": {
+          "left": 216.96,
+          "top": 176.1300787401575,
+          "width": 846.08,
+          "height": 129.84
+        }
+      },
+      {
+        "id": "2",
+        "text": "01",
+        "position": {
+          "left": 1175,
+          "top": 660,
+          "width": 60,
+          "height": 28
+        }
+      },
+      {
+        "id": "3",
+        "text": "A gamified interface for\nunderstanding cookie choices",
+        "position": {
+          "left": 95,
+          "top": 319.020157480315,
+          "width": 1080,
+          "height": 150
+        }
+      },
+      {
+        "id": "4",
+        "text": "Lee Chen Xuan\nA0276149U\nSupervisor: Prof Prasanna\nMain Evaluator: Prof Alan Cheng\nSchool of Computing",
+        "position": {
+          "left": 235,
+          "top": 542.76,
+          "width": 800,
+          "height": 158.22110236220473
+        }
+      }
+    ],
+    "images": [
+      {
+        "id": "11",
+        "frame": {
+          "left": 338.8,
+          "top": 223.0301312335958,
+          "width": 85.72,
+          "height": 85.72
+        },
+        "alt": ""
+      },
+      {
+        "id": "13",
+        "frame": {
+          "left": 295.9399475065617,
+          "top": 223.0301312335958,
+          "width": 85.72,
+          "height": 85.72
+        },
+        "alt": ""
+      },
+      {
+        "id": "9",
+        "frame": {
+          "left": 600.64,
+          "top": 176.1300787401575,
+          "width": 112.84,
+          "height": 142.8900787401575
+        },
+        "alt": ""
+      }
+    ]
+  },
+  {
+    "slide": 2,
+    "id": "hwbqtkby",
+    "shapes": [
+      {
+        "id": "7",
+        "text": "Why is it so complicated?",
+        "position": {
+          "left": 64,
+          "top": 42,
+          "width": 1150,
+          "height": 75
+        }
+      },
+      {
+        "id": "2",
+        "text": "02",
+        "position": {
+          "left": 1175,
+          "top": 660,
+          "width": 60,
+          "height": 28
+        }
+      },
+      {
+        "id": "4",
+        "text": "A website visit begins\nwith a privacy choice",
+        "position": {
+          "left": 65,
+          "top": 188,
+          "width": 470,
+          "height": 135
+        }
+      },
+      {
+        "id": "5",
+        "text": "Users’ lack of understanding on privacy settings\nInterface is too verbose\nNot user-friendly interface\nInconvenient\n",
+        "position": {
+          "left": 65,
+          "top": 344.56,
+          "width": 480,
+          "height": 231.44
+        }
+      },
+      {
+        "id": "6",
+        "text": "Can this process be simpler?",
+        "position": {
+          "left": 65,
+          "top": 598.4999475065617,
+          "width": 1110,
+          "height": 55
+        }
+      }
+    ],
+    "images": [
+      {
+        "id": "8",
+        "frame": {
+          "left": 639,
+          "top": 143.8696062992126,
+          "width": 526.4339107611548,
+          "height": 432.2607874015748
+        },
+        "alt": ""
+      }
+    ]
+  },
+  {
+    "slide": 3,
+    "id": "ofy9wn61",
+    "shapes": [
+      {
+        "id": "9",
+        "text": "Consent? Whatever",
+        "position": {
+          "left": 64,
+          "top": 42,
+          "width": 1150,
+          "height": 75
+        }
+      },
+      {
+        "id": "2",
+        "text": "03",
+        "position": {
+          "left": 1175,
+          "top": 660,
+          "width": 60,
+          "height": 28
+        }
+      },
+      {
+        "id": "3",
+        "text": "22–23",
+        "position": {
+          "left": 65,
+          "top": 117,
+          "width": 500,
+          "height": 115
+        }
+      },
+      {
+        "id": "4",
+        "text": "percentage-point increase in consent",
+        "position": {
+          "left": 70,
+          "top": 244,
+          "width": 520,
+          "height": 60
+        }
+      },
+      {
+        "id": "5",
+        "text": "when the first-page opt-out was removed\nNouwens et al., 2020 · 40 participants",
+        "position": {
+          "left": 70,
+          "top": 290,
+          "width": 540,
+          "height": 80
+        }
+      },
+      {
+        "id": "6",
+        "text": "Design can influence decisions.",
+        "position": {
+          "left": 685,
+          "top": 185,
+          "width": 500,
+          "height": 100
+        }
+      },
+      {
+        "id": "7",
+        "text": "The challenge is to explain cookie\npurposes clearly and preserve\nthe user’s intended choice.",
+        "position": {
+          "left": 685,
+          "top": 290,
+          "width": 510,
+          "height": 160
+        }
+      },
+      {
+        "id": "8",
+        "text": "Can we…. gamify it with an analogy?",
+        "position": {
+          "left": 666.24,
+          "top": 500,
+          "width": 518.76,
+          "height": 80
+        }
+      }
+    ],
+    "images": [
+      {
+        "id": "11",
+        "frame": {
+          "left": 105.2,
+          "top": 370,
+          "width": 419.6,
+          "height": 313.03485564304464
+        },
+        "alt": ""
+      }
+    ]
+  },
+  {
+    "slide": 4,
+    "id": "jyx0ra1s",
+    "shapes": [
+      {
+        "id": "10",
+        "text": "It’s not as easy as it sounds",
+        "position": {
+          "left": 64,
+          "top": 42,
+          "width": 1150,
+          "height": 75
+        }
+      },
+      {
+        "id": "2",
+        "text": "04",
+        "position": {
+          "left": 1175,
+          "top": 660,
+          "width": 60,
+          "height": 28
+        }
+      },
+      {
+        "id": "11",
+        "text": "Simplify without distorting",
+        "position": {
+          "left": 70,
+          "top": 165,
+          "width": 445,
+          "height": 72
+        }
+      },
+      {
+        "id": "12",
+        "text": "An analogy must preserve the cookie’s purpose.",
+        "position": {
+          "left": 550,
+          "top": 165,
+          "width": 660,
+          "height": 80
+        }
+      },
+      {
+        "id": "13",
+        "text": "Handle uncertain purposes",
+        "position": {
+          "left": 70,
+          "top": 273,
+          "width": 445,
+          "height": 72
+        }
+      },
+      {
+        "id": "14",
+        "text": "Missing declarations limit what we can explain.",
+        "position": {
+          "left": 550,
+          "top": 273,
+          "width": 660,
+          "height": 63
+        }
+      },
+      {
+        "id": "15",
+        "text": "Interpret ambiguous answers",
+        "position": {
+          "left": 70,
+          "top": 381,
+          "width": 445,
+          "height": 72
+        }
+      },
+      {
+        "id": "16",
+        "text": "Answers like “Maybe” doesn’t mean consent.",
+        "position": {
+          "left": 550,
+          "top": 381,
+          "width": 660,
+          "height": 80
+        }
+      },
+      {
+        "id": "17",
+        "text": "Make engagement useful",
+        "position": {
+          "left": 70,
+          "top": 489,
+          "width": 445,
+          "height": 72
+        }
+      },
+      {
+        "id": "18",
+        "text": "Enjoyment must lead to better understanding.",
+        "position": {
+          "left": 550,
+          "top": 489,
+          "width": 660,
+          "height": 80
+        }
+      }
+    ],
+    "images": []
+  },
+  {
+    "slide": 5,
+    "id": "i107q5of",
+    "shapes": [
+      {
+        "id": "10",
+        "text": "How each feature addresses the problem",
+        "position": {
+          "left": 64,
+          "top": 42,
+          "width": 1150,
+          "height": 75
+        }
+      },
+      {
+        "id": "2",
+        "text": "05",
+        "position": {
+          "left": 1175,
+          "top": 660,
+          "width": 60,
+          "height": 28
+        }
+      },
+      {
+        "id": "11",
+        "text": "Each feature has a proposed benefit to evaluate",
+        "position": {
+          "left": 70,
+          "top": 140,
+          "width": 1130,
+          "height": 55
+        }
+      }
+    ],
+    "images": []
+  },
+  {
+    "slide": 6,
+    "id": "x8f69ofe",
+    "shapes": [
+      {
+        "id": "10",
+        "text": "The research gap",
+        "position": {
+          "left": 64,
+          "top": 42,
+          "width": 1150,
+          "height": 75
+        }
+      },
+      {
+        "id": "2",
+        "text": "06",
+        "position": {
+          "left": 1175,
+          "top": 660,
+          "width": 60,
+          "height": 28
+        }
+      },
+      {
+        "id": "11",
+        "text": "Existing work",
+        "position": {
+          "left": 70,
+          "top": 162,
+          "width": 350,
+          "height": 50
+        }
+      },
+      {
+        "id": "12",
+        "text": "Consent interface studies explain how design affects choices.\nCookieBlock classifies cookies and enforces preferences.",
+        "position": {
+          "left": 450,
+          "top": 162,
+          "width": 760,
+          "height": 120
+        }
+      },
+      {
+        "id": "13",
+        "text": "Gap in reviewed work",
+        "position": {
+          "left": 70,
+          "top": 323,
+          "width": 350,
+          "height": 85
+        }
+      },
+      {
+        "id": "14",
+        "text": "The reviewed works do not evaluate a gamified approach.\nIts effect on understanding and choice accuracy is untested.",
+        "position": {
+          "left": 450,
+          "top": 323,
+          "width": 760,
+          "height": 115
+        }
+      },
+      {
+        "id": "15",
+        "text": "Our contribution",
+        "position": {
+          "left": 70,
+          "top": 500,
+          "width": 350,
+          "height": 55
+        }
+      },
+      {
+        "id": "16",
+        "text": "A working Cookie Homes prototype and a planned\ncomparison with conventional consent controls.",
+        "position": {
+          "left": 450,
+          "top": 500,
+          "width": 760,
+          "height": 100
+        }
+      }
+    ],
+    "images": []
+  },
+  {
+    "slide": 7,
+    "id": "gnmp4jqx",
+    "shapes": [
+      {
+        "id": "17",
+        "text": "",
+        "position": {
+          "left": 302,
+          "top": 487,
+          "width": 64,
+          "height": 0,
+          "horizontalFlip": true
+        }
+      },
+      {
+        "id": "16",
+        "text": "",
+        "position": {
+          "left": 608,
+          "top": 487,
+          "width": 64,
+          "height": 0,
+          "horizontalFlip": true
+        }
+      },
+      {
+        "id": "15",
+        "text": "",
+        "position": {
+          "left": 914,
+          "top": 487,
+          "width": 64,
+          "height": 0,
+          "horizontalFlip": true
+        }
+      },
+      {
+        "id": "14",
+        "text": "",
+        "position": {
+          "left": 1099,
+          "top": 306,
+          "width": 0,
+          "height": 108
+        }
+      },
+      {
+        "id": "13",
+        "text": "",
+        "position": {
+          "left": 914,
+          "top": 233,
+          "width": 64,
+          "height": 0
+        }
+      },
+      {
+        "id": "12",
+        "text": "",
+        "position": {
+          "left": 608,
+          "top": 233,
+          "width": 64,
+          "height": 0
+        }
+      },
+      {
+        "id": "11",
+        "text": "",
+        "position": {
+          "left": 302,
+          "top": 233,
+          "width": 64,
+          "height": 0
+        }
+      },
+      {
+        "id": "20",
+        "text": "Prototype architecture",
+        "position": {
+          "left": 64,
+          "top": 42,
+          "width": 1150,
+          "height": 75
+        }
+      },
+      {
+        "id": "2",
+        "text": "07",
+        "position": {
+          "left": 1175,
+          "top": 660,
+          "width": 60,
+          "height": 28
+        }
+      },
+      {
+        "id": "3",
+        "text": "Website inputs\nCookie metadata\nCookiebot consent\nPublic declaration",
+        "position": {
+          "left": 60,
+          "top": 160,
+          "width": 242,
+          "height": 146
+        }
+      },
+      {
+        "id": "4",
+        "text": "Extension connector\nCollect and send\nvalue-free inputs",
+        "position": {
+          "left": 366,
+          "top": 160,
+          "width": 242,
+          "height": 146
+        }
+      },
+      {
+        "id": "5",
+        "text": "Purpose matching\nNormalise inputs\nKeep uncertainty",
+        "position": {
+          "left": 672,
+          "top": 160,
+          "width": 242,
+          "height": 146
+        }
+      },
+      {
+        "id": "6",
+        "text": "Cookie Homes\nScenarios + chatbot\nUser response",
+        "position": {
+          "left": 978,
+          "top": 160,
+          "width": 242,
+          "height": 146
+        }
+      },
+      {
+        "id": "7",
+        "text": "AI interpretation\nLocal server\n↔ Gemini",
+        "position": {
+          "left": 978,
+          "top": 414,
+          "width": 242,
+          "height": 146
+        }
+      },
+      {
+        "id": "8",
+        "text": "Rules engine\nValidate intent\nProtect essentials",
+        "position": {
+          "left": 672,
+          "top": 414,
+          "width": 242,
+          "height": 146
+        }
+      },
+      {
+        "id": "9",
+        "text": "Local choice state\nUpdate guests\nand summary",
+        "position": {
+          "left": 366,
+          "top": 414,
+          "width": 242,
+          "height": 146
+        }
+      },
+      {
+        "id": "10",
+        "text": "Planned write-back\nReview and confirm\nApply to site CMP",
+        "position": {
+          "left": 60,
+          "top": 414,
+          "width": 242,
+          "height": 146
+        }
+      },
+      {
+        "id": "18",
+        "text": "Current prototype: local website + extension connector",
+        "position": {
+          "left": 60,
+          "top": 603,
+          "width": 900,
+          "height": 40
+        }
+      },
+      {
+        "id": "19",
+        "text": "Solid = implemented     Dashed = planned",
+        "position": {
+          "left": 60,
+          "top": 646,
+          "width": 900,
+          "height": 30
+        }
+      }
+    ],
+    "images": []
+  },
+  {
+    "slide": 8,
+    "id": "fu1gfa1s",
+    "shapes": [
+      {
+        "id": "7",
+        "text": "What the prototype can do today",
+        "position": {
+          "left": 64,
+          "top": 42,
+          "width": 1150,
+          "height": 75
+        }
+      },
+      {
+        "id": "2",
+        "text": "08",
+        "position": {
+          "left": 1175,
+          "top": 660,
+          "width": 60,
+          "height": 28
+        }
+      },
+      {
+        "id": "5",
+        "text": "Cookiebot data adapter\n\nHome and guest scenarios\n\nChat and local decisions",
+        "position": {
+          "left": 768.96,
+          "top": 203.65249343832022,
+          "width": 455.24,
+          "height": 382.90740157480315
+        }
+      }
+    ],
+    "images": [
+      {
+        "id": "3",
+        "frame": {
+          "left": 64,
+          "top": 103.56,
+          "width": 542.4,
+          "height": 446.7451968503937
+        },
+        "alt": ""
+      },
+      {
+        "id": "9",
+        "frame": {
+          "left": 481.4179527559055,
+          "top": 451.83023622047244,
+          "width": 254.9020472440945,
+          "height": 250.46887139107614
+        },
+        "alt": ""
+      }
+    ]
+  },
+  {
+    "slide": 9,
+    "id": "udsvah03",
+    "shapes": [
+      {
+        "id": "5",
+        "text": "Live Demo",
+        "position": {
+          "left": 446.49049868766406,
+          "top": 312.04241469816276,
+          "width": 387.0188976377953,
+          "height": 95.91517060367454
+        }
+      },
+      {
+        "id": "2",
+        "text": "11",
+        "position": {
+          "left": 1175,
+          "top": 660,
+          "width": 60,
+          "height": 28
+        }
+      }
+    ],
+    "images": []
+  },
+  {
+    "slide": 10,
+    "id": "m90b6t0r",
+    "shapes": [
+      {
+        "id": "6",
+        "text": "Evaluation Metrics",
+        "position": {
+          "left": 55,
+          "top": 117,
+          "width": 1150,
+          "height": 75
+        }
+      },
+      {
+        "id": "2",
+        "text": "09",
+        "position": {
+          "left": 1175,
+          "top": 660,
+          "width": 60,
+          "height": 28
+        }
+      }
+    ],
+    "images": []
+  },
+  {
+    "slide": 11,
+    "id": "jetc3ut0",
+    "shapes": [
+      {
+        "id": "9",
+        "text": "Planned work and expected outcomes",
+        "position": {
+          "left": 64,
+          "top": 42,
+          "width": 1150,
+          "height": 75
+        }
+      },
+      {
+        "id": "2",
+        "text": "10",
+        "position": {
+          "left": 1175,
+          "top": 660,
+          "width": 60,
+          "height": 28
+        }
+      },
+      {
+        "id": "3",
+        "text": "Complete the consent journey",
+        "position": {
+          "left": 68,
+          "top": 165,
+          "width": 620,
+          "height": 55
+        }
+      },
+      {
+        "id": "4",
+        "text": "Extension interface, confirmed write-back\nand clearer uncertainty explanations",
+        "position": {
+          "left": 68,
+          "top": 238,
+          "width": 660,
+          "height": 100
+        }
+      },
+      {
+        "id": "5",
+        "text": "Evaluate the gamified experience",
+        "position": {
+          "left": 68,
+          "top": 385,
+          "width": 680,
+          "height": 55
+        }
+      },
+      {
+        "id": "6",
+        "text": "With comparative user study and refinements of the overall experience from user feedback",
+        "position": {
+          "left": 68,
+          "top": 458,
+          "width": 660,
+          "height": 100
+        }
+      },
+      {
+        "id": "7",
+        "text": "Expected outputs",
+        "position": {
+          "left": 830,
+          "top": 168,
+          "width": 380,
+          "height": 50
+        }
+      },
+      {
+        "id": "8",
+        "text": "A usable prototype\n\nEvidence about user benefit\n\nPractical design guidance",
+        "position": {
+          "left": 830,
+          "top": 255,
+          "width": 380,
+          "height": 275
+        }
+      }
+    ],
+    "images": []
+  },
+  {
+    "slide": 12,
+    "id": "8f2psfyx",
+    "shapes": [
+      {
+        "id": "5",
+        "text": "Conclusion",
+        "position": {
+          "left": 64,
+          "top": 42,
+          "width": 1150,
+          "height": 75
+        }
+      },
+      {
+        "id": "2",
+        "text": "11",
+        "position": {
+          "left": 1175,
+          "top": 660,
+          "width": 60,
+          "height": 28
+        }
+      },
+      {
+        "id": "3",
+        "text": "Can an gamified analogy help users\nmake informed cookie choices?",
+        "position": {
+          "left": 68,
+          "top": 190,
+          "width": 1130,
+          "height": 180
+        }
+      },
+      {
+        "id": "4",
+        "text": "The interaction prototype is in place.\nThe next step is to measure how it helps users—and where it does not.",
+        "position": {
+          "left": 70,
+          "top": 455,
+          "width": 1100,
+          "height": 125
+        }
+      }
+    ],
+    "images": []
+  },
+  {
+    "slide": 13,
+    "id": "hgzapcr6",
+    "shapes": [
+      {
+        "id": "5",
+        "text": "Thank You",
+        "position": {
+          "left": 448.9056167979003,
+          "top": 312.04241469816276,
+          "width": 382.1887664041995,
+          "height": 95.91517060367454
+        }
+      },
+      {
+        "id": "2",
+        "text": "11",
+        "position": {
+          "left": 1175,
+          "top": 660,
+          "width": 60,
+          "height": 28
+        }
+      }
+    ],
+    "images": []
+  }
+]

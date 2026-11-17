@@ -1,0 +1,193 @@
+Cookie Homes
+Gamified cookie consent design report   Prepared by Lee Chen Xuan
+                                        November 2026
+Cookie Homes                                                                                                                November 2026
+
+
+
+
+Contents
+
+
+Executive summary.................................................................................................................... 2
+   At a glance ............................................................................................................................. 2
+   Motivation and problem ......................................................................................................... 2
+Key findings ............................................................................................................................... 3
+   Literature and background ..................................................................................................... 3
+   Key challenge ......................................................................................................................... 3
+   Implications ............................................................................................................................ 3
+Recommendations ..................................................................................................................... 4
+   Conclusion ............................................................................................................................. 4
+Appendix ................................................................................................................................... 5
+   Architecture and progress ...................................................................................................... 5
+   Sources .................................................................................................................................. 6
+
+
+
+
+                                                                                                                                             1
+Cookie Homes                                                                       November 2026
+
+
+
+
+Executive summary
+Cookie Homes explores whether a gamified interface can help users understand cookie
+purposes and express their privacy preferences. Websites become homes and cookies
+become guests with requests. Users can inspect technical evidence, discuss a scenario with a
+chatbot and review the resulting choice.
+The current prototype combines a browser extension connector with a local website interface.
+It demonstrates data collection, scenario generation and local decision updates. Its benefit to
+users remains a research question; website consent write-back and a comparative user study
+are planned.
+
+
+At a glance
+  • Motivation: improve the quality of cookie choices during everyday browsing.
+  • Current scope: Cookiebot sites; browser metadata, consent signals and public
+    declarations.
+  • Main question: does the gamified journey improve understanding and engagement while
+    preserving users’ intended choices?
+
+
+Motivation and problem
+The report’s F1 and FIFA examples show users encountering consent controls before
+continuing with a website. The controls differ in detail and granularity. These examples connect
+the project to everyday browsing, but do not establish how all users behave or which interface
+is best.
+The problem is to make cookie requests understandable without distorting their meaning or
+steering users towards acceptance or rejection. This is challenging because purposes can be
+uncertain, preferences can depend on context, and conversational answers can be ambiguous.
+
+
+
+
+                                                                                                  2
+Cookie Homes                                                                               November 2026
+
+
+
+
+Key findings
+Existing research supports examining consent interface design and cookie classification.
+Cookie Homes asks how a gamified experience affects users’ understanding and choices.
+
+
+Literature and background
+Nouwens et al. [1] showed that interface design changes consent choices in a study with 40
+participants. CookieBlock [2] classifies cookies with machine learning and enforces
+preferences.
+
+
+Key challenge
+These works do not evaluate the conversational home and guest experience proposed here.
+This project studies its effects on understanding and preference elicitation; it does not claim
+that no related gamified systems exist.
+
+
+
+  Research question. Can a gamified scenario interface improve cookie understanding
+  and engagement while accurately capturing users’ intended choices?
+
+
+
+
+Implications
+Public declarations may be incomplete or inaccurate. The analogy must preserve the available
+evidence and make uncertainty visible.
+
+  Challenge          Risk                               Design response
+
+  Purpose evidence   Incomplete declarations            Show uncertainty and metadata
+
+  Conversation       Ambiguous user intent              Clarify before changing a choice
+
+  Consent            CMP support varies                 Begin with Cookiebot
+
+
+
+
+                                                                                                      3
+Cookie Homes                                                                        November 2026
+
+
+
+
+Recommendations
+Complete the supported Cookiebot journey, then evaluate user benefit. The following work
+connects the implementation to measurable research outcomes.
+  1. Complete the prototype. Move the interaction into the extension, investigate supported
+     consent write-back, and add review and recovery controls. Preserve uncertain purpose
+     labels and clarify ambiguous answers before changing state.
+
+  2. Run a comparative study. Pilot matched tasks, then compare Cookie Homes with a
+     category dashboard. Counterbalance order. Measure comprehension, completion rate,
+     time, interpretation errors, decision confidence, engagement and perceived difficulty.
+     Compare choices with stated intent and discuss mismatches with participants.
+
+  3. Interpret the evidence. Use interviews to identify helpful or confusing elements. If
+     feasible, compare a simplified variant with the same choice logic to separate the
+     analogy’s effect from the chatbot’s. Otherwise report results for the whole interface.
+     Agree sample size and analysis before recruitment.
+
+
+Conclusion
+The prototype demonstrates the feasibility of a scenario based interaction. The expected
+outputs are a usable extension prototype, evidence about understanding and engagement, and
+recommendations for presenting cookie choices.
+Improvement is a hypothesis to test. Mixed or negative results will still inform the design. A
+small exploratory study cannot establish broad effectiveness, and the current prototype does
+not yet apply choices to a website’s CMP.
+
+
+
+
+                                                                                                 4
+Cookie Homes                                                                       November 2026
+
+
+
+
+Appendix
+Architecture and progress
+The connector reads cookie metadata, the Cookiebot consent snapshot and a public
+declaration. The adapter normalises inputs and matches purposes. Cookie Homes turns the
+resulting records into scenarios, with the underlying evidence available for inspection.
+Chat messages pass through the local server to Gemini for interpretation. The rules engine
+validates structured decisions and updates local state. Essential guests are protected. Unclear
+messages should trigger clarification; consent write-back is shown as planned.
+
+
+
+
+                                                                                              5
+Cookie Homes                                                                         November 2026
+
+
+
+
+Sources
+  • [1] Nouwens, M., Liccardi, I., Veale, M., Karger, D. and Kagal, L. (2020). Dark Patterns
+    after the GDPR: Scraping Consent Pop-ups and Demonstrating their Influence. CHI.
+    https://doi.org/10.1145/3313831.3376321
+  • [2] Bollinger, D., Kubicek, K., Cotrini, C. and Basin, D. (2022). Automating Cookie Consent
+    and GDPR Violation Detection. USENIX Security, 2893–2910.
+    https://www.usenix.org/conference/usenixsecurity22/presentation/bollinger
+  • [3] Lee Chen Xuan. Designing a Gamified Application for User Privacy Preference
+    Extraction. Continual Assessment Report, November 2026. Project source:
+    report/report.tex.
+  • [4] Cookie Homes implementation. extension/popup.js; src/engine/cookiebot-adapter.js;
+    src/engine/input-adapter.js; src/engine/rules.js; src/ui/app.js; server.js. Reviewed for this
+    architecture draft.
+
+
+
+  Evaluation note. A questionnaire records stated preferences, not an objective privacy
+  truth. Learning may legitimately change a choice. Assess understanding and intended
+  decisions together; acceptance rate alone is not a success measure.
+
+
+
+
+                                                                                                    6
+

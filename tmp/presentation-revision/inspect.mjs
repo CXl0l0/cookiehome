@@ -1,0 +1,13 @@
+import fs from 'node:fs/promises';
+import {pathToFileURL} from 'node:url';
+const dep='C:/Program Files/WindowsApps/OpenAI.CodexPrimaryRuntime.v26-1112-611-0_26.1112.611.0_x64__3k8sg7r9htsxt/dependencies';
+const {PresentationFile,FileBlob}=await import(pathToFileURL(dep+'/node/node_modules/@oai/artifact-tool/dist/artifact_tool.mjs'));
+const build='C:/Users/User/Desktop/cookiehome/tmp/presentation-revision';
+await fs.mkdir(build,{recursive:true});
+const input='C:/Users/User/Desktop/cookiehome/output/presentation-draft/Cookie_Homes_Presentation.pptx';
+await fs.copyFile(input,build+'/original.pptx');
+const p=await PresentationFile.importPptx(await FileBlob.load(input));
+console.log(p.help('*',{search:'delete',include:['index','notes'],maxChars:7000}));
+console.log(await p.inspect({kind:'slide,textbox,shape,layout',search:'Related work',maxChars:3000}));
+await fs.writeFile(build+'/before-slide4.png',new Uint8Array(await (await p.export({slide:p.slides.items[3],format:'png',scale:1})).arrayBuffer()));
+console.log('SHAPES',p.slides.items[3].shapes.items.map(x=>({id:x.id,text:x.text.toString(),position:x.position})));
